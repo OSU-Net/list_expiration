@@ -12,13 +12,14 @@ def login_success(request):
     #     print("no lists for user")
     # else:
     #     print(u.listentry_set.all())
-
+    output = 'nothing'
     records = OwnerEntry.objects.filter(name=request.user)
     if(records == None):
         print("no lists for:")
         print(request.user)
     else:
-        for oe in records:
-            print(oe.list.name)
+        # for oe in records:
+        #     print(oe.list.name)
+        output = ', '.join(r.list.name for r in records)
 
-    return HttpResponse("login success!")
+    return HttpResponse(output)
