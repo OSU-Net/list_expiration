@@ -1,0 +1,14 @@
+#This file is an example of what settings should be included to make the site function.
+
+#These backends should be specified for django-cas to work
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas.backends.CASBackend'
+)
+
+CAS_SERVER_URL = 'https://login.oregonstate.edu/cas-dev/login'
+
+CAS_REDIRECT_URL = '.../app/login_success'
+
+#specify this to prevent needing to authenticate through the CAS server to reach the admin page
+CAS_ADMIN_PREFIX = '.../admin'

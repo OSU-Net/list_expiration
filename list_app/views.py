@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import ListEntry, OwnerEntry
+from django.template import RequestContext, loader
 
 # Create your views here.
 
@@ -18,8 +19,15 @@ def login_success(request):
         print("no lists for:")
         print(request.user)
     else:
-        # for oe in records:
-        #     print(oe.list.name)
+
+        for oe in records:
+            print(oe.list.name)
+
         output = ', '.join(r.list.name for r in records)
+        template = loader.get_template('app/login_success.html')
+        context = RequestContext(request, {
+            'user_email_list': records,
+        })
+        return HttpResponse(template.render(context))
 
     return HttpResponse(output)
