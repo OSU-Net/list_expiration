@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> List Management </title>
+</head>
+<body>
+{% if list_to_edit %}
+    <form>
+        <input id="name" type="text" readonly />
+        <input id="expire_date" type="text" />
+        <input id="admins" type="text" readonly />
+        <input id="active_date" type="text" readonly />
+
+        <input id="submit" type="button" value="Save Changes" />
+        <input id="cancel" type="button" value="Cancel" />
+    </form>
+{% else %}
+    <p>No list passed</p>
+{% endif %}
+</body>
+</html>
