@@ -5,7 +5,7 @@ class ListEntry(models.Model):
     # create_date = models.DateTimeField('date created')
     # active_date = models.DateTimeField('date of last list activity')
     # expire_date = models.DateTimeField('date of expiration')
-    date = models.DateTimeField('date created')
+    create_date = models.DateTimeField('date created')
 
     class Meta:
         ordering = ('name',)
