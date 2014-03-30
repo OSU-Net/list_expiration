@@ -14,12 +14,11 @@
                     <td>{{ listEntry.name }}</td>
                     <td>{{ listEntry.create_date }}</td>
                     <td>
-                        <form action="/list_edit" method="post">
-                            <input id="submit" type="submit" value="Edit" />
-                            <comment>
-                                problem:  need a way to supply extra data (listEntry.name, listEntry.create_date) to the form
-                                possible solution: create hidden fields for the necessary data.
-                            </comment>
+                        <form action="/app/list_edit" method="get">
+                            <input name="submit" type="submit" value="Edit" />
+                            <!--<input name="list_name" type="hidden" value="{{listEntry.name}}" />-->
+                            <input name="list_id" type="hidden" value="{{listEntry.id}}" />
+                            <input name="admin_name" type="hidden" value="{{admin_name}}" />
                         </form>
                     </td>
                 </tr>

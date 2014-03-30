@@ -5,7 +5,7 @@
 </head>
 <body>
     {% if list_to_edit %}
-        <form action="/list_edit/">
+        <form action="/list_edit/" method="post">
             <input id="name" type="text" readonly />
             <input id="expire_date" type="text" />
             <input id="admins" type="text" readonly />
