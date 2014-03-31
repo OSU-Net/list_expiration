@@ -4,18 +4,31 @@
     <title> List Management </title>
 </head>
 <body>
-    {% if list_to_edit %}
-        <form action="/list_edit/" method="post">
-            <input id="name" type="text" readonly />
-            <input id="expire_date" type="text" />
-            <input id="admins" type="text" readonly />
-            <input id="active_date" type="text" readonly />
+    <table style="width:300px">
+        <tr>
+            <td> list name </td>
+            <td> expiration date </td>
+            <td> administrators </td>
+            <td> active date </td>
+        </tr>
+        <tr>
+            <form action="/app/list_edit/" method="post">
+                <td> <input id="name" type="text" readonly   /> </td>
+                <td> <input id="expire_date" type="text"     /> </td>
+                <td> <input id="admins" type="text" readonly /> </td>
+                <td> <input id="active_date" type="text" readonly /> </td>
 
-            <input id="submit" type="submit" value="Save Changes" />
-            <input id="cancel" type="button" value="Cancel" />
-        </form>
-    {% else %}
-        <p>No list passed</p>
+                <input id="submit" type="submit" value="Save Changes" />
+                <!--<input id="cancel" type="button" value="Cancel" />-->
+            </form>
+
+            <form action="/app/list_edit_cancel" method="get">
+                <input id="cancel" type="button" value="cancel" />
+            </form>
+        </tr>
+    </table>
+    {% if invalid_edit %}
+        <p><b>Invalid changes:<br> {{error_msg}} </b></p>
     {% endif %}
 </body>
 </html>
