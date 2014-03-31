@@ -5,7 +5,10 @@ from django.template import RequestContext, loader
 
 
 #view for the page that is redirected to after successful CAS authentication
-def login_success(request):
+def list_index(request):
+    if not request.user:
+        return HttpResponseRedirect('login')
+
     user_lists = OwnerEntry.objects.filter(name=request.user)
     lists = []
     for list_record in user_lists:
@@ -15,7 +18,7 @@ def login_success(request):
         return HttpResponse(str.format("no lists for {0}", request.user))
 
     else:
-        template = loader.get_template('login_success.html')
+        template = loader.get_template('list_index.html')
         context = RequestContext(request, {
             'lists': lists,
             'admin_name': request.user
@@ -27,12 +30,12 @@ def validate_list_changes():
     return "success"
 
 
-def list_edit(request):
+def list_index(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
         error_msg = validate_list_changes()
 
         if error_msg == 'success':
-            return HttpResponseRedirect("app/login_success")
+            return HttpResponseRedirect("lists/index")
         else:
             #render list_edit.html with a mean-looking red warning
             return HttpResponse("hello world!")

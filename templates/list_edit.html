@@ -8,22 +8,22 @@
         <tr>
             <td> list name </td>
             <td> expiration date </td>
-            <td> administrators </td>
-            <td> active date </td>
+            <!--<td> administrators </td>-->
+            <!--<td> active date </td>-->
         </tr>
         <tr>
-            <form action="/app/list_edit/" method="post">
-                <td> <input id="name" type="text" readonly   /> </td>
-                <td> <input id="expire_date" type="text"     /> </td>
-                <td> <input id="admins" type="text" readonly /> </td>
-                <td> <input id="active_date" type="text" readonly /> </td>
+            <form action="" method="post">
+                <td> <input id="name" type="text" /> </td>
+                <td> <input id="expire_date" type="text" /> </td>
+                <!--<td> <input id="admins" type="text" readonly /> </td>-->
+                <!--<td> <input id="active_date" type="text" readonly /> </td>-->
 
                 <input id="submit" type="submit" value="Save Changes" />
                 <!--<input id="cancel" type="button" value="Cancel" />-->
             </form>
 
-            <form action="/app/list_edit_cancel" method="get">
-                <input id="cancel" type="button" value="cancel" />
+            <form action="/lists/list_edit_cancel" method="get">
+                <input id="cancel" type="button" value="Cancel" />
             </form>
         </tr>
     </table>
