@@ -14,7 +14,7 @@
                     <td>{{ listEntry.name }}</td>
                     <td>{{ listEntry.create_date }}</td>
                     <td>
-                        <form action="/app/list_edit" method="get">
+                        <form action="/lists/list_edit" method="get">
                             <input name="submit" type="submit" value="Edit" />
                             <!--<input name="list_name" type="hidden" value="{{listEntry.name}}" />-->
                             <input name="list_id" type="hidden" value="{{listEntry.id}}" />
@@ -29,7 +29,7 @@
         <p> You are not an administrator of any lists</p>
     {% endif %}
 
-    <form action="/logout/" method="post">
+    <form action="/logout/" method="post"> {% csrf_token %}
         <input name="logout" type="submit" value="logout" />
     </form>
 </body>

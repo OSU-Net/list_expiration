@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^lists/', include('list_app.urls', namespace='list_app')),
     url(r'^logout', 'django_cas.views.logout'),
     url(r'^login', 'django_cas.views.login'),
+    url(r'^', 'list_app.views.list_index')
 )

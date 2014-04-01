@@ -12,7 +12,7 @@
             <!--<td> active date </td>-->
         </tr>
         <tr>
-            <form action="" method="post">
+            <form action="" method="post"> {% csrf_token %}
                 <td> <input id="name" type="text" /> </td>
                 <td> <input id="expire_date" type="text" /> </td>
                 <!--<td> <input id="admins" type="text" readonly /> </td>-->
@@ -22,8 +22,9 @@
                 <!--<input id="cancel" type="button" value="Cancel" />-->
             </form>
 
-            <form action="/lists/list_edit_cancel" method="get">
-                <input id="cancel" type="button" value="Cancel" />
+            <!--TODO: Turn the below code into a javascript button-->
+            <form action="/lists/list_index" method="get">
+                <input id="cancel" type="submit" value="Cancel" />
             </form>
         </tr>
     </table>

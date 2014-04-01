@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from models import ListEntry, OwnerEntry
 from django.template import RequestContext, loader
-
+from django.contrib.auth.models import User
 
 #view for the page that is redirected to after successful CAS authentication
 def list_index(request):
-    if not request.user:
+    if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
 
     user_lists = OwnerEntry.objects.filter(name=request.user)
@@ -30,7 +30,7 @@ def validate_list_changes():
     return "success"
 
 
-def list_index(request):
+def list_edit(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
         error_msg = validate_list_changes()
 

@@ -8,6 +8,7 @@ class list_edit(forms.Form):
     # admins = forms.CharField(max_length=256, required=False)
 
     def is_valid(self):
+        print "hello world!"
         if self.expire_date < datetime.now():
             return False
 
