@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+    {% if lists %}
+        <table style="width:300px">
+            <tr>
+                <td> Mailing List Name</td>
+                <td> Mailing List Creation Date</td>
+            </tr>
+
+            {% for listEntry in lists %}
+                <tr>
+                    <td>{{ listEntry.name }}</td>
+                    <td>{{ listEntry.create_date }}</td>
+                    <td>
+                        <form action="/app/list_edit" method="get">
+                            <input name="submit" type="submit" value="Edit" />
+                            <!--<input name="list_name" type="hidden" value="{{listEntry.name}}" />-->
+                            <input name="list_id" type="hidden" value="{{listEntry.id}}" />
+                            <input name="admin_name" type="hidden" value="{{admin_name}}" />
+                        </form>
+                    </td>
+                </tr>
+            {%endfor%}
+
+        </table>
+    {% else %}
+        <p> You are not an administrator of any lists</p>
+    {% endif %}
+
+    <form action="/logout/" method="post">
+        <input name="logout" type="submit" value="logout" />
+    </form>
+</body>
+</html>
