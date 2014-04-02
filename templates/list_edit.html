@@ -4,6 +4,12 @@
     <title> List Management </title>
 </head>
 <body>
+    <!--Calendar Stuff-->
+    <link href="/templates/calendar/calendar_control.css"
+        rel="stylesheet" type="text/css">
+    <script src="/templates/calendar/calendar_control.js"
+        language="javascript"></script>
+
     <table style="width:300px">
         <tr>
             <td> list name </td>
@@ -14,7 +20,7 @@
         <tr>
             <form action="" method="post"> {% csrf_token %}
                 <td> <input id="name" type="text" /> </td>
-                <td> <input id="expire_date" type="text" /> </td>
+                <td> <input id="expire_date" onfocus="showCalendarControl(this);" type="text" /> </td>
                 <!--<td> <input id="admins" type="text" readonly /> </td>-->
                 <!--<td> <input id="active_date" type="text" readonly /> </td>-->
 
