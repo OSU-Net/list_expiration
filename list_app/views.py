@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from models import ListEntry, OwnerEntry
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
+from list_app.forms import list_edit_form
+from datetime import *
 
 #view for the page that is redirected to after successful CAS authentication
 def list_index(request):
@@ -26,19 +28,52 @@ def list_index(request):
         return HttpResponse(template.render(context))
 
 
-def validate_list_changes():
-    return "success"
+def parse_expire_date(date_str):
+        date_elements = str.split(date_str, '-')
+
+        if len(date_elements) != 3:
+            return None
+        else:
+            return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
+
+def validate_list_changes(cd):
+    try:
+        list_id = cd['list_id']
+        admin_name = cd['expire_date']
+        return True
+
+    except object:
+        print(str.format("Exception of type {0} occurred because invalid list form data was submitted",
+                         type(object)))
+        return False
 
 
 def list_edit(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
-        error_msg = validate_list_changes()
+        edit_form = list_edit_form(request.POST)
+        result_message = str(None)
 
-        if error_msg == 'success':
-            return HttpResponseRedirect("lists/index")
+        if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
+            cd = edit_form.cleaned_data
+            le = ListEntry.objects.filter(id=cd['list_id'])
+            le.expire_date = parse_expire_date(cd['expire_date'])
+            le.save()
+
+            #TODO: redirect to index page and display some sort of message indicating successful changes
+            return HttpResponseRedirect('lists/index')
+
         else:
-            #render list_edit.html with a mean-looking red warning
+            #return an error message
             return HttpResponse("hello world!")
+
+
+
+        # if error_msg == 'success':
+        #     #edit the list and redirect to index
+        #     return HttpResponseRedirect("lists/index")
+        # else:
+        #     #render list_edit.html with a mean-looking red warning
+        #     return HttpResponse("hello world!")
     else:
         admin_name = request.GET['admin_name']
         list_id = request.GET['list_id']
@@ -52,12 +87,9 @@ def list_edit(request):
         template = loader.get_template('list_edit.html')
         context = RequestContext(request, {
             'admin_name': admin_name,
-            'list_to_edit': list_to_edit,
+            'list_id': list_id,
             'invalid_edit': False,
         })
 
         return HttpResponse(template.render(context))
 
-def list_edit_cancel(request):
-
-    template = loader.get_template('list_edit.html')

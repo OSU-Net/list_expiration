@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="/templates/jquery-1.11.0.js"></script>
-    <link href="/templates/calendar/calendar_control.css"
+    {% load staticfiles %}
+    <script src="{% static 'jquery-1.11.0.js' %}"></script>
+    <link href="{% static 'calendar/calendar_control.css' %}"
         rel="stylesheet" type="text/css"/>
-    <script src="/templates/calendar/calendar_control.js"
+    <script src="{% static 'calendar/calendar_control.js' %}"
         language="javascript"></script>
 
     <title> List Management </title>
@@ -20,13 +21,11 @@
         </tr>
         <tr>
             <form action="" method="post"> {% csrf_token %}
-                <td> <input id="name" type="text" /> </td>
-                <!--<td> <input id="expire_date" onfocus="showCalendarControl(this);" type="text" /> </td>-->
-                <!--<td> <input id="admins" type="text" readonly /> </td>-->
-                <!--<td> <input id="active_date" type="text" readonly /> </td>-->
+                <!--<td> <input id="name" type="text" /> </td>-->
+                <td> <input id="expire_date" onfocus="showCalendarControl(this);" type="text" /> </td>
+                <td> <input id="list_id" type="hidden" value="{{list_id}}"></td>
 
                 <input id="submit" type="submit" value="Save Changes" />
-                <!--<input id="cancel" type="button" value="Cancel" />-->
             </form>
 
             <!--TODO: Turn the below code into a javascript button-->
