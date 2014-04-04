@@ -29,12 +29,14 @@ def list_index(request):
 
 
 def parse_expire_date(date_str):
-        date_elements = str.split(date_str, '-')
+    date_elements = str.split(date_str, '-')
 
-        if len(date_elements) != 3:
-            return None
-        else:
-            return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
+
+    if len(date_elements) != 3:
+        return None
+    else:
+        return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
+
 
 def validate_list_changes(cd):
     try:
@@ -64,7 +66,7 @@ def list_edit(request):
 
         else:
             #return an error message
-            return HttpResponse("hello world!")
+            return HttpResponse(str.format("Errors:\n {0} \n {1}", edit_form['list_id'].errors, edit_form['expire_date'].errors))
 
 
 
