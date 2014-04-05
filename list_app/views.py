@@ -81,6 +81,7 @@ def list_edit(request):
         context = RequestContext(request, {
             'admin_name': admin_name,
             'list_pk': list_pk,
+            'list_expire_date': 'hi there!',
             'invalid_edit': False,
         })
 

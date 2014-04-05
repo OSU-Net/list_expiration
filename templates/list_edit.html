@@ -7,6 +7,7 @@
         rel="stylesheet" type="text/css"/>
     <script src="{% static 'calendar/calendar_control.js' %}"
         language="javascript"></script>
+    <script src="{% static 'text_area.js' %}"></script>
 
     <title> List Management </title>
 </head>
@@ -21,8 +22,15 @@
         </tr>
         <tr>
             <form action="" method="post"> {% csrf_token %}
-                <!--<td> <input id="name" type="text" /> </td>-->
-                <td> <input name="expire_date" onfocus="showCalendarControl(this);" type="text" /> </td>
+                <td> <input id="expire_date"
+                            name="expire_date"
+
+                            type="text"
+                            value="{{list_expire_date}}"/>
+                </td>
+
+                <!--onfocus="showCalendarControl(this);"-->
+
                 <td> <input name="list_pk" type="hidden" value="{{list_pk}}"></td>
 
                 <input id="submit" type="submit" value="Save Changes" />
