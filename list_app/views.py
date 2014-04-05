@@ -28,19 +28,18 @@ def list_index(request):
         return HttpResponse(template.render(context))
 
 
-def parse_expire_date(date_str):
-    date_elements = str.split(date_str, '-')
-
-
-    if len(date_elements) != 3:
-        return None
-    else:
-        return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
+# def parse_expire_date(date_str):
+#     date_elements = str.split(date_str, '-')
+#
+#     if len(date_elements) != 3:
+#         return None
+#     else:
+#         return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
 
 
 def validate_list_changes(cd):
     try:
-        list_id = cd['list_id']
+        list_id = cd['list_pk']
         admin_name = cd['expire_date']
         return True
 
@@ -57,8 +56,8 @@ def list_edit(request):
 
         if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
             cd = edit_form.cleaned_data
-            le = ListEntry.objects.filter(id=cd['list_id'])
-            le.expire_date = parse_expire_date(cd['expire_date'])
+            le = ListEntry.objects.get(pk=cd['list_pk'])
+            le.expire_date = cd['expire_date']
             le.save()
 
             #TODO: redirect to index page and display some sort of message indicating successful changes
@@ -66,21 +65,13 @@ def list_edit(request):
 
         else:
             #return an error message
-            return HttpResponse(str.format("Errors:\n {0} \n {1}", edit_form['list_id'].errors, edit_form['expire_date'].errors))
+            return HttpResponse(str.format("Errors:\n {0} \n {1}", edit_form['list_pk'].errors, edit_form['expire_date'].errors))
 
-
-
-        # if error_msg == 'success':
-        #     #edit the list and redirect to index
-        #     return HttpResponseRedirect("lists/index")
-        # else:
-        #     #render list_edit.html with a mean-looking red warning
-        #     return HttpResponse("hello world!")
     else:
         admin_name = request.GET['admin_name']
-        list_id = request.GET['list_id']
+        list_pk = request.GET['list_pk']
 
-        list_to_edit = ListEntry.objects.filter(id=list_id)
+        list_to_edit = ListEntry.objects.filter(id=list_pk)
 
         if not list_to_edit:
             return HttpResponse(str.format("user {0} is not an administrator of {1}", admin_name, list_to_edit.name))
@@ -89,7 +80,7 @@ def list_edit(request):
         template = loader.get_template('list_edit.html')
         context = RequestContext(request, {
             'admin_name': admin_name,
-            'list_id': list_id,
+            'list_pk': list_pk,
             'invalid_edit': False,
         })
 

@@ -23,7 +23,7 @@
             <form action="" method="post"> {% csrf_token %}
                 <!--<td> <input id="name" type="text" /> </td>-->
                 <td> <input name="expire_date" onfocus="showCalendarControl(this);" type="text" /> </td>
-                <td> <input name="list_id" type="hidden" value="{{list_id}}"></td>
+                <td> <input name="list_pk" type="hidden" value="{{list_pk}}"></td>
 
                 <input id="submit" type="submit" value="Save Changes" />
             </form>
