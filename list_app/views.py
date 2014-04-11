@@ -71,7 +71,7 @@ def list_edit(request):
         admin_name = request.GET['admin_name']
         list_pk = request.GET['list_pk']
 
-        list_to_edit = ListEntry.objects.filter(id=list_pk)
+        list_to_edit = ListEntry.objects.get(id=list_pk)
 
         if not list_to_edit:
             return HttpResponse(str.format("user {0} is not an administrator of {1}", admin_name, list_to_edit.name))
@@ -81,7 +81,7 @@ def list_edit(request):
         context = RequestContext(request, {
             'admin_name': admin_name,
             'list_pk': list_pk,
-            'list_expire_date': 'hi there!',
+            'list_expire_date': list_to_edit.expire_date,
             'invalid_edit': False,
         })
 

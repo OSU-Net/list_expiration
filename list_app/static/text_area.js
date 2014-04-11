@@ -1,8 +1,8 @@
-$("#list_edit_form.value").on('focus', function(){
+$("#list_edit_form input[name='expire_date']").on('focus', function(){
 
     console.log("hello world! focus");
 
-    if(this.value == 'default_value')
+    if(this.value == window.$vars.default_text)
     {
         this.value = '';
         showCalendarControl(this);
@@ -13,7 +13,7 @@ $("#list_edit_form.value").on('focus', function(){
 
     if( this.value == '')
     {
-        this.value = 'default_value';
+        this.value = window.$vars.default_text;
         hideCalendarControl(this);
     }
 })

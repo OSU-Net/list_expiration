@@ -13,29 +13,27 @@
 </head>
 <body>
 
-
-    <!--Calendar Stuff-->
-    <table style="width:300px">
-        <tr>
-            <td> list name </td>
-            <td> expiration date </td>
+            <p> list name </p>
+            <p> expiration date </p>
             <!--<td> administrators </td>-->
             <!--<td> active date </td>-->
-        </tr>
-        <tr>
             <form id="list_edit_form" action="" method="post"> {% csrf_token %}
-                <td> <input id="expire_date"
-                            name="expire_date"
-                            type="text"
-                            value="{{list_expire_date}}"/>
-                </td>
+                <input id="expire_date"
+                    name="expire_date"
+                    type="text"
+                    value="{{list_expire_date}}"/>
 
                 <!--onfocus="showCalendarControl(this);"-->
-
-                <td> <input name="list_pk" type="hidden" value="{{list_pk}}"></td>
-
+                <input name="list_pk" type="hidden" value="{{list_pk}}">
                 <input id="submit" type="submit" value="Save Changes" />
             </form>
+
+            <script>
+                window.$vars = {
+                    default_text: '{{list_expire_date}}'
+                };
+            </script>
+            <script src="{% static 'text_area.js' %}"></script>
 
             <!--TODO: Turn the below code into a javascript button-->
             <form action="/lists/list_index" method="get">
@@ -48,6 +46,5 @@
     {% endif %}
 </body>
 
-<script src="{% static 'text_area.js' %}"></script>
 
 </html>
