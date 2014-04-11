@@ -7,11 +7,13 @@
         rel="stylesheet" type="text/css"/>
     <script src="{% static 'calendar/calendar_control.js' %}"
         language="javascript"></script>
-    <script src="{% static 'text_area.js' %}"></script>
+
 
     <title> List Management </title>
 </head>
 <body>
+
+
     <!--Calendar Stuff-->
     <table style="width:300px">
         <tr>
@@ -21,10 +23,9 @@
             <!--<td> active date </td>-->
         </tr>
         <tr>
-            <form action="" method="post"> {% csrf_token %}
+            <form id="list_edit_form" action="" method="post"> {% csrf_token %}
                 <td> <input id="expire_date"
                             name="expire_date"
-
                             type="text"
                             value="{{list_expire_date}}"/>
                 </td>
@@ -46,4 +47,7 @@
         <p><b>Invalid changes:<br> {{error_msg}} </b></p>
     {% endif %}
 </body>
+
+<script src="{% static 'text_area.js' %}"></script>
+
 </html>
