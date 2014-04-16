@@ -12,17 +12,18 @@
             </tr>
 
             {% for listEntry in lists %}
-                <tr>
-                    <td>{{ listEntry.name }}</td>
-                    <td>{{ listEntry.create_date }}</td>
-                    <td>
-                        <form action="/lists/list_edit" method="get">
-                            <input name="submit" type="submit" value="Edit Expiration Date" />
-                            <!--<input name="list_name" type="hidden" value="{{listEntry.name}}" />-->
-                            <input name="list_pk" type="hidden" value="{{listEntry.pk}}" />
-                            <input name="admin_name" type="hidden" value="{{admin_name}}" />
-                        </form>
-                    </td>
+                <tr name="{{listEntry.name}}_row">
+                    <td name="list_name">{{ listEntry.name }}</td>
+                    <td name="create_date">{{ listEntry.create_date }}</td>
+                    <button name="{{listEntry.name}}_edit_button">edit</button>
+                    <!--<td>-->
+                        <!--<form action="/lists/list_edit" method="get">-->
+                            <!--<input name="submit" type="submit" value="Edit Expiration Date" />-->
+                            <!--&lt;!&\ndash;<input name="list_name" type="hidden" value="{{listEntry.name}}" />&ndash;&gt;-->
+                            <!--<input name="list_pk" type="hidden" value="{{listEntry.pk}}" />-->
+                            <!--<input name="admin_name" type="hidden" value="{{admin_name}}" />-->
+                        <!--</form>-->
+                    <!--</td>-->
                 </tr>
             {%endfor%}
 

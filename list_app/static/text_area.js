@@ -1,19 +1,67 @@
-$("#list_edit_form input[name='expire_date']").on('focus', function(){
-
-    console.log("hello world! focus");
-
-    if(this.value == window.$vars.default_text)
+var App = 
     {
-        this.value = '';
-        showCalendarControl(this);
-    }
-}).on('blur', function(){
+        editing_list: false,
+        default_text: 'hello world!',
+        edit_element: null,
+        editing_html: 
+            "<textarea name= \"expiration_date\">list expiration date</textarea>",
+        normal_html: 
+            "<td name= \"expiration_date\">list expiration date</td>",
+    };
 
-    console.log("hello world! blur");
-
-    if( this.value == '')
+function on_edit_button_click()
+{
+    if(App.editing_list)
     {
-        this.value = window.$vars.default_text;
-        hideCalendarControl(this);
+        $("textarea[name=expiration_date]").replaceWith(App.normal_html);
+        $(this).html("edit");
+        
+        App.editing_list = false;
     }
-})
+    else
+    {
+        $("td[name=expiration_date]").html(App.editing_html);
+        $(this).html("save");
+        
+        App.editing_list = true;
+    }
+}
+
+$(document).ready(function()
+{
+    init();
+    $('button').click(on_edit_button_click);
+});
+
+function init()
+{
+    App.edit_element = $("td[name=expiration_date]");
+    console.log(App.edit_element);
+}
+
+function onListEdit()
+{
+    if(App.editing_list)
+    {
+        return;
+    }
+    
+    $("textarea[name='edit_text']").on('focus', function(){
+
+        console.log("on_focus");
+        if(this.value == App.default_text)
+        {
+            this.value = '';
+            //showCalendarControl(this);
+        }
+
+    }).on('blur', function(){
+
+        console.log("on_blur");
+        if( this.value == '')
+        {
+            this.value = App.default_text;
+            //hideCalendarControl(this);
+        }
+    })
+}
