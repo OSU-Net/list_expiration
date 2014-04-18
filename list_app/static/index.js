@@ -13,13 +13,15 @@ function on_edit_button_click()
 {
     if(App.editing_list)
     {
-        $("textarea[name=expiration_date]").replaceWith(App.normal_html);
+        list_expire_html = $("tr[name={{listEntry.name}}_row] td[name=exire_date]");
+        list_expire_html.replaceWith(App.normal_html);
         $(this).html("edit");
         
         App.editing_list = false;
     }
     else
     {
+        list_expire_html = $("tr[name={{listEntry.name}}_row] textarea[name=expire_date]");
         $("td[name=expiration_date]").html(App.editing_html);
         $(this).html("save");
         
