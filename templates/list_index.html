@@ -4,23 +4,35 @@
 
 </head>
 <body>
-    {% for listEntry in lists %}
-    <div class="list_entry">
+    <div class="border">
+        {% for listEntry in lists %}
+        <div class="list_entry">
 
-        <div class="list_field">
-            <p>List Name:</p>
-            <p>{{listEntry.name</p>
-        </div>
+            <div class="list_field">
+                <p>List Name:</p>
+                <p>{{listEntry.name}}</p>
+            </div>
 
-        <div class="list_field">
-            <p>List Expiration Date:</p>
-            <p>{{listEntry.expire_date}}</p>
+            <div class="list_field">
+                <p>List Expiration Date:</p>
+                <p>{{listEntry.expire_date}}</p>
+            </div>
         </div>
+        {% endfor %}
+
+        <form action="/logout/" method="post"> {% csrf_token %}
+            <input name="logout" type="submit" value="logout" />
+        </form>
     </div>
-    {% endfor %}
-
-    <form action="/logout/" method="post"> {% csrf_token %}
-        <input name="logout" type="submit" value="logout" />
-    </form>
 </body>
+
+
+{% load staticfiles %}
+<script src="{% static 'jquery-1.11.0.js' %}"></script>
+<link href="{% static 'calendar/calendar_control.css' %}"
+    rel="stylesheet" type="text/css"/>
+<script src="{% static 'calendar/calendar_control.js' %}"
+    language="javascript"></script>
+<link href="{% static 'index.css' %}"
+    rel="stylesheet" type="text/css"/>
 </html>
