@@ -4,34 +4,20 @@
 
 </head>
 <body>
-    {% if lists %}
-        <table style="width:300px">
-            <tr>
-                <td> Mailing List Name</td>
-                <td> Mailing List Creation Date</td>
-            </tr>
+    {% for listEntry in lists %}
+    <div class="list_entry">
 
-            {% for listEntry in lists %}
-                <tr name="{{listEntry.name}}_row">
-                    <td name="list_name">{{ listEntry.name }}</td>
-                    <td name="create_date">{{ listEntry.create_date }}</td>
-                    <td name="expire_date"></td>
-                    <button name="{{listEntry.name}}_edit_button">edit</button>
-                    <!--<td>-->
-                        <!--<form action="/lists/list_edit" method="get">-->
-                            <!--<input name="submit" type="submit" value="Edit Expiration Date" />-->
-                            <!--&lt;!&\ndash;<input name="list_name" type="hidden" value="{{listEntry.name}}" />&ndash;&gt;-->
-                            <!--<input name="list_pk" type="hidden" value="{{listEntry.pk}}" />-->
-                            <!--<input name="admin_name" type="hidden" value="{{admin_name}}" />-->
-                        <!--</form>-->
-                    <!--</td>-->
-                </tr>
-            {%endfor%}
+        <div class="list_field">
+            <p>List Name:</p>
+            <p>{{listEntry.name</p>
+        </div>
 
-        </table>
-    {% else %}
-        <p> You are not an administrator of any lists</p>
-    {% endif %}
+        <div class="list_field">
+            <p>List Expiration Date:</p>
+            <p>{{listEntry.expire_date}}</p>
+        </div>
+    </div>
+    {% endfor %}
 
     <form action="/logout/" method="post"> {% csrf_token %}
         <input name="logout" type="submit" value="logout" />
