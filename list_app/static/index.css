@@ -1,26 +1,30 @@
 .list_entry
 {
-    width:90%;
+    margin: 0 auto;
+    width: 50%;
+    position:relative;
+    /*width:90%;*/
     height:20%;
-    margin-right:10px;
+    /*margin-right:10px;*/
     border:2px solid #a1a1a1;
     /*padding-left: 5%;
     padding-right: 5%;
     padding-top: 5%;
     padding-bottom: 5%;*/
-    margin: 10%;
+    /*margin: 10%;*/
     background:#C63D0F;
     border-radius:25px;
     vertical-align:middle;
-    margin:4px;
+    /*margin:4px;*/
     display:inline-block;
 }
 
 .list_field
 {
+    position:relative;
     float:left;
     /*margin-right:5px;*/
-    margin: 10%;
+    margin: 5%;
     border-radius: 5px;
     border:2px solid #a1a1a1;
     background:#dddddd;

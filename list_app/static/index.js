@@ -7,6 +7,7 @@ var App =
             "<textarea name= \"expiration_date\">list expiration date</textarea>",
         normal_html: 
             "<td name= \"expiration_date\">list expiration date</td>",
+        list_ids:
     };
 
 function on_edit_button_click()
@@ -32,7 +33,12 @@ function on_edit_button_click()
 $(document).ready(function()
 {
     init();
-    $('button').click(on_edit_button_click);
+    buttons = $('[name^=edit_button]').click(on_edit_button_click);
+    for(var i=0; i < buttons.length(); i++)
+    {
+        var strings = buttons[i].split("_");
+        var list_id = strings[strings.length-1];
+    }
 });
 
 function init()
