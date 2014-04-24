@@ -3,20 +3,6 @@ var App =
         editing_list: false,
         default_text: 'hello world!',
         edit_element: null,
-        editing_html: 
-            "<textarea name=\"expire_date\" class=\"list_field\"> \
-                list expiration date                              \
-            </textarea>", 
-        normal_html: 
-<<<<<<< HEAD
-            "<div name=\"expire_date\" class=\"list_field\"> \
-                <p><b>List Expiration Date:</b></p>          \
-                <p>{{listEntry.expire_date}}</p>             \
-            </div>",
-=======
-            "<td name= \"expiration_date\">list expiration date</td>",
-        list_ids:
->>>>>>> d6f3574614d18c0e48467e5349f16ffbdb9c7f43
     };
 
 function get_button_list_id(button)
@@ -40,7 +26,7 @@ function on_edit_button_click()
         var normal_html = 
             "<div name=\"expire_date\" class=\"list_field\"> \
                 <p><b>List Expiration Date:</b></p>          \
-                <p>".concat(list_expire_date).concat("</p>             \
+                <p>".concat(list_expire_date).concat("</p>   \
             </div>");
         list_expire_html.replaceWith(normal_html);
         $(this).html("Edit");
@@ -68,16 +54,7 @@ function on_edit_button_click()
 $(document).ready(function()
 {
     init();
-<<<<<<< HEAD
     $(':button').click(on_edit_button_click);
-=======
-    buttons = $('[name^=edit_button]').click(on_edit_button_click);
-    for(var i=0; i < buttons.length(); i++)
-    {
-        var strings = buttons[i].split("_");
-        var list_id = strings[strings.length-1];
-    }
->>>>>>> d6f3574614d18c0e48467e5349f16ffbdb9c7f43
 });
 
 function init()
