@@ -4,26 +4,31 @@ var App =
         default_text: 'hello world!',
         edit_element: null,
         editing_html: 
-            "<textarea name= \"expiration_date\">list expiration date</textarea>",
+            "<textarea name=\"expire_date\" class=\"list_field\"> \
+                list expiration date                              \
+            </textarea>", 
         normal_html: 
-            "<td name= \"expiration_date\">list expiration date</td>",
+            "<div name=\"expire_date\" class=\"list_field\"> \
+                <p><b>List Expiration Date:</b></p>          \
+                <p>{{listEntry.expire_date}}</p>             \
+            </div>",
     };
 
 function on_edit_button_click()
 {
     if(App.editing_list)
     {
-        list_expire_html = $("tr[name={{listEntry.name}}_row] td[name=exire_date]");
+        list_expire_html = $("div[id=\{\{listEntry.id\}\}] div[name=exire_date]");
         list_expire_html.replaceWith(App.normal_html);
-        $(this).html("edit");
+        $(this).html("Edit");
         
         App.editing_list = false;
     }
     else
     {
-        list_expire_html = $("tr[name={{listEntry.name}}_row] textarea[name=expire_date]");
+        list_expire_html = $("div[id=\{\{listEntry.id\}\}] textarea[name=expire_date]");
         $("td[name=expiration_date]").html(App.editing_html);
-        $(this).html("save");
+        $(this).html("Save");
         
         App.editing_list = true;
     }
@@ -32,7 +37,7 @@ function on_edit_button_click()
 $(document).ready(function()
 {
     init();
-    $('button').click(on_edit_button_click);
+    $(':button').click(on_edit_button_click);
 });
 
 function init()

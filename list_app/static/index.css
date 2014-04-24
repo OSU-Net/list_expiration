@@ -1,15 +1,15 @@
 .list_entry
 {
-    width:90%;
-    height:20%;
+    max-height: 10%;
+    width: 90%;
     margin-right:10px;
     border:2px solid #a1a1a1;
     /*padding-left: 5%;
     padding-right: 5%;
     padding-top: 5%;
     padding-bottom: 5%;*/
-    margin: 10%;
-    background:#C63D0F;
+    /* margin: 10%; */
+    background:#FF8B42;
     border-radius:25px;
     vertical-align:middle;
     margin:4px;
@@ -20,7 +20,7 @@
 {
     float:left;
     /*margin-right:5px;*/
-    margin: 10%;
+    margin: 3%;
     border-radius: 5px;
     border:2px solid #a1a1a1;
     background:#dddddd;
@@ -32,4 +32,14 @@
     border: 2px solid black;
     background: solid #FFC675;
     margin: 10%;
+}
+
+.edit_button
+{
+    position:relative;
+    width: 10%;
+    height: 10%;
+    top: 45%;
+    bottom: 55%;
+    float:right;
 }
