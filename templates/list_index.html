@@ -37,6 +37,29 @@
     language="javascript"></script>
 <link href="{% static 'index.css' %}"
     rel="stylesheet" type="text/css"/>
+
+<script language="javascript">
+    var EmailList = function(id, name, expire_date)
+    {
+        var id = id;
+        var name = name;
+        var expire_date = expire_date;
+    }
+    var list_array = new Array();
+    {* for listEntry in lists*}
+        var list = new EmailList(
+            {* listEntry.id *},
+            {* listEntry.name *},
+            {* listEntry.expire_date *}
+        );
+        list_array.push(list);
+    {* endfor *}
+
+    var email_lists = new EmailLists(list_array);
+</script>
+<script src="{% static 'email_lists.js' %}"
+    language="javascript"></script>
+
 <script src="{% static 'index.js' %}"
     language="javascript"></script>
 

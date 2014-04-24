@@ -14,20 +14,46 @@ var App =
             </div>",
     };
 
+function get_button_list_id(button)
+{
+    var id_str = button.id;
+    return id_str.split("_")[2];
+}
+
 function on_edit_button_click()
 {
+    var id = get_button_list_id(this);
+    console.log(id);
+
     if(App.editing_list)
-    {
-        list_expire_html = $("div[id=\{\{listEntry.id\}\}] div[name=exire_date]");
-        list_expire_html.replaceWith(App.normal_html);
+    {  
+        list_expire_html = $("div[id=".concat(id).concat("] textarea[name=expire_date]");
+        console.log(lookup_str);
+        console.log($(lookup_str).length);
+
+        var list_expire_date = email_lists.get_list_by_id(id).expire_date;
+        var normal_html = 
+            "<div name=\"expire_date\" class=\"list_field\"> \
+                <p><b>List Expiration Date:</b></p>          \
+                <p>".concat(list_expire_date).concat("</p>             \
+            </div>");
+        list_expire_html.replaceWith(normal_html);
         $(this).html("Edit");
         
         App.editing_list = false;
     }
     else
     {
-        list_expire_html = $("div[id=\{\{listEntry.id\}\}] textarea[name=expire_date]");
-        $("td[name=expiration_date]").html(App.editing_html);
+        list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]");
+        console.log(lookup_str);
+        console.log($(lookup_str).length);
+        
+        var editing_html =  
+            "<textarea name=\"expire_date\" class=\"list_field\"> \
+                list expiration date                                             \
+            </textarea>";
+        list_expire_html.replaceWith(editing_html);
+
         $(this).html("Save");
         
         App.editing_list = true;
