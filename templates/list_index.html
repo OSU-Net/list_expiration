@@ -28,7 +28,6 @@
     </div>
 </body>
 
-
 {% load staticfiles %}
 <script src="{% static 'jquery-1.11.0.js' %}"></script>
 
@@ -48,24 +47,20 @@
 <script language="javascript">
     var EmailList = function(id, name, expire_date)
     {
-        var id = id;
-        var name = name;
-        var expire_date = expire_date;
+        this.id = id;
+        this.name = name;
+        this.expire_date = expire_date;
     }
     var list_array = new Array();
     {% for listEntry in lists %}
-        var list = new EmailList(
+
+        list_array.push(new EmailList(
             {{ listEntry.id }},
             "{{ listEntry.name }}",
             "{{ listEntry.expire_date }}"
-        );
-        list_array.push(list);
+        ));
+        
     {% endfor %}
-
-    for(i = 0; i < list_array.length; i++)
-    {
-        console.log(list_array[i].name)
-    }
 
     var email_lists = new EmailLists(list_array);
 </script>

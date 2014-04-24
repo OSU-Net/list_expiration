@@ -3,6 +3,7 @@
 **********/
 function EmailLists(list_array)
 {	
+	var that = this;
 	var lists = list_array;
 
 	this.get_list_by_id = function(id)
@@ -10,10 +11,12 @@ function EmailLists(list_array)
 		for(i = 0; i < lists.length; i++)
 		{
 			list = lists[i];
-			if(list.id === id)
+			if(list.id == id)
 			{
 				return list;
 			}
+
+			console.log(list.id);
 		}
 
 		return null;
@@ -32,4 +35,7 @@ function EmailLists(list_array)
 		
 		return null;
 	}
+
+	return this;
 }
+
