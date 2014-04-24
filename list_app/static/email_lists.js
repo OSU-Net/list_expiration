@@ -5,7 +5,7 @@ function EmailLists(list_array)
 {	
 	var lists = list_array;
 
-	function get_list_by_id(id)
+	this.get_list_by_id = function(id)
 	{
 		for(i = 0; i < lists.length; i++)
 		{
@@ -19,7 +19,7 @@ function EmailLists(list_array)
 		return null;
 	}
 
-	function get_list_by_name(name)
+	this.get_list_by_name = function(name)
 	{
 		for(i = 0; i < lists.length; i++)
 		{

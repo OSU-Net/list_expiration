@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <div class="border">
+        {% for listEntry in lists %}
+        <div name="list_div" id="{{listEntry.id}}" class="list_entry">
+
+            <div name="list_name" class="list_field">
+                <p><b>List Name:</b></p>
+                <p>{{listEntry.name}}</p>
+            </div>
+
+            <div name="expire_date" class="list_field">
+                <p><b>List Expiration Date:</b></p>
+                <p>{{listEntry.expire_date}}</p>
+            </div>
+
+            <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
+        </div>
+        {% endfor %}
+
+        <form action="/logout/" method="post"> {% csrf_token %}
+            <input name="logout" type="submit" value="logout" />
+        </form>
+    </div>
+</body>
+
+
+{% load staticfiles %}
+<script src="{% static 'jquery-1.11.0.js' %}"></script>
+
+<link href="{% static 'calendar/calendar_control.css' %}"
+    rel="stylesheet" type="text/css"/>
+
+<script src="{% static 'calendar/calendar_control.js' %}"
+    language="javascript"></script>
+
+<link href="{% static 'index.css' %}"
+    rel="stylesheet" type="text/css"/>
+
+<script src="{% static 'email_lists.js' %}"
+    language="javascript"></script>
+
+
+<script language="javascript">
+    var EmailList = function(id, name, expire_date)
+    {
+        var id = id;
+        var name = name;
+        var expire_date = expire_date;
+    }
+    var list_array = new Array();
+    {% for listEntry in lists %}
+        var list = new EmailList(
+            {{ listEntry.id }},
+            "{{ listEntry.name }}",
+            "{{ listEntry.expire_date }}"
+        );
+        list_array.push(list);
+    {% endfor %}
+
+    for(i = 0; i < list_array.length; i++)
+    {
+        console.log(list_array[i].name)
+    }
+
+    var email_lists = new EmailLists(list_array);
+</script>
+
+<script src="{% static 'index.js' %}"
+    language="javascript"></script>
+
+</html>

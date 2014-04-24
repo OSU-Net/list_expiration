@@ -18,9 +18,7 @@ function on_edit_button_click()
 
     if(App.editing_list)
     {  
-        list_expire_html = $("div[id=".concat(id).concat("] textarea[name=expire_date]");
-        console.log(lookup_str);
-        console.log($(lookup_str).length);
+        list_expire_html = $("div[id=".concat(id).concat("]"));
 
         var list_expire_date = email_lists.get_list_by_id(id).expire_date;
         var normal_html = 
@@ -35,14 +33,15 @@ function on_edit_button_click()
     }
     else
     {
-        limvst_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]");
-        console.log(lookup_str);
-        console.log($(lookup_str).length);
+        list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
         
         var editing_html =  
-            "<textarea name=\"expire_date\" class=\"list_field\"> \
-                list expiration date                                             \
-            </textarea>";
+            "<div name=\"expire_date\" class=\"list_field\">               \
+                <b>List Expiration Date:</b><br>                           \
+                <textarea name=\"expire_date\" class=\"list_edit_field\">  \
+                    list expiration date                                   \
+                </textarea>                                                \
+            </div>";
         list_expire_html.replaceWith(editing_html);
 
         $(this).html("Save");
