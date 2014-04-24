@@ -1,0 +1,64 @@
+.list_entry
+{
+<<<<<<< HEAD
+    max-height: 10%;
+    width: 90%;
+    margin-right:10px;
+=======
+    margin: 0 auto;
+    width: 50%;
+    position:relative;
+    /*width:90%;*/
+    height:20%;
+    /*margin-right:10px;*/
+>>>>>>> d6f3574614d18c0e48467e5349f16ffbdb9c7f43
+    border:2px solid #a1a1a1;
+    /*padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;*/
+<<<<<<< HEAD
+    /* margin: 10%; */
+    background:#FF8B42;
+=======
+    /*margin: 10%;*/
+    background:#C63D0F;
+>>>>>>> d6f3574614d18c0e48467e5349f16ffbdb9c7f43
+    border-radius:25px;
+    vertical-align:middle;
+    /*margin:4px;*/
+    display:inline-block;
+}
+
+.list_field
+{
+    position:relative;
+    float:left;
+    /*margin-right:5px;*/
+<<<<<<< HEAD
+    margin: 3%;
+=======
+    margin: 5%;
+>>>>>>> d6f3574614d18c0e48467e5349f16ffbdb9c7f43
+    border-radius: 5px;
+    border:2px solid #a1a1a1;
+    background:#dddddd;
+    vertical-align:middle;
+}
+
+.border
+{
+    border: 2px solid black;
+    background: solid #FFC675;
+    margin: 10%;
+}
+
+.edit_button
+{
+    position:relative;
+    width: 10%;
+    height: 10%;
+    top: 45%;
+    bottom: 55%;
+    float:right;
+}
