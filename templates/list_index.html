@@ -7,7 +7,7 @@
     <div class="border">
         {% for listEntry in lists %}
         <div name="list_div" id="{{listEntry.id}}" class="list_entry">
-
+        
             <div name="list_name" class="list_field">
                 <p><b>List Name:</b></p>
                 <p>{{listEntry.name}}</p>
@@ -50,7 +50,9 @@
         this.id = id;
         this.name = name;
         this.expire_date = expire_date;
+        this.is_editing = false;
     }
+
     var list_array = new Array();
     {% for listEntry in lists %}
 

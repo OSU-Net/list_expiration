@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from models import ListEntry, OwnerEntry
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
-from list_app.forms import list_edit_form
+from list_app.forms import ListEditForm
 from datetime import *
 
 #view for the page that is redirected to after successful CAS authentication
@@ -48,6 +48,18 @@ def validate_list_changes(cd):
                          type(object)))
         return False
 
+def submit_list_edit(request):
+    edit_form = ListEditForm(request.POST)
+
+    if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
+        cd = edit_form.cleaned_data
+        le = ListEntry.objects.get(id=cd['list_id'])
+        le.expire_date = cd['expire_date']
+        le.save()
+    else:
+        #this 'else statement should never be executed, if it does, it means that the browser submitted
+        #edits that are invalid
+        return HttpResponse("ERROR: Server rejected list changes.")
 
 def list_edit(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data

@@ -1,7 +1,5 @@
 var App = 
     {
-        editing_list: false,
-        default_text: 'hello world!',
         edit_element: null,
     };
 
@@ -59,7 +57,7 @@ function on_edit_button_click()
 
     if(App.editing_list)
     {  
-        list_expire_html = $("form[name=edit_form]"));
+        list_expire_html = $("form[name=edit_form]");
 
         var list_expire_date = email_lists.get_list_by_id(id).expire_date;
         var normal_html = 
@@ -78,12 +76,13 @@ function on_edit_button_click()
         list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
         
         var editing_html =  
-        "<form name=\"edit_form\" action = \"lists\\submit_list_edit\">   
+        "<form name=\"edit_form\" action = \"lists\\submit_list_edit\" method=\"post\">                                \
             <div name=\"expire_date\" class=\"list_field\">                                                            \
                 <b>List Expiration Date:</b><br>                                                                       \
                 <input type=\"text\" name=\"expire_date\" class=\"text_edit_field\"> Choose an expiration date</input> \                                             \
             </div>                                                                                                     \
-        </form>";
+            <input type=\"hidden\" name=\"expire_date\" value=\"".concat(id).concat("\" />                                        \                                                                                                               \
+        </form>");
         list_expire_html.replaceWith(editing_html);
 
         $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
