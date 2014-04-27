@@ -30,33 +30,46 @@ function on_text_area_lose_focus(text_area)
     }
 }
 
-function get_date_delta(earlier_date, later_date)
-{   
-    return new Date(later_date.getTime() - earlier_date.getTime());
-}
-
-function validate_list_edit(list_id, expire_date_str)
-{
-    var new_expire_date = Date(expiration_date_str);
-    var current_expire_date = email_lists.get_list_by_id(list_id);
-    var delta_years = get_date_delta(current_expire_date,new_expire_date).getYears();
-
-    if(delta_years >= 2 || delta_years <= 0)
-    {
-        alert("Invalid expiration date!  Choose a date within two years of the current expiration date.");
-        return false;
-    }
-
-    return true;
-}
-
 function on_edit_button_click()
 {
     var id = get_button_list_id(this);
-    console.log(id);
 
-    if(App.editing_list)
+    list = email_lists.get_list_being_edited();
+    
+    if(list == null)
     {  
+        list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
+        
+        var editing_html =  
+        "<form name=\"edit_form\" action = \"lists\\submit_list_edit\" method=\"post\">                                   \
+            <div name=\"expire_date\" class=\"list_field\">                                                               \
+                <b>List Expiration Date:</b><br>                                                                          \
+                <input type=\"text\" name=\"expire_date\" class=\"text_edit_field\" value=\"choose an expiration date\">  \                                             \
+            </div>                                                                                                        \
+            <input type=\"hidden\" name=\"list_id\" value=\"".concat(id).concat("\" />                                    \                                                                                                               \
+        </form>");
+        list_expire_html.replaceWith(editing_html);
+
+        $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
+
+        $(this).html("Save");
+        
+        email_lists.start_editing(id);
+    }
+    else
+    {
+        if(list.id != id)
+        {
+            alert("You can only edit one list at a time.")
+            return; //can't edit two lists at once!
+        }
+
+        if(!email_lists.end_editing())
+        {
+            alert("Please enter a valid expiration date.");
+            return;
+        }
+
         list_expire_html = $("form[name=edit_form]");
 
         var list_expire_date = email_lists.get_list_by_id(id).expire_date;
@@ -67,36 +80,13 @@ function on_edit_button_click()
             </div>");
         list_expire_html.replaceWith(normal_html);
         $(this).html("Edit");
-
-
-        App.editing_list = false;
-    }
-    else
-    {
-        list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
-        
-        var editing_html =  
-        "<form name=\"edit_form\" action = \"lists\\submit_list_edit\" method=\"post\">                                \
-            <div name=\"expire_date\" class=\"list_field\">                                                            \
-                <b>List Expiration Date:</b><br>                                                                       \
-                <input type=\"text\" name=\"expire_date\" class=\"text_edit_field\"> Choose an expiration date</input> \                                             \
-            </div>                                                                                                     \
-            <input type=\"hidden\" name=\"expire_date\" value=\"".concat(id).concat("\" />                                        \                                                                                                               \
-        </form>");
-        list_expire_html.replaceWith(editing_html);
-
-        $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
-
-        $(this).html("Save");
-        
-        App.editing_list = true;
     }
 }
 
 $(document).ready(function()
 {
     init();
-    $(':button').click(on_edit_button_click);
+    $(':button[name=edit_button]').click(on_edit_button_click);
 });
 
 function init()
