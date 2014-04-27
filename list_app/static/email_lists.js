@@ -17,9 +17,9 @@ function EmailLists(list_array)
 		var new_expire_date_str = $("form[name=edit_form] div[name=expire_date] input[name=expire_date]").val();
 		console.log(new_expire_date_str);
 
-	    var new_expire_date = Date(expiration_date_str);
-	    var current_expire_date = instance.get_list_by_id(list_id);
-	    var delta_years = get_date_delta(current_expire_date,new_expire_date).getYears();
+	    var new_expire_date = Date(new_expire_date_str);
+	    var current_expire_date = instance.get_list_by_id(list_id).expire_date;
+	    var delta_years = get_date_delta(current_expire_date, new_expire_date).getYears();
 
 	    if(delta_years >= 2 || delta_years <= 0)
 	    {
@@ -30,17 +30,17 @@ function EmailLists(list_array)
 	    return true;
 	}
 
-	this.get_list_by_id = function(list_id)
+	this.get_list_by_id = function(id)
 	{
 		for(i = 0; i < lists.length; i++)
 		{
 			list = lists[i];
-			if(list.id == list_id)
+			if(list.list_id == id)
 			{
 				return list;
 			}
 
-			console.log(list.id);
+			console.log(list.list_id);
 		}
 
 		return null;
@@ -51,7 +51,7 @@ function EmailLists(list_array)
 		for(i = 0; i < lists.length; i++)
 		{
 			list = lists[i];
-			if(list.name === name)
+			if(list.list_name === name)
 			{
 				return list;
 			}

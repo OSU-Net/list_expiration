@@ -58,7 +58,8 @@ function on_edit_button_click()
     }
     else
     {
-        if(list.id != id)
+        console.log(list.get_list_id());
+        if(list.get_list_id() != id)
         {
             alert("You can only edit one list at a time.")
             return; //can't edit two lists at once!

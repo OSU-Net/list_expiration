@@ -40,19 +40,13 @@
 <link href="{% static 'index.css' %}"
     rel="stylesheet" type="text/css"/>
 
+<script src="{% static 'email_list.js' %}"
+    language="javascript"></script>
+    
 <script src="{% static 'email_lists.js' %}"
     language="javascript"></script>
 
-
 <script language="javascript">
-    var EmailList = function(id, name, expire_date)
-    {
-        this.id = id;
-        this.name = name;
-        this.expire_date = expire_date;
-        this.is_editing = false;
-    }
-
     var list_array = new Array();
     {% for listEntry in lists %}
 
