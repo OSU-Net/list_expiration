@@ -4,9 +4,9 @@ from list_app.models import *
 now = datetime.now()
 exp_date = datetime(now.year + 2, now.month, now.day)
 
-le1 = ListEntry(name='physics 211 mailing list', create_date=datetime.now(), expire_date= exp_date)
+le1 = ListEntry(name='physics 211 mailing list', create_date=datetime.now(), expire_date=exp_date)
 le1.save()
-le2 = ListEntry(name='physics 212 mailing list', create_date=datetime.now(), expire_date= exp_date)
+le2 = ListEntry(name='physics 212 mailing list', create_date=datetime.now(), expire_date=exp_date)
 le2.save()
 oe1 = OwnerEntry(name='wasingej', list=le1)
 oe1.save()

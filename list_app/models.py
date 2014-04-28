@@ -4,9 +4,14 @@ class ListEntry(models.Model):
     name = models.CharField(max_length=64)
     # create_date = models.DateTimeField('date created')
     # active_date = models.DateTimeField('date of last list activity')
-    expire_date = models.DateTimeField('date of expiration')
-    create_date = models.DateTimeField('date created')
+    expire_date = models.DateField('date of expiration')
+    create_date = models.DateField('date created')
 
+    def get_expire_date_str(self):
+        return self.expire_date.
+
+    def get_create_date_str(self):
+        return self.create_date.value_to_string()
     class Meta:
         ordering = ('name',)
 
