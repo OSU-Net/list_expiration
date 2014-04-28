@@ -1,7 +1,7 @@
 var App = 
-    {
-        edit_element: null,
-    };
+{
+    edit_element: null,
+};
 
 var text_area_stored_text = null;
 
@@ -58,7 +58,6 @@ function on_edit_button_click()
     }
     else
     {
-        console.log(list.get_list_id());
         if(list.get_list_id() != id)
         {
             alert("You can only edit one list at a time.")

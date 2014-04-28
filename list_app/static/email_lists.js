@@ -3,84 +3,44 @@
 **********/
 function EmailLists(list_array)
 {	
-	var instance = this;
-	var lists = list_array;
-	var is_editing = false;
+	this.lists = list_array;
+	this.is_editing = false;
+}
 
-	function get_date_delta(earlier_date, later_date)
-	{   
-	    return new Date(later_date.getTime() - earlier_date.getTime());
-	}
-
-	function validate_list_edit(list_id)
+EmailLists.prototype = 
+{
+	end_editing : function()
 	{
-		var new_expire_date_str = $("form[name=edit_form] div[name=expire_date] input[name=expire_date]").val();
-		console.log(new_expire_date_str);
-
-	    var new_expire_date = Date(new_expire_date_str);
-	    var current_expire_date = instance.get_list_by_id(list_id).expire_date;
-	    var delta_years = get_date_delta(current_expire_date, new_expire_date).getYears();
-
-	    if(delta_years >= 2 || delta_years <= 0)
-	    {
-	        alert("Invalid expiration date!  Choose a date within two years of the current expiration date.");
-	        return false;
-	    }
-
-	    return true;
-	}
-
-	this.get_list_by_id = function(id)
-	{
-		for(i = 0; i < lists.length; i++)
+		if(!this.is_editing)
 		{
-			list = lists[i];
-			if(list.list_id == id)
-			{
-				return list;
-			}
-
-			console.log(list.list_id);
+			throw "Not editing a list!";
+		}
+		else
+		{
+			this.is_editing = false;
 		}
 
-		return null;
-	}
-
-	this.get_list_by_name = function(name)
-	{
-		for(i = 0; i < lists.length; i++)
+		for(i = 0; i < this.lists.length; i++)
 		{
-			list = lists[i];
-			if(list.list_name === name)
+			list = this.lists[i];
+			if(list.is_editing)
 			{
-				return list;
+				this.validate_list_edit(list.get_list_id());
+				list.is_editing = false;
 			}
 		}
-		
-		return null;
-	}
+	},
 
-	this.get_list_being_edited = function()
+	start_editing : function(list_id)
 	{
-		for(i = 0; i < lists.length; i++)
-		{
-			if(lists[i].is_editing)
-			{
-				return lists[i];
-			}
-		}
-	}
-
-	this.start_editing = function(list_id)
-	{
-		if(is_editing)
+		if(this.is_editing)
 		{
 			return false;
 		}
 
-		is_editing = true;
+		this.is_editing = true;
 		
-		var list = instance.get_list_by_id(list_id)
+		var list = this.get_list_by_id(list_id)
 		if(!list)
 		{
 			throw "list does not exist!";
@@ -90,37 +50,72 @@ function EmailLists(list_array)
 			list.is_editing = true;
 			return true;
 		}
-	}
+	},
 
-	this.end_editing = function()
+	get_list_being_edited : function()
 	{
-		if(!is_editing)
+		for(i = 0; i < this.lists.length; i++)
 		{
-			throw "Not editing a list!";
-		}
-		else
-		{
-			is_editing = false;
-		}
-
-		for(i = 0; i < lists.length; i++)
-		{
-			list = lists[i];
-			if(list.is_editing)
+			if(this.lists[i].is_editing)
 			{
-				if(!validate_list_edit(list.id))
-				{
-					return false;
-				}
-				else
-				{
-					list.is_editing = false;
-					return true;
-				}
+				return this.lists[i];
 			}
 		}
-	}
 
-	return this;
+		return null;
+	},
+
+	get_list_by_name : function(name)
+	{
+		for(i = 0; i < this.lists.length; i++)
+		{
+			list = this.lists[i];
+			if(list.list_name === name)
+			{
+				return list;
+			}
+		}
+		
+		return null;
+	},
+
+	get_date_delta : function(earlier_date, later_date)
+	{   
+	    return new Date(later_date.getTime() - earlier_date.getTime());
+	},
+
+	validate_list_edit : function(list_id)
+	{
+		var new_expire_date_str = $("form[name=edit_form] div[name=expire_date] input[name=expire_date]").val();
+
+	    var new_expire_date = Date(new_expire_date_str);
+
+	    var current_expire_date = this.get_list_by_id(list_id).expire_date;
+	    var delta_years = this.get_date_delta(current_expire_date, new_expire_date).getYears();
+
+	    if(delta_years >= 2 || delta_years <= 0)
+	    {
+	        alert("Invalid expiration date!  Choose a date within two years of the current expiration date.");
+	        return false;
+	    }
+
+	    return true;
+	},
+
+	get_list_by_id : function(id)
+	{
+		for(i = 0; i < this.lists.length; i++)
+		{
+			list = this.lists[i];
+			if(list.list_id == id)
+			{
+				return list;
+			}
+
+			console.log(list.list_id);
+		}
+
+		throw("no list with id: ".concat(id));
+	},
 }
 
