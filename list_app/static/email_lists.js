@@ -96,7 +96,7 @@ EmailLists.prototype =
 								  parseInt(later_date_strs[2]), 
 								  0, 0, 0);
 
-	    return (later_date.getTime() - earlier_date.getTime()) / (1000*60*60*24);
+	    return (later_date.getTime() - earlier_date.getTime()) / (1000*60*60*24*365);
 	},
 
 	validate_list_edit : function(list_id)

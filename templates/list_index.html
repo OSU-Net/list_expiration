@@ -28,6 +28,7 @@
     </div>
 </body>
 
+{% load list_extras %}
 {% load staticfiles %}
 <script src="{% static 'jquery-1.11.0.js' %}"></script>
 
@@ -53,7 +54,7 @@
         list_array.push(new EmailList(
             {{ listEntry.id }},
             "{{ listEntry.name }}",
-            "{{ listEntry.expire_date }}"
+            "{{ listEntry|format_expire_date }}"
         ));
         
     {% endfor %}

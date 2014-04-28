@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from list_app.forms import ListEditForm
 from datetime import *
 
+
 #view for the page that is redirected to after successful CAS authentication
 def list_index(request):
     if not request.user.is_authenticated():
@@ -63,8 +64,7 @@ def submit_list_edit(request):
 
 def list_edit(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
-        edit_form = list_edit_form(request.POST)
-        result_message = str(None)
+        edit_form = ListEditForm(request.POST)
 
         if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
             cd = edit_form.cleaned_data

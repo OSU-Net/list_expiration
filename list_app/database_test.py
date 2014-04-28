@@ -2,7 +2,7 @@ from datetime import *
 from list_app.models import *
 
 now = datetime.now()
-exp_date = datetime(now.year + 2, now.month, now.day)
+exp_date = datetime(now.year, now.month + 1, now.day)
 
 le1 = ListEntry(name='physics 211 mailing list', create_date=datetime.now(), expire_date=exp_date)
 le1.save()
