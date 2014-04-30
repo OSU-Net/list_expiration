@@ -53,6 +53,17 @@
     float:right;
 }
 
+.cancel_button
+{
+    position:relative;
+    width: 10%;
+    height: 20%;
+    top: 45%;
+    bottom: 55%;
+    float:left;
+    vertical-align: middle;
+}
+
 .text_edit_field
 {
     position: relative;
