@@ -247,7 +247,7 @@ function CalendarControl() {
 
     return table;
   }
-
+  
   this.show = show;
   function show(field) {
     can_hide = 0;

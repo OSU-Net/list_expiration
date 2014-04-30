@@ -22,7 +22,6 @@ function on_text_area_gain_focus(text_area)
 
 function on_text_area_lose_focus(text_area)
 {
-    console.log("on_blur");
     if( this.value == '')
     {
         this.value = App.default_text;
@@ -50,6 +49,8 @@ function on_edit_button_click()
             <input type=\"hidden\" name=\"list_id\" value=\"").concat(id).concat("\" />                                                          \                                                                                                               \
         </form>");
         list_expire_html.replaceWith(editing_html);
+
+        $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
 
         $(this).html("Save");
         
