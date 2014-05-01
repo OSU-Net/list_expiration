@@ -30,6 +30,12 @@ function on_text_area_lose_focus(text_area)
     }
 }
 
+function on_cancel_button_click()
+{
+    var id = get_button_list_id(this);
+    end_editing(id);
+}
+
 //Performs two functions: modifies list index page visually to open editing options.  Also signals to 'email_lists'
 //to begin editing on list with id 'id'
 function begin_editing(id)
@@ -50,10 +56,12 @@ function begin_editing(id)
     $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
 
     //change the button text to 'save' and add a cancel button 
-    var button = $(":button[name=edit_button]");
+    var button = $("button[id=edit_button_".concat(id).concat("]"));
     button.html("Save");
-    button.after("<button id=\"cancel_button_".concat(id).concat("\" class=\"cancel_button\" name=\"cancel\"> cancel </button>"));
+    button.after("<button name=\"cancel_button\" id=\"cancel_button_".concat(id).concat("\" \
+                  class=\"cancel_button\" name=\"cancel\"> cancel </button>"));
     
+    $("button[name=cancel_button]").click(on_cancel_button_click);
     email_lists.start_editing(id);
 }
 
@@ -74,15 +82,10 @@ function end_editing(id)
     list_expire_html.replaceWith(normal_html);
 
     //Change 'Save' button back to 'Edit' and remove the cancel button 
-    var save_button = $(":button[name=save_button]");
+    var save_button = $(":button[name=edit_button]");
     save_button.html("Edit");
-    $("button[id=\"cancel_button_".concat(id).concat("\"]")).remove();
-}
 
-function on_cancel_button_click()
-{
-    var id = get_button_list_id(this);
-    end_editing(id);
+    $("button[id=\"cancel_button_".concat(id).concat("\"]")).remove();
 }
 
 function on_edit_button_click()

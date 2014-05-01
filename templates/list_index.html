@@ -2,6 +2,8 @@
 <html>
 <head>
 
+{% load list_extras %}
+
 </head>
 <body>
     <div class="border">
@@ -15,7 +17,7 @@
 
             <div name="expire_date" class="list_field">
                 <p><b>List Expiration Date:</b></p>
-                <p>{{listEntry.expire_date}}</p>
+                <p>{{listEntry|format_expire_date}}</p>
             </div>
 
             <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
@@ -28,7 +30,6 @@
     </div>
 </body>
 
-{% load list_extras %}
 {% load staticfiles %}
 <script src="{% static 'jquery-1.11.0.js' %}"></script>
 

@@ -5,6 +5,7 @@ function EmailLists(list_array)
 {	
 	this.lists = list_array;
 	this.is_editing = false;
+	this.cached_list = null; //use this this to store a copy of a list being edited so that it can be reset if it doesn't validate correctly
 }
 
 EmailLists.prototype = 
@@ -25,8 +26,16 @@ EmailLists.prototype =
 			list = this.lists[i];
 			if(list.is_editing)
 			{
-				this.validate_list_edit(list.get_list_id());
-				list.is_editing = false;
+				if(!this.validate_list_edit(list.get_list_id()))
+				{
+					return;
+				}
+				else
+				{
+					list = cached_list.copy();
+					cached_list = null; //<<<<<<------------ I was working on list validation/uploading to the server last
+					list.is_editing = false;
+				}
 			}
 		}
 	},
@@ -48,6 +57,8 @@ EmailLists.prototype =
 		else
 		{
 			list.is_editing = true;
+			this.cached_list = list.clone();
+
 			return true;
 		}
 	},
@@ -125,8 +136,6 @@ EmailLists.prototype =
 			{
 				return list;
 			}
-
-			console.log(list.list_id);
 		}
 
 		throw("no list with id: ".concat(id));
