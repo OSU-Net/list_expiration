@@ -45,6 +45,12 @@ function cancel_editing(id)
 //to begin editing on list with id 'id'
 function begin_editing(id)
 {
+
+    //hide readonly expire_date div
+    //show editable expire_date text field
+    //change 'edit' button to 'save'
+    //make 'cancel' and forward buttons visible
+    
     list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
     
     //add in a text field to allow modification of the expiration date

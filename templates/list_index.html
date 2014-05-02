@@ -6,21 +6,29 @@
 
 </head>
 <body>
-    <div class="border">
+    <div id="accordion">
         {% for listEntry in lists %}
+        <h{{listEntry.id}}> listEntry.name </h{{listEntry.id}}>
         <div name="list_div" id="{{listEntry.id}}" class="list_entry">
         
-            <div name="list_name" class="list_field">
+            <div name="list_name" id="list_name_{{listEntry.id}}" class="list_field">
                 <p><b>List Name:</b></p>
                 <p>{{listEntry.name}}</p>
             </div>
 
-            <div name="expire_date" class="list_field">
+            <div name="expire_date" id="expire_date_{{listEntry.id}}" class="list_field">
                 <p><b>List Expiration Date:</b></p>
                 <p>{{listEntry|format_expire_date}}</p>
             </div>
 
+            <form name="edit_form" id="edit_form_{{listEntry.id}}">
+                <input type="hidden" name="list_id" value="{{listEntry.id}}">
+                <input type="text" name="expire_date" value="">    
+            </form>
+
             <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
+            <button name="cancel_button" id="cancel_button_{{listEntry.id}}" class="cancel_button">Cancel</button>
+            <button name="forward_button" id="forward_button_{{listEntry.id}}" class="forward_button">Set foward two years</button> 
         </div>
         {% endfor %}
 
