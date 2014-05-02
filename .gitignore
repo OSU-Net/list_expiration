@@ -3,3 +3,4 @@ list_site/settings.py
 .idea/
 settings.py
 db.sqlite3
+

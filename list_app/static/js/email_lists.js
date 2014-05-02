@@ -10,6 +10,27 @@ function EmailLists(list_array)
 
 EmailLists.prototype = 
 {
+	cancel_editing : function()
+	{
+		if(!this.is_editing)
+		{
+			throw "Not editing a list!";
+		}
+		
+		this.is_editing = false;
+
+		for(i = 0; i < this.lists.length; i++)
+		{
+			list = this.lists[i];
+			if(list.is_editing)
+			{
+				list = this.cached_list.clone();
+				this.cached_list = null;
+				list.is_editing = false;
+			}
+		}
+	}
+
 	end_editing : function()
 	{
 		if(!this.is_editing)
@@ -28,12 +49,17 @@ EmailLists.prototype =
 			{
 				if(!this.validate_list_edit(list.get_list_id()))
 				{
+					this.is_editing = false;
+					list.is_editing = false;
 					return;
 				}
 				else
 				{
-					list = cached_list.copy();
-					cached_list = null; //<<<<<<------------ I was working on list validation/uploading to the server last
+					var form = $("form[name=edit_form")[0];
+					form.submit();
+
+					this.cached_list = null;
+					this.is_editing = false;
 					list.is_editing = false;
 				}
 			}
@@ -53,6 +79,7 @@ EmailLists.prototype =
 		if(!list)
 		{
 			throw "list does not exist!";
+			this.is_editing = false;
 		}
 		else
 		{

@@ -33,7 +33,12 @@ function on_text_area_lose_focus(text_area)
 function on_cancel_button_click()
 {
     var id = get_button_list_id(this);
-    end_editing(id);
+    cancel_editing();
+}
+
+function cancel_editing(id)
+{
+
 }
 
 //Performs two functions: modifies list index page visually to open editing options.  Also signals to 'email_lists'
@@ -44,7 +49,7 @@ function begin_editing(id)
     
     //add in a text field to allow modification of the expiration date
     var editing_html =  
-    "<form name=\"edit_form\" action = \"lists\\submit_list_edit\" method=\"post\">                                   \
+    "<form name=\"edit_form\" action=\"\/lists\/submit_list_edit\" method=\"post\">                                     \
         <div name=\"expire_date\" class=\"list_field\">                                                               \
             <b>List Expiration Date:</b><br>                                                                          \
             <input type=\"text\" name=\"expire_date\" class=\"text_edit_field\" value=\"choose an expiration date\">  \                                             \

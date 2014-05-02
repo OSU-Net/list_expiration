@@ -11,9 +11,9 @@ EmailList.prototype =
 	get_list_id : function() { return this.list_id; },
     get_list_name : function() { return this.list_name; },
     get_expire_date_str : function() { return this.expire_date; },
-    is_editing : function() { return this.is_editing; }
+    is_editing : function() { return this.is_editing; },
 
-    copy : function()
+    clone : function()
     {
     	return new EmailList(this.id, this.list_name, this.expire_date);
     }

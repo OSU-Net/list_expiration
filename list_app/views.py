@@ -3,11 +3,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from models import ListEntry, OwnerEntry
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 from list_app.forms import ListEditForm
 from datetime import *
 
 
 #view for the page that is redirected to after successful CAS authentication
+@csrf_exempt
 def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
@@ -28,20 +30,10 @@ def list_index(request):
         })
         return HttpResponse(template.render(context))
 
-
-# def parse_expire_date(date_str):
-#     date_elements = str.split(date_str, '-')
-#
-#     if len(date_elements) != 3:
-#         return None
-#     else:
-#         return datetime(int(date_elements[2]), int(date_elements[0]), int(date_elements[1]))
-
-
 def validate_list_changes(cd):
     try:
-        list_id = cd['list_pk']
-        admin_name = cd['expire_date']
+        list_id = cd['list_id']
+        expire_date = cd['expire_date']
         return True
 
     except object:
@@ -49,18 +41,24 @@ def validate_list_changes(cd):
                          type(object)))
         return False
 
+
+@csrf_exempt
 def submit_list_edit(request):
     edit_form = ListEditForm(request.POST)
+    print("hello!")
 
     if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
         cd = edit_form.cleaned_data
         le = ListEntry.objects.get(id=cd['list_id'])
         le.expire_date = cd['expire_date']
         le.save()
+
     else:
         #this 'else statement should never be executed, if it does, it means that the browser submitted
         #edits that are invalid
         return HttpResponse("ERROR: Server rejected list changes.")
+
+    return HttpResponseRedirect('/lists/index')
 
 def list_edit(request):
     if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
