@@ -29,7 +29,7 @@ EmailLists.prototype =
 				list.is_editing = false;
 			}
 		}
-	}
+	},
 
 	end_editing : function()
 	{

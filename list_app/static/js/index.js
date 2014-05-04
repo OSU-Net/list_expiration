@@ -1,14 +1,11 @@
-var App = 
-{
-    edit_element: null,
-};
 
 var text_area_stored_text = null;
 
 function get_button_list_id(button)
 {
     var id_str = button.id;
-    return id_str.split("_")[2];
+    var id_strs = id_str.split("_");
+    return id_strs[id_strs.length - 1];
 }
 
 function on_text_area_gain_focus(text_area)
@@ -17,7 +14,7 @@ function on_text_area_gain_focus(text_area)
 
     text_area_stored_text = text_area.value;
     text_area.value = '';
-    showCalendarControl(this);
+    showCalendarControl(this); //should 'this' be 'text_area'?
 }
 
 function on_text_area_lose_focus(text_area)
@@ -26,7 +23,7 @@ function on_text_area_lose_focus(text_area)
     if( this.value == '')
     {
         this.value = App.default_text;
-        hideCalendarControl(this);
+        hideCalendarControl(this); //should 'this' be 'text_area'?
     }
 }
 
@@ -47,32 +44,18 @@ function begin_editing(id)
 {
 
     //hide readonly expire_date div
+    $("div[id=expire_date_".concat(id).concat("]")).hide();
+
     //show editable expire_date text field
+    $("form[id=edit_form_".concat(id).concat("] input[type=text]")).show();
+
     //change 'edit' button to 'save'
+    $("button[id=edit_button_".concat(id).concat("]")).html('Save');
+
     //make 'cancel' and forward buttons visible
-    
-    list_expire_html = $("div[id=".concat(id).concat("] div[name=expire_date]"));
-    
-    //add in a text field to allow modification of the expiration date
-    var editing_html =  
-    "<form name=\"edit_form\" action=\"\/lists\/submit_list_edit\" method=\"post\">                                     \
-        <div name=\"expire_date\" class=\"list_field\">                                                               \
-            <b>List Expiration Date:</b><br>                                                                          \
-            <input type=\"text\" name=\"expire_date\" class=\"text_edit_field\" value=\"choose an expiration date\">  \                                             \
-        </div>                                                                                                        \
-        <input type=\"hidden\" name=\"list_id\" value=\"".concat(id).concat("\" />                                    \                                                                                                               \
-    </form>");
-    list_expire_html.replaceWith(editing_html);
+    $("button[id=cancel_button_".concat(id).concat("]")).show();
+    $("button[id=forward_button_".concat(id).concat("]")).show();
 
-    $("input[name=expire_date]").on('focus', on_text_area_gain_focus).on('blur', on_text_area_lose_focus);
-
-    //change the button text to 'save' and add a cancel button 
-    var button = $("button[id=edit_button_".concat(id).concat("]"));
-    button.html("Save");
-    button.after("<button name=\"cancel_button\" id=\"cancel_button_".concat(id).concat("\" \
-                  class=\"cancel_button\" name=\"cancel\"> cancel </button>"));
-    
-    $("button[name=cancel_button]").click(on_cancel_button_click);
     email_lists.start_editing(id);
 }
 
@@ -81,22 +64,23 @@ function end_editing(id)
 {
     email_lists.end_editing();
 
-    list_expire_html = $("form[name=edit_form]");
+    //show expire_date div
+    $("div[id=expire_date_".concat(id).concat("]")).show();
 
-    //change the edit text area back into a readonly div
-    var list_expire_date = email_lists.get_list_by_id(id).expire_date;
-    var normal_html = 
-        "<div name=\"expire_date\" class=\"list_field\"> \
-            <p><b>List Expiration Date:</b></p>          \
-            <p>".concat(list_expire_date).concat("</p>   \
-        </div>");
-    list_expire_html.replaceWith(normal_html);
+    //hide editable expire_date text field
+    $("form[id=edit_form_".concat(id).concat("] input[type=text]")).hide();
 
-    //Change 'Save' button back to 'Edit' and remove the cancel button 
-    var save_button = $(":button[name=edit_button]");
-    save_button.html("Edit");
+    //change 'save' button to edit
+    $("button[id=edit_button_".concat(id).concat("]")).html('Edit');
 
-    $("button[id=\"cancel_button_".concat(id).concat("\"]")).remove();
+    //hide 'cancel' and 'forward' buttons
+    $("button[id=cancel_button_".concat(id).concat("]")).hide();
+    $("button[id=forward_button_".concat(id).concat("]")).hide();
+}
+
+function on_forward_button_click()
+{
+
 }
 
 function on_edit_button_click()
@@ -123,16 +107,17 @@ function on_edit_button_click()
 
 $(document).ready(function()
 {
-    init();
-    $(':button[name=edit_button]').click(on_edit_button_click);
+    $('button[name=edit_button]').click(on_edit_button_click);
+    $('button[name=cancel_button]').click(on_cancel_button_click);
+    $('button[name=forward_button]').click(on_forward_button_click);
+
+
+    $("form[name=edit_form] input[type=text]").hide();
+    $("button[name=cancel_button]").hide();
+    $("button[name=forward_button]").hide();
     //$(':button[name=cancel_button]').click(on_cancel_button_click);
 });
 
-function init()
-{
-    App.edit_element = $("td[name=expiration_date]");
-    console.log(App.edit_element);
-}
 
 function onListEdit()
 {

@@ -1,79 +1,87 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
 
-{% load list_extras %}
+    {% load list_extras %}
 
-</head>
-<body>
-    <div id="accordion">
-        {% for listEntry in lists %}
-        <h{{listEntry.id}}> listEntry.name </h{{listEntry.id}}>
-        <div name="list_div" id="{{listEntry.id}}" class="list_entry">
-        
-            <div name="list_name" id="list_name_{{listEntry.id}}" class="list_field">
-                <p><b>List Name:</b></p>
-                <p>{{listEntry.name}}</p>
+    </head>
+    <body>
+        <div id="accordion">
+            {% for listEntry in lists %}
+            <h{{listEntry.id}}> {{listEntry.name}} </h{{listEntry.id}}>
+            <div name="list_div" id="{{listEntry.id}}" class="list_entry">
+            
+                <div name="list_name" id="list_name_{{listEntry.id}}" class="list_field">
+                    <p><b>List Name:</b></p>
+                    <p>{{listEntry.name}}</p>
+                </div>
+
+                <div name="expire_date" id="expire_date_{{listEntry.id}}" class="list_field">
+                    <p><b>List Expiration Date:</b></p>
+                    <p>{{listEntry|format_expire_date}}</p>
+                </div>
+
+                <form name="edit_form" id="edit_form_{{listEntry.id}}">
+                    <input type="hidden" name="list_id" value="{{listEntry.id}}">
+                    <input type="text" name="expire_date" value="">    
+                </form>
+
+                <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
+                <button name="cancel_button" id="cancel_button_{{listEntry.id}}" class="cancel_button">Cancel</button>
+                <button name="forward_button" id="forward_button_{{listEntry.id}}" class="forward_button">Set foward two years</button> 
             </div>
+            {% endfor %}
 
-            <div name="expire_date" id="expire_date_{{listEntry.id}}" class="list_field">
-                <p><b>List Expiration Date:</b></p>
-                <p>{{listEntry|format_expire_date}}</p>
-            </div>
-
-            <form name="edit_form" id="edit_form_{{listEntry.id}}">
-                <input type="hidden" name="list_id" value="{{listEntry.id}}">
-                <input type="text" name="expire_date" value="">    
+            <form action="/logout/" method="post"> {% csrf_token %}
+                <input name="logout" type="submit" value="logout" />
             </form>
-
-            <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
-            <button name="cancel_button" id="cancel_button_{{listEntry.id}}" class="cancel_button">Cancel</button>
-            <button name="forward_button" id="forward_button_{{listEntry.id}}" class="forward_button">Set foward two years</button> 
         </div>
+    </body>
+
+    {% load staticfiles %}
+    <script src="{% static 'js/jquery-1.11.0.js' %}"></script>
+
+    <script src="{% static 'js/crsf.js' %}"></script>
+
+    <link href="{% static 'calendar/calendar_control.css' %}"
+        rel="stylesheet" type="text/css"/>
+
+    <script src="{% static 'calendar/calendar_control.js' %}"
+        language="javascript"></script>
+
+    <link href="{% static 'css/index.css' %}"
+        rel="stylesheet" type="text/css"/>
+
+    <script src="{% static 'js/email_list.js' %}"
+        language="javascript"></script>
+        
+    <script src="{% static 'js/email_lists.js' %}"
+        language="javascript"></script>
+
+    <script src="{% static 'jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.js' %}"
+        language="javascript"></script>
+
+    <script language="javascript">
+        var list_array = new Array();
+        {% for listEntry in lists %}
+
+            list_array.push(new EmailList(
+                {{ listEntry.id }},
+                "{{ listEntry.name }}",
+                "{{ listEntry|format_expire_date }}"
+            ));
+            
         {% endfor %}
 
-        <form action="/logout/" method="post"> {% csrf_token %}
-            <input name="logout" type="submit" value="logout" />
-        </form>
-    </div>
-</body>
+        var email_lists = new EmailLists(list_array);
+    </script>
 
-{% load staticfiles %}
-<script src="{% static 'jquery-1.11.0.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"
+        language="javascript"></script>
 
-<script src="{% static 'crsf.js' %}"></script>
-
-<link href="{% static 'calendar/calendar_control.css' %}"
-    rel="stylesheet" type="text/css"/>
-
-<script src="{% static 'calendar/calendar_control.js' %}"
-    language="javascript"></script>
-
-<link href="{% static 'index.css' %}"
-    rel="stylesheet" type="text/css"/>
-
-<script src="{% static 'email_list.js' %}"
-    language="javascript"></script>
-    
-<script src="{% static 'email_lists.js' %}"
-    language="javascript"></script>
-
-<script language="javascript">
-    var list_array = new Array();
-    {% for listEntry in lists %}
-
-        list_array.push(new EmailList(
-            {{ listEntry.id }},
-            "{{ listEntry.name }}",
-            "{{ listEntry|format_expire_date }}"
-        ));
-        
-    {% endfor %}
-
-    var email_lists = new EmailLists(list_array);
-</script>
-
-<script src="{% static 'index.js' %}"
-    language="javascript"></script>
+    <script>
+        $("#accordion").accordion();
+    </script>
 
 </html>
+
