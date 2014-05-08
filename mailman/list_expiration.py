@@ -1,14 +1,22 @@
 import pickle
 import MySQLdb as mdb
+import sys
 
 MAILMAN_LISTS_DIRECTORY = "/var/lib/mailman/lists/"
 connection = None
 
 try:
-	connection = mdb.connect('db.nws.oregonstate.edu', 'wasingej', '12Tyugjk')
+	connection = mdb.connect('db.nws.oregonstate.edu', 'wasingej', '12Tyugjk', 'maillist')
+	# db = mdb.select_db('lists_test')
 
-	version = mdb.query("SEELECT VERSION()")
-	print(version)
+	cursor = connection.cursor()
+	cursor.execute("""SELECT * FROM lists_test
+					  WHERE admin='wasingej' """)
+	entry = cursor.fetchone()
+	while entry is not None:
+		print(entry)
+		entry = cursor.fetchone()
+
 	# cursor = connection.cursor()
 	# cursor.execute("SELECT VERSION()")
 
