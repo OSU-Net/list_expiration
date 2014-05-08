@@ -55,7 +55,8 @@ EmailLists.prototype =
 				}
 				else
 				{
-					var form = $("form[name=edit_form")[0];
+					var list_id = list.get_list_id();
+					var form = $("form[id=edit_form_".concat(list_id).concat("]"));
 					form.submit();
 
 					this.cached_list = null;
@@ -139,7 +140,7 @@ EmailLists.prototype =
 
 	validate_list_edit : function(list_id)
 	{
-		var new_expire_date_str = $("form[name=edit_form] div[name=expire_date] input[name=expire_date]").val();
+		var new_expire_date_str = $("form[id=edit_form_".concat(list_id).concat("] input[name=expire_date]")).val();
 
 	    var current_expire_date = this.get_list_by_id(list_id).get_expire_date_str();
 

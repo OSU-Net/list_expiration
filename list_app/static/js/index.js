@@ -1,9 +1,9 @@
 
 var text_area_stored_text = null;
 
-function get_button_list_id(button)
+function get_element_list_id(element)
 {
-    var id_str = button.id;
+    var id_str = element.id;
     var id_strs = id_str.split("_");
     return id_strs[id_strs.length - 1];
 }
@@ -29,7 +29,7 @@ function on_text_area_lose_focus(text_area)
 
 function on_cancel_button_click()
 {
-    var id = get_button_list_id(this);
+    var id = get_element_list_id(this);
     cancel_editing();
 }
 
@@ -55,6 +55,13 @@ function begin_editing(id)
     //make 'cancel' and forward buttons visible
     $("button[id=cancel_button_".concat(id).concat("]")).show();
     $("button[id=forward_button_".concat(id).concat("]")).show();
+
+    var date_field = $("form[id=edit_form_".concat(id).concat("] input[type=text]"));
+    var default_date = email_lists.get_list_by_id(id).get_expire_date_str();
+    
+    date_field.datepicker({ dateFormat: "yy-mm-dd"})
+    date_field.datepicker("option", "defaultDate", default_date);
+    date_field.datepicker();
 
     email_lists.start_editing(id);
 }
@@ -85,7 +92,7 @@ function on_forward_button_click()
 
 function on_edit_button_click()
 {
-    var id = get_button_list_id(this);
+    var id = get_element_list_id(this);
     var list = email_lists.get_list_being_edited();
     
     if(list == null)
@@ -116,32 +123,51 @@ $(document).ready(function()
     $("button[name=cancel_button]").hide();
     $("button[name=forward_button]").hide();
     //$(':button[name=cancel_button]').click(on_cancel_button_click);
+
+    //enable calendar functionality when the edit field in the form is clicked on 
+    
+    // $("form[name=edit_form] input[type=text]").datepicker(
+    // {
+    //     onSelect : function(dateText, inst)
+    //     {
+    //         console.log(dateText);
+    //         $("input[type=text]").val(dateText);
+    //     }
+    // });
+    //$("form[name=edit_form] input[type=text]").datepicker();
+    
+    // $("form[name=edit_form] input[type=text]").on('focus', function() 
+    // {
+    //     #()
+    // }).on('blur', function() {
+
+    // });
 });
 
-
-function onListEdit()
-{
-    if(App.editing_list)
-    {
-        return;
-    }
+// function on_edit()
+// function on_start_edit()
+// {
+//     if(App.editing_list)
+//     {
+//         return;
+//     }
     
-    $("textarea[name='edit_text']").on('focus', function(){
+//     $("textarea[name='edit_text']").on('focus', function(){
 
-        console.log("on_focus");
-        if(this.value == App.default_text)
-        {
-            this.value = '';
-            //showCalendarControl(this);
-        }
+//         console.log("on_focus");
+//         if(this.value == App.default_text)
+//         {
+//             this.value = '';
+//             //showCalendarControl(this);
+//         }
 
-    }).on('blur', function(){
+//     }).on('blur', function(){
 
-        console.log("on_blur");
-        if( this.value == '')
-        {
-            this.value = App.default_text;
-            //hideCalendarControl(this);
-        }
-    })
-}
+//         console.log("on_blur");
+//         if( this.value == '')
+//         {
+//             this.value = App.default_text;
+//             //hideCalendarControl(this);
+//         }
+//     })
+// }

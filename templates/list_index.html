@@ -21,7 +21,7 @@
                     <p>{{listEntry|format_expire_date}}</p>
                 </div>
 
-                <form name="edit_form" id="edit_form_{{listEntry.id}}">
+                <form name="edit_form" id="edit_form_{{listEntry.id}}" method="post" action="/lists/list_edit/"> {% csrf_token %}
                     <input type="hidden" name="list_id" value="{{listEntry.id}}">
                     <input type="text" name="expire_date" value="">    
                 </form>
@@ -57,6 +57,9 @@
         
     <script src="{% static 'js/email_lists.js' %}"
         language="javascript"></script>
+
+    <link href="{% static 'jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.custom.css' %}"
+        rel="stylesheet" type="text/css"/>
 
     <script src="{% static 'jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.js' %}"
         language="javascript"></script>

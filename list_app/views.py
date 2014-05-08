@@ -9,7 +9,7 @@ from datetime import *
 
 
 #view for the page that is redirected to after successful CAS authentication
-@csrf_exempt
+# @csrf_exempt
 def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
@@ -21,7 +21,6 @@ def list_index(request):
 
     if not user_lists:
         return HttpResponse(str.format("no lists for {0}", request.user))
-
     else:
         template = loader.get_template('list_index.html')
         context = RequestContext(request, {
@@ -42,10 +41,9 @@ def validate_list_changes(cd):
         return False
 
 
-@csrf_exempt
+# @csrf_exempt
 def submit_list_edit(request):
     edit_form = ListEditForm(request.POST)
-    print("hello!")
 
     if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
         cd = edit_form.cleaned_data
