@@ -1,5 +1,6 @@
 from django.db import models
-# from datetime.datetime import *
+#from datetime.datetime import *
+from datetime import *
 
 class ListEntry(models.Model):
     name = models.CharField(max_length=64)
@@ -7,12 +8,17 @@ class ListEntry(models.Model):
     expire_date = models.DateField('date of expiration')
     create_date = models.DateField('date created')
 
+class ListWarning(models.Model):
+    list_id = models.ForeignKey(ListEntry)
+    first_warning = models.BooleanField()
+    last_warning = models.BooleanField()
+
     class Meta:
-        ordering = ('name',)
+        ordering = ('list_id',)
 
 class OwnerEntry(models.Model):
     name = models.CharField(max_length=32)
-    list = models.ForeignKey(ListEntry)
+    list_id = models.ForeignKey(ListEntry)
 
     class Meta:
         ordering = ('name',)
