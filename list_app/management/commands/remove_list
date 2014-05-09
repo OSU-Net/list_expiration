@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "hello world!"
+
+MAILMAN_DIR = "./mailman"
+ARCHIVE_DIR = "./mailman/old_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
+
+#read list name from commandline argument
+list_name = $1
+
+list_pck_dir = $MAILMAN_DIR"/lists/"$list_name
+list_public_archive_dir = $MAILMAN_DIR"/archives/public/"$list_name
+list_private_archive_dir = $MAILMAN_DIR"/archives/private/"$list_name
+list_private_mbox_file = $MAILMAN_DIR"/archives/private/"$list_name".mbox"
+
+#tar-ball creation:
+tar -cvzf list_name_archive.tgz list_name.pck list_archive1 list_archive2 ...
+
+tar -cvzf $(ARCHIVE_DIR)"/"$(list_name)".tgz" $(list_pck_dir)\
+ 					      $(list_public_archive_dir)\
+					      $(list_private_archive_dir)\
+					      $(list_private_mbox_file)
+#now remove relevant list files
+rm -rf $(list_pck_dir)
+rm -rf $(list_public_archive_dir)
+rm -rf $(list_private_archive_dir)
+rm -rf $(list_private_mbox_file)
+					      

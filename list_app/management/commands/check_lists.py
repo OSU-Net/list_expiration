@@ -1,19 +1,34 @@
 from django.core.management.base import BaseCommand, CommandError
 from list_app.models import ListEntry, ListWarning
 from datetime import *
+import os
 
-MAILMAN_FILES_DIR = "/var/lib/mailman/lists/"
+MAILMAN_FILES_DIR = "./test_lists"
 FIRST_WARNING_TIME = 30
 SECOND_WARNING_TIME = 7
+
+
+def delete_list(list_name):
+    list_dirs = [x[0] for x in os.walk(MAILMAN_FILES_DIR)];
+    for list in list_dirs:
+        if list == list_name:
+            #call a shell script which copies the list to a temporary directory and tars it
+            #delete original copy of the list
+
+    print("list deleted ;)")
+
 
 def date_delta_days(earlier_date, later_date):
     return (later_date - earlier_date).days
 
+
 def send_second_warning(list_entry):
     print("second warning sent ;)")
 
+
 def send_first_warning(list_entry):
     print("first warning sent ;)")
+
 
 class Command(BaseCommand):
     help = """ Manages list expiration.  If lists are expiring soon, sends an email warning the list owners
