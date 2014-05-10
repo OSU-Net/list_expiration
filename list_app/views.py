@@ -14,8 +14,15 @@ def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
 
-    user_lists = OwnerEntry.objects.filter(name=request.user)
+    print('hello!')
+    user_entries = OwnerEntry.objects.filter(name=request.user)
+
     lists = []
+    user_list_ids = []
+
+    for user in user_entries:
+        user_list_ids.append(user.list_id)
+    
     for list_record in user_lists:
         lists.append(list_record.list)
 
