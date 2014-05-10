@@ -19,10 +19,13 @@ def list_index(request):
 
     lists = []
     user_list_ids = []
+    user_lists = []
 
     for user in user_entries:
         user_list_ids.append(user.list_id)
-    
+
+    user_lists = ListEntry.objects.filter(id__in=user_list_ids)
+
     for list_record in user_lists:
         lists.append(list_record.list)
 

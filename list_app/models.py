@@ -9,7 +9,7 @@ class ListEntry(models.Model):
     create_date = models.DateField('date created')
 
 class ListWarning(models.Model):
-    list_id = models.ForeignKey(ListEntry)
+    list = models.ForeignKey(ListEntry)
     first_warning = models.BooleanField()
     last_warning = models.BooleanField()
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "hello world!"
-
 MAILMAN_DIR = "./mailman"
 ARCHIVE_DIR = "./mailman/old_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
+
+mkdir -p ($ARCHIVE_DIR)
 
 #read list name from commandline argument
 list_name = $1

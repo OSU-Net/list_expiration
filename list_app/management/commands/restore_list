@@ -1,0 +1,20 @@
+#!/bin/bash
+
+MAILMAN_DIR = "./mailman"
+ARCHIVE_DIR = "./mailman/old_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
+
+#read list name from commandline argument
+list_name = $1
+
+list_pck_dir = $MAILMAN_DIR"/lists/"$list_name
+list_public_archive_dir = $MAILMAN_DIR"/archives/public/"$list_name
+list_private_archive_dir = $MAILMAN_DIR"/archives/private/"$list_name
+list_private_mbox_file = $MAILMAN_DIR"/archives/private/"$list_name".mbox
+
+if [ ! -d $(list_pck_dir) ] 		|| \
+   [ ! -d $(list_public_archive_dir) ]  || \
+   [ ! -d $(list_private_archive_dir) ] || \
+   [ ! -d $(list_private_mbox__file)]
+   then
+
+fi
