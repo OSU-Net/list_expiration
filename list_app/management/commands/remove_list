@@ -29,8 +29,8 @@ fi
 
 pck_dir=$MAILMAN_DIR"/lists/"$1
 #public_archive_sym_link=$MAILMAN_DIR"/archives/public/"$1
-private_archive_dir=$MAILMAN_DIR"/archives/private/"$1
-private_mbox_dir=$MAILMAN_DIR"/archives/private/"$1".mbox"
+private_archive_dir="$MAILMAN_DIR"/archives/private/"$1"
+private_mbox_dir="$MAILMAN_DIR"/archives/private/"$1".mbox
 
 echo $pck_dir
 echo $public_archive_sym_link
@@ -52,24 +52,13 @@ mkdir -p $TAR_DIR"/pck/"
 mkdir -p $TAR_DIR"/archive/"
 mkdir -p $TAR_DIR"/mbox/"
 
-cp -r "$pck_dir"/* $TAR_DIR"/pck/"
-cp -r $private_archive_dir"/" $TAR_DIR"/archive"
-cp -r $private_mbox_dir"/" $TAR_DIR"/mbox"
-
-#echo $list_pck_dir
-# echo $list_public_archive_dir
-# echo $list_private_archive_dir
-# echo $list_private_mbox_dir
-# echo "hello world!"
+cp "$pck_dir"/* $TAR_DIR"/pck/"
+cp -r "$private_archive_dir" "$TAR_DIR"/archive
+cp -r "$private_mbox_dir" "$TAR_DIR"/mbox
 
 #tar-ball creation:
-tar -cvzf $ARCHIVE_DIR"/"$TAR_DIR".tgz" $TAR_DIR
+echo "creating tar archive..."
+tar -cvzf "$ARCHIVE_DIR"/"$TAR_DIR".tgz "$TAR_DIR"
 
-rm -rf TAR_DIR
+rm -rf "$TAR_DIR"
 
-#now remove relevant list files
-# rm -rf $list_pck_dir
-# rm -rf $list_public_archive_dir
-# rm -rf $list_private_archive_dir
-# rm -rf $list_private_mbox_file
-					      
