@@ -34,32 +34,16 @@ class Command(BaseCommand):
            """
 
     def handle(self, *args, **options):
-        print("hello")
-        #grab all lists expiring in a month or less
-        month_from_now = datetime.datetime.now() + datetime.timedelta(days=30)
-        week_from_now = datetime.datetime.now()
-        expiring_lists = ListEntry.objects.filter(expire_date__lt=month_from_now)
-        print("hello world!")
+        expired_lists = check_lists()
+        
+        for listEntry in expired_lists:
+        	#delete the list on file 
+            subprocess.call(["./remove_list {0}".format(listEntry.list_name)])
 
-        for listEntry in expiring_lists:
+            #delete the list from the database
+            listEntry.delete()
+            owners = OwnerEntry.objects.filter(list_id=listEntry.id)
+            owners.delete()
 
-            list_warning = ListWarning.objects.get(listEntry.id)
-            if not list_warning:
-                new_warning = ListWarning(list_id=listEntry.id, first_warning=True, last_warning=False)
-                new_warning.save()
-                send_first_warning(listEntry)
 
-            if listEntry.expire_date <= week_from_now:
-                list_warning = ListWarning(list_id=listEntry.id)
-                list_warning.second_warning = True
-                send_second_warning(listEntry)
-
-            if listEntry.expire_date <= datetime.now():
-            	#delete the list on file 
-            	subprocess.call(["./remove_list {0}".format(listEntry.list_name)])
-
-            	#delete the list from the database
-            	listEntry.delete()
-            	owners = OwnerEntry.objects.filter(list_id=listEntry.id)
-            	owners.delete()
 
