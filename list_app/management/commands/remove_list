@@ -1,28 +1,75 @@
 #!/bin/bash
 
-MAILMAN_DIR = "./mailman"
-ARCHIVE_DIR = "./mailman/old_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
+MAILMAN_DIR="./mailman"
+ARCHIVE_DIR="./mailman/deleted_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
+TAR_DIR=$1"_files" 
 
-mkdir -p ($ARCHIVE_DIR)
+mkdir -p $ARCHIVE_DIR
+
 
 #read list name from commandline argument
-list_name = $1
 
-list_pck_dir = $MAILMAN_DIR"/lists/"$list_name
-list_public_archive_dir = $MAILMAN_DIR"/archives/public/"$list_name
-list_private_archive_dir = $MAILMAN_DIR"/archives/private/"$list_name
-list_private_mbox_file = $MAILMAN_DIR"/archives/private/"$list_name".mbox"
+# options=':q:nd:h'
+# if ! getopts $options cmd_args 
+# then
+# 	echo "list name expected."
+# 	exit 1
+# fi
+if [ $# -lt 1 ] 
+then
+	echo "List name expected"
+	exit 1
+fi
+
+if [ $# -gt 1 ] 
+then
+	echo "Too many arguments"
+	exit 1
+fi
+
+pck_dir=$MAILMAN_DIR"/lists/"$1
+#public_archive_sym_link=$MAILMAN_DIR"/archives/public/"$1
+private_archive_dir=$MAILMAN_DIR"/archives/private/"$1
+private_mbox_dir=$MAILMAN_DIR"/archives/private/"$1".mbox"
+
+echo $pck_dir
+echo $public_archive_sym_link
+echo $private_archive_dir
+echo $private_mbox_dir
+
+if [ ! -d $pck_dir ] || \
+   #[ ! -f $public_archive_sym_link ] || \
+   [ ! -d $private_archive_dir ] || \
+   [ ! -d $private_mbox_dir ]
+then
+	echo "List directories missing."
+	exit 1
+fi
+
+#create a temporary directory to copy the files that need to be archived into
+mkdir -p $TAR_DIR
+mkdir -p $TAR_DIR"/pck/"
+mkdir -p $TAR_DIR"/archive/"
+mkdir -p $TAR_DIR"/mbox/"
+
+cp -r $pck_dir"/*" $TAR_DIR"/pck/"
+cp -r $private_archive_dir"/" $TAR_DIR"/archive"
+cp -r $private_mbox_dir"/" $TAR_DIR"/mbox"
+
+#echo $list_pck_dir
+# echo $list_public_archive_dir
+# echo $list_private_archive_dir
+# echo $list_private_mbox_dir
+# echo "hello world!"
 
 #tar-ball creation:
-tar -cvzf list_name_archive.tgz list_name.pck list_archive1 list_archive2 ...
+tar -cvzf $ARCHIVE_DIR"/"$TAR_DIR".tgz" $TAR_DIR
 
-tar -cvzf $(ARCHIVE_DIR)"/"$(list_name)".tgz" $(list_pck_dir)\
- 					      $(list_public_archive_dir)\
-					      $(list_private_archive_dir)\
-					      $(list_private_mbox_file)
+rm -rf TAR_DIR
+
 #now remove relevant list files
-rm -rf $(list_pck_dir)
-rm -rf $(list_public_archive_dir)
-rm -rf $(list_private_archive_dir)
-rm -rf $(list_private_mbox_file)
+# rm -rf $list_pck_dir
+# rm -rf $list_public_archive_dir
+# rm -rf $list_private_archive_dir
+# rm -rf $list_private_mbox_file
 					      

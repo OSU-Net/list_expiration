@@ -16,5 +16,5 @@ if [ ! -d $(list_pck_dir) ] 		|| \
    [ ! -d $(list_private_archive_dir) ] || \
    [ ! -d $(list_private_mbox__file)]
    then
-
+   
 fi
