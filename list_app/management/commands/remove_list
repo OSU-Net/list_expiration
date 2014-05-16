@@ -52,7 +52,7 @@ mkdir -p $TAR_DIR"/pck/"
 mkdir -p $TAR_DIR"/archive/"
 mkdir -p $TAR_DIR"/mbox/"
 
-cp -r $pck_dir"/*" $TAR_DIR"/pck/"
+cp -r "$pck_dir"/* $TAR_DIR"/pck/"
 cp -r $private_archive_dir"/" $TAR_DIR"/archive"
 cp -r $private_mbox_dir"/" $TAR_DIR"/mbox"
 
