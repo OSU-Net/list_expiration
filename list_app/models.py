@@ -9,12 +9,12 @@ class ListEntry(models.Model):
     create_date = models.DateField('date created')
 
 class ListWarning(models.Model):
-    list = models.ForeignKey(ListEntry)
+    email_list = models.ForeignKey(ListEntry)
     first_warning = models.BooleanField()
     last_warning = models.BooleanField()
 
     class Meta:
-        ordering = ('list_id',)
+        ordering = ('email_list',)
 
 class OwnerEntry(models.Model):
     name = models.CharField(max_length=32)
