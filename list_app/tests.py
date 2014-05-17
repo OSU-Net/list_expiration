@@ -1,8 +1,6 @@
 from django.test import TestCase
 from datetime import *
-from timedelta import * 
 from list_app.models import * 
-from list_app.management.commands import check_lists
 
 class ListTestCase(TestCase):
 	
@@ -17,7 +15,7 @@ class ListTestCase(TestCase):
 		warning_date_1 = now + timedelta(30) 
 		warning_date_2 = now + timedelta(7)
 
-		le1 = ListEntry(name='PH_211', create_date=create, expire_date=exp_date_1)
+		le1 = ListEntry(name='PH_211', create_date=create, expire_date=expired_date)
 		le1.save()
 		
 		le2 = ListEntry(name='PH_212', create_date=create, expire_date=warning_date_1)
@@ -40,4 +38,6 @@ class ListTestCase(TestCase):
 
 	def test(self):
 		expired_lists = check_lists()
-		self.assertEqual(ListWarning.objects.filter(mailing_list=le1))
+
+		for listEntry in expired_lists:
+			print("{0} has been deleted.".format(listEntry.name))

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from list_app.models import ListEntry, ListWarning, OwnerEntry
+from list_app.models import *
 from datetime import *
 from list_site import settings
 import os
