@@ -2,11 +2,13 @@ from django.db import models
 #from datetime.datetime import *
 from datetime import *
 
+
 class ListEntry(models.Model):
     name = models.CharField(max_length=64)
     # active_date = models.DateTimeField('date of last list activity')
     expire_date = models.DateField('date of expiration')
     create_date = models.DateField('date created')
+
 
 class ListWarning(models.Model):
     mailing_list = models.ForeignKey(ListEntry)
@@ -16,6 +18,7 @@ class ListWarning(models.Model):
     class Meta:
         ordering = ('mailing_list__name', 'first_warning', 'last_warning')
 
+
 class OwnerEntry(models.Model):
     name = models.CharField(max_length=32)
     mailing_list = models.ForeignKey(ListEntry)
@@ -23,6 +26,15 @@ class OwnerEntry(models.Model):
     class Meta:
         ordering = ('name',)
 
+
+class OwnerTransition(models.Model):
+    owner_email = models.CharField(max_length=32, blank=False)
+    list_name = models.CharField(max_length=32, blank=False)
+    bounced = models.BooleanField(blank=True)
+    onid_id = models.CharField(max_length=32, blank=True)
+
+    class Meta:
+        ordering = ('owner_email', 'list_name', 'bounced', 'onid_id',)
 
 def send_first_warning(listEntry):
     print("First warning sent for {0} ".format(listEntry.name))

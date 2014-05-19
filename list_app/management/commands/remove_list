@@ -57,6 +57,7 @@ cp -r "$private_archive_dir" "$TAR_DIR"/archive
 cp -r "$private_mbox_dir" "$TAR_DIR"/mbox
 
 #TODO: call bin/rmlists -a list_name
+"$MAILMAN_DIR"/bin/rmlist -a "$1"
 
 #tar-ball creation:
 echo "creating tar archive..."
