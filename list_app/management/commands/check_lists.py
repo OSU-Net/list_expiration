@@ -37,13 +37,14 @@ class Command(BaseCommand):
         expired_lists = check_lists()
         
         for listEntry in expired_lists:
-        	#delete the list on file 
+
+            #delete the list on file
             subprocess.call(["./remove_list {0}".format(listEntry.list_name)])
 
             #delete the list from the database
+            (OwnerEntry.objects.get(mailing_list=listEntry)).delete()
+            (ListWarning.objects.get(mailing_list=listEntry)).delete()
             listEntry.delete()
-            owners = OwnerEntry.objects.filter(list_id=listEntry.id)
-            owners.delete()
 
 
 
