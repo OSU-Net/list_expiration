@@ -56,6 +56,8 @@ cp "$pck_dir"/* $TAR_DIR"/pck/"
 cp -r "$private_archive_dir" "$TAR_DIR"/archive
 cp -r "$private_mbox_dir" "$TAR_DIR"/mbox
 
+#TODO: call bin/rmlists -a list_name
+
 #tar-ball creation:
 echo "creating tar archive..."
 tar -cvzf "$ARCHIVE_DIR"/"$TAR_DIR".tgz "$TAR_DIR"
