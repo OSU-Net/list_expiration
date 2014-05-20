@@ -14,11 +14,13 @@ then
 	exit 1
 fi
 
-if [ $# -gt 1 ] 
+if [ $# -gt 2 ] 
 then
 	echo "Too many arguments"
 	exit 1
 fi
+
+echo "sup"
 
 MAILMAN_DIR=$2
 ARCHIVE_DIR="./mailman/deleted_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
