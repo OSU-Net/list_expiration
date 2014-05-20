@@ -39,7 +39,7 @@ class Command(BaseCommand):
         for listEntry in expired_lists:
 
             #delete the list on file
-            subprocess.call(["./remove_list {0}".format(listEntry.list_name)])
+            subprocess.call(["./remove_list {0} {1}".format(listEntry.list_name, MAILMAN_FILES_DIR)])
 
             #delete the list from the database
             (OwnerEntry.objects.get(mailing_list=listEntry)).delete()

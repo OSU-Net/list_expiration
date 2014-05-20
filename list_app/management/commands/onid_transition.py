@@ -3,7 +3,7 @@
     2) Send and email out to all owners linking them to a form where they can authenticate their lists
     3) Mark down all bounced emails
 '''
-import sys
+import sys, os
 from django.core.management.base import BaseCommand, CommandError
 from list_app.models import *
 from list_site import settings
@@ -18,12 +18,13 @@ class Command(BaseCommand):
     	#foreach list:
         #	unpickle the pck file
 
-        list_dirs = [x[0] for x in os.walk(MAILMAN_FILES_DIR + '/lists')] #trailing slash needed here?
+        list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists')] #trailing slash needed here?
+        print(list_dirs)
 
         for list_name in list_dirs:
         	pck_file = None
         	try:
-        		pck_file = open(MAILMAN_FILES_DIR + '/lists/' + list_name + '/{0}.pck'.format(list_name),'r')
+        		pck_file = open(settings.MAILMAN_FILES_DIR + '/lists/' + list_name + '/{0}.pck'.format(list_name),'r')
         	except IOERROR as e:
         		print("I/O error({0}): {1}".format(e.errno, e.strerror))
         		print("List {0} files corrupted or missing".format(list_dir))
