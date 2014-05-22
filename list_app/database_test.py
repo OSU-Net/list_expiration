@@ -24,3 +24,5 @@ oe2.save()
 
 oe3 = OwnerEntry(name='doej', mailing_list=le2)
 oe3.save()
+
+exit()

@@ -8,8 +8,12 @@ from list_app.forms import ListEditForm
 from datetime import *
 
 
+def onid_transition(request):
+    template = loader.get_template('onid_transition.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
+
 #view for the page that is redirected to after successful CAS authentication
-# @csrf_exempt
 def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
@@ -22,12 +26,12 @@ def list_index(request):
     user_lists = []
 
     for user in user_entries:
-        user_list_ids.append(user.list_id)
+        user_list_ids.append(user.mailing_list.id)
 
     user_lists = ListEntry.objects.filter(id__in=user_list_ids)
 
     for list_record in user_lists:
-        lists.append(list_record.list)
+        lists.append(list_record)
 
     if not user_lists:
         return HttpResponse(str.format("no lists for {0}", request.user))
