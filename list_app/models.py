@@ -1,7 +1,7 @@
 from django.db import models
 #from datetime.datetime import *
 from datetime import *
-
+import hashlib
 
 class ListEntry(models.Model):
     name = models.CharField(max_length=64)
@@ -26,7 +26,11 @@ class OwnerEntry(models.Model):
     class Meta:
         ordering = ('name',)
 
+class TransitionLink(models.Model):
+    owner_email = models.CharField(max_length=32, blank=False)
+    link_str = models.CharField(max_length=32, blank=False)
 
+    
 class OwnerTransition(models.Model):
     owner_email = models.CharField(max_length=32, blank=False)
     list_name = models.CharField(max_length=32, blank=False)
