@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from list_app.models import *
 from list_site import settings
 import cPickle as pickle  
-
+import random
 
 class Command(BaseCommand):
 	help = """ This command is used to begin the transition process which will migrate list owners
@@ -19,9 +19,8 @@ class Command(BaseCommand):
 		print('transition email sent to {0}'.format(onid_email))
 
 
-	def send_transition_emaiL(email):
-		#1) create email hash
-		print('hello')
+	def send_transition_email(email_addr):
+		print('Transition email sent with link ...')
 
 	def get_mailman_list_names():
 
@@ -46,10 +45,23 @@ class Command(BaseCommand):
 			return True
 
 		return False
+	
+	def generate_links():
+		unique_owners = OwnerTransition.objects.order_by('owner_email').values('owner_email').distinct()
+		links = {}
 
-	def hash_owner_email(email):
-	    return hashlib.sha256(salt.encode() email.encode()).hexdigest() # will this colon cause issues? 
-	    
+		for owner_email in unique_owners:
+			
+			while True:
+				link_val = random.getrandbits(128)
+				if link_val in links.values():
+					continue
+				else:
+					links[owner_email] = link_val
+					break
+
+		return links
+
 	def handle(self, *args, **options):
 		#foreach list:
 		#    unpickle the pck file
@@ -78,19 +90,27 @@ class Command(BaseCommand):
 				transition_entry.bounced = False
 
 				if owner_is_onid(pck_dict):
-					transition_entry.onid_id = transition_entry.owner_email
+					transition_entry.onid_email = transition_entry.owner_email
 				else:
-					transition_entry.onid_id = ''
+					transition_entry.onid_email = ''
 
 				transition_entry.save()
 
+		links = generate_links()
+		for owner in links:
+			transition_entry = OwnerTransition.objects.filter(owner_email=owner)
+			transition_entry.link_code = links[owner]
+			transition_entry.save()
+			
 		#now send out emails
 		transition_entries = TransitionEntry.objects.all()
 		
 		for transition_entry in transition_entries:
-			if transition_entry.onid_id != '':
+			if transition_entry.onid_email != '':
+				send_transition_email_onid(transition_entry.onid_email)
+			else:
+				send_transition_email(transition_entry.owner_email)
 
-		#grab a list of all owners in the TransitionEntry table and generate a unique link for each owner
 
 		#for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over
 		#to the new system and now have control over list expiration (Should they be prompted to choose an expiration date for their lists?)
