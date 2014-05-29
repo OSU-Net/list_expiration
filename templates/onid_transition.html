@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<div>
+			You currently manage the following lists:
+		</div>
+
+		<!-- list out lists here -->
+        {% for list in lists %}
+        <div>
+            List Name: {{list.name}}
+        </div>
+
+        {% endfor %}
+		<!-- if their lists are not linked to their ONID: -->
+		<div>
+			You do not currently have an ONID account linked to your lists. 
+			<button> Register Lists with ONID </button>
+			<button> Don't have an ONID account? </button> <!-- this button will bring the user to a separate page listing out the status of other owners -->
+
+		</div>
+	</body>
+</html>

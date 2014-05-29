@@ -9,112 +9,124 @@ from list_app.models import *
 from list_site import settings
 import cPickle as pickle  
 import random
+from list_app.transition_models import *
 
 class Command(BaseCommand):
-	help = """ This command is used to begin the transition process which will migrate list owners
-	over to ONID.  Only list owners that possess ONID accounts will be able to manage the
-	expiration of the list(s) that they manage.
-	"""
-	def send_transition_email_onid(onid_email):
-		print('transition email sent to {0}'.format(onid_email))
+    help = """ This command is used to begin the transition process which will migrate list owners
+    over to ONID.  Only list owners that possess ONID accounts will be able to manage the
+    expiration of the list(s) that they manage.
+    """
+    def send_transition_email_onid(onid_email):
+        print('transition email sent to {0}'.format(onid_email))
 
 
-	def send_transition_email(email_addr):
-		print('Transition email sent with link ...')
+    def send_transition_email(email_addr):
+        print('Transition email sent with link ...')
 
-	def get_mailman_list_names():
+    def get_mailman_list_names(self):
 
-		list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists/')]
-		list_names = []
+        list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists/')]
+        list_names = []
 
-		for list_dir in list_dirs:
-			strs = list_dir.split('/')
-			if strs[len(strs)-1] == '':
-				continue
-			else:
-				list_names.append(strs[len(strs)-1])
+        for list_dir in list_dirs:
+            strs = list_dir.split('/')
+            if strs[len(strs)-1] == '':
+                continue
+            else:
+                list_names.append(strs[len(strs)-1])
 
-		print list_names
+        print list_names
 
-		return list_names
+        return list_names
 
-	def owner_is_onid(owner_email):
+    def owner_is_onid(owner_email):
 
-		strs = owner_email.split('@')
-		if strs[len(strs) - 1] == 'onid.oregonstate.edu' or strs[len(strs) - 1] == 'onid.orst.edu':
-			return True
+        strs = owner_email.split('@')
+        if strs[len(strs) - 1] == 'onid.oregonstate.edu' or strs[len(strs) - 1] == 'onid.orst.edu':
+            return True
 
-		return False
-	
-	def generate_links():
-		unique_owners = OwnerTransition.objects.order_by('owner_email').values('owner_email').distinct()
-		links = {}
+        return False
 
-		for owner_email in unique_owners:
-			
-			while True:
-				link_val = random.getrandbits(128)
-				if link_val in links.values():
-					continue
-				else:
-					links[owner_email] = link_val
-					break
+    def generate_links(self):
+        unique_owners = OldOwner.objects.order_by('owner_email').values('owner_email').distinct()
+        links = {}
 
-		return links
+        for owner_email in unique_owners:
 
-	def handle(self, *args, **options):
-		#foreach list:
-		#    unpickle the pck file
+            while True:
+                link_val = random.getrandbits(128)
+                if link_val in links.values():
+                    continue
+                else:
+                    links[owner_email] = link_val
+                    break
 
-		#list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists')] #trailing slash needed here?
-		list_names = get_mailman_list_names()
+        return links
 
-		for list_name in list_names:
-			pck_dict = None
-			
-			try:
-				pck_file = open(settings.MAILMAN_FILES_DIR + '/lists/' + list_name + '/config.pck','r')
-				pck_dict = pickle.load(pck_file)
+    def handle(self, *args, **options):
+        #foreach list:
+        #    unpickle the pck file
 
-			except IOError as e:
-				print("I/O error({0}): {1}".format(e.errno, e.strerror))
-				print("List {0} files corrupted or missing".format(list_name))
-				break
-			except pickle.PickleError as e:
-				print("Pickle error{0}: {1}".format(e.errno, e.strerror))
+        #list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists')] #trailing slash needed here?
+        list_names = self.get_mailman_list_names()
 
-			for owner_email in pck_dict['owner']:
-				transition_entry = OwnerTransition()
-				transition_entry.owner_email = owner_email
-				transition_entry.list_name = pck_dict['real_name']
-				transition_entry.bounced = False
+        for list_name in list_names:
+            pck_dict = None
 
-				if owner_is_onid(pck_dict):
-					transition_entry.onid_email = transition_entry.owner_email
-				else:
-					transition_entry.onid_email = ''
+            try:
+                pck_file = open(settings.MAILMAN_FILES_DIR + '/lists/' + list_name + '/config.pck','r')
+                pck_dict = pickle.load(pck_file)
 
-				transition_entry.save()
+            except IOError as e:
+                print("I/O error({0}): {1}".format(e.errno, e.strerror))
+                print("List {0} files corrupted or missing".format(list_name))
+                break
+            except pickle.PickleError as e:
+                print("Pickle error{0}: {1}".format(e.errno, e.strerror))
 
-		links = generate_links()
-		for owner in links:
-			transition_entry = OwnerTransition.objects.filter(owner_email=owner)
-			transition_entry.link_code = links[owner]
-			transition_entry.save()
-			
-		#now send out emails
-		transition_entries = TransitionEntry.objects.all()
-		
-		for transition_entry in transition_entries:
-			if transition_entry.onid_email != '':
-				send_transition_email_onid(transition_entry.onid_email)
-			else:
-				send_transition_email(transition_entry.owner_email)
+            old_list = OldList(list_name=list_name)
+            old_list.save()
+
+            for owner_email in pck_dict['owner']:
+                # transition_entry = OldOwner()
+                # transition_entry.owner_email = owner_email
+                # transition_entry.list_name = pck_dict['real_name']
+                # transition_entry.bounced = False
+
+                owner = OldOwner.objects.filter(owner_email=owner_email)
+                if owner.count() == 0:
+                    owner = OldOwner()
+                    owner.owner_email = owner_email
+                    owner.lists.add()
+                else:
+
+            if self.owner_is_onid(pck_dict):
+                transition_entry.onid_email = transition_entry.owner_email
+            else:
+                transition_entry.onid_email = ''
+
+            transition_entry.save()
+
+        links = self.generate_links()
+        
+        for owner in links:
+            transition_entry = OwnerTransition.objects.filter(owner_email=owner)
+            transition_entry.link_code = links[owner]
+            transition_entry.save()
+
+        #now send out emails
+        transition_entries = TransitionEntry.objects.all()
+
+        for transition_entry in transition_entries:
+            if transition_entry.onid_email != '':
+                send_transition_email_onid(transition_entry.onid_email)
+            else:
+                send_transition_email(transition_entry.owner_email)
 
 
-		#for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over
-		#to the new system and now have control over list expiration (Should they be prompted to choose an expiration date for their lists?)
+        #for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over
+        #to the new system and now have control over list expiration (Should they be prompted to choose an expiration date for their lists?)
 
-		#for every list with an owner without an ONID account, send them an email asking them to authenticate through ONID to regain admin access to their list
+        #for every list with an owner without an ONID account, send them an email asking them to authenticate through ONID to regain admin access to their list
 
-		
+                

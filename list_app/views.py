@@ -1,16 +1,25 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from models import ListEntry, OwnerEntry
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from models import ListEntry, OwnerEntry, OwnerTransition
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from list_app.forms import ListEditForm
 from datetime import *
-
+from transition_models import *
 
 def onid_transition(request):
+    user_code = request.GET.get('id', '')
+
+    if user_code == '':
+        raise Http404
+
+    lists = OldOwner.objects.filter(link_code=user_code).lists.all()
+
     template = loader.get_template('onid_transition.html')
-    context = RequestContext(request)
+    context = RequestContext(request, {
+        'lists': lists
+    })
     return HttpResponse(template.render(context))
 
 #view for the page that is redirected to after successful CAS authentication

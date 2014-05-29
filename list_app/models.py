@@ -25,17 +25,6 @@ class OwnerEntry(models.Model):
 
     class Meta:
         ordering = ('name',)
-
-class TransitionLink(models.Model):
-    owner_email = models.CharField(max_length=32, blank=False)
-    link_str = models.CharField(max_length=32, blank=False)
-
-class OwnerTransition(models.Model):
-    owner_email = models.CharField(max_length=32, blank=False)
-    list_name = models.CharField(max_length=32, blank=False)
-    bounced = models.BooleanField(blank=True)
-    onid_email = models.CharField(max_length=32, blank=True)
-    link_code = models.CharField(max_length=32, blank=True)
     
     class Meta:
         ordering = ('owner_email', 'list_name', 'bounced', 'onid_id',)

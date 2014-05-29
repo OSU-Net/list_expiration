@@ -39,19 +39,19 @@ class Command(BaseCommand):
         print("hey")
         for listEntry in expired_lists:
 
-        	print(__file__)
-	    	print(listEntry.name)
-	    	print(settings.MAILMAN_FILES_DIR)
+            print(__file__)
+            print(listEntry.name)
+            print(settings.MAILMAN_FILES_DIR)
 
-	        #delete the list on file
-	        subprocess.call(['./remove_list {0} {1}'.format(listEntry.name, settings.MAILMAN_FILES_DIR)], shell=True)
+            #delete the list on file
+            subprocess.call(['./remove_list {0} {1}'.format(listEntry.name, settings.MAILMAN_FILES_DIR)], shell=True)
 
-	        print("hi")
+            print("hi")
 
-	        #delete the list from the database
-	        (OwnerEntry.objects.get(mailing_list=listEntry)).delete()
-	        (ListWarning.objects.get(mailing_list=listEntry)).delete()
-	        listEntry.delete()
+            #delete the list from the database
+            (OwnerEntry.objects.get(mailing_list=listEntry)).delete()
+            (ListWarning.objects.get(mailing_list=listEntry)).delete()
+            listEntry.delete()
 
 
 
