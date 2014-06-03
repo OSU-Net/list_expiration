@@ -19,9 +19,13 @@ class Command(BaseCommand):
     def send_transition_email_onid(onid_email):
         print('transition email sent to {0}'.format(onid_email))
 
-
     def send_transition_email(email_addr):
-        print('Transition email sent with link ...')
+        #print('Transition email sent with link ...')
+        link_code = OldOwner.objects.get(owner_email=email_addr).link_code;
+        link = 'localhost:8000/lists/onid_transition/?link_code={0}'.format(link_code)
+
+        print('link for {0} is: {1}'.format(onid_email, link))
+
 
     def get_mailman_list_names(self):
 
@@ -39,7 +43,7 @@ class Command(BaseCommand):
 
         return list_names
 
-    def owner_is_onid(owner_email):
+    def owner_is_onid(self, owner_email):
 
         strs = owner_email.split('@')
         if strs[len(strs) - 1] == 'onid.oregonstate.edu' or strs[len(strs) - 1] == 'onid.orst.edu':
@@ -47,7 +51,7 @@ class Command(BaseCommand):
 
         return False
 
-    def generate_links(self):
+    def generate_link_codes(self):
         unique_owners = OldOwner.objects.order_by('owner_email').values('owner_email').distinct()
         links = {}
 
@@ -97,31 +101,35 @@ class Command(BaseCommand):
                 if owner.count() == 0:
                     owner = OldOwner()
                     owner.owner_email = owner_email
-                    owner.lists.add()
+
+                    if self.owner_is_onid(owner_email):
+                        owner.onid_email = owner.owner_email
+                    else:
+                        owner.onid_email = ''
                 else:
+                    owner.lists.objects.add(old_list)
 
-            if self.owner_is_onid(pck_dict):
-                transition_entry.onid_email = transition_entry.owner_email
-            else:
-                transition_entry.onid_email = ''
-
-            transition_entry.save()
-
-        links = self.generate_links()
+                owner.save()
+                owner.lists.objects.add(old_list)
+                owner.save()
+                old_list.oldowner_set.add(owner)
+                old_list.save()
+                
+        links = self.generate_link_codes()
         
-        for owner in links:
-            transition_entry = OwnerTransition.objects.filter(owner_email=owner)
-            transition_entry.link_code = links[owner]
-            transition_entry.save()
+        for owner_email in links:
+            owner = OldOwner.objects.filter(owner_email=owner)
+            owner.link_code = links[owner]
+            owner.save()
 
         #now send out emails
-        transition_entries = TransitionEntry.objects.all()
+        owner_entries = OldOwner.objects.all()
 
-        for transition_entry in transition_entries:
-            if transition_entry.onid_email != '':
-                send_transition_email_onid(transition_entry.onid_email)
+        for owner in owner_entries:
+            if owner.onid_email != '':
+                send_transition_email_onid(owner.onid_email)
             else:
-                send_transition_email(transition_entry.owner_email)
+                send_transition_email(owner.owner_email)
 
 
         #for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over

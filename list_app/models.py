@@ -24,10 +24,7 @@ class OwnerEntry(models.Model):
     mailing_list = models.ForeignKey(ListEntry)
 
     class Meta:
-        ordering = ('name',)
-    
-    class Meta:
-        ordering = ('owner_email', 'list_name', 'bounced', 'onid_id',)
+        ordering = ('name', 'mailing_list')
 
 def send_first_warning(listEntry):
     print("First warning sent for {0} ".format(listEntry.name))
@@ -76,3 +73,13 @@ def check_lists():
             expired_lists.append(listEntry)
 
     return expired_lists
+
+class OldList(models.Model):
+    list_name = models.CharField(max_length=32, blank=False)
+
+class OldOwner(models.Model):
+    owner_email = models.CharField(max_length=32, blank=False)
+    onid_email = models.CharField(max_length=32, blank=True)
+    link_code = models.CharField(max_length=32, blank=True)
+    bounced = models.NullBooleanField(blank=True,null=True)
+    lists = models.ManyToManyField(OldList, blank=True)
