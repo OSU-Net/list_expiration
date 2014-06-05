@@ -9,7 +9,9 @@ from list_app.models import *
 from list_site import settings
 import cPickle as pickle  
 import random
-from list_app.transition_models import *
+import hashlib
+from datetime import *
+
 
 class Command(BaseCommand):
     help = """ This command is used to begin the transition process which will migrate list owners
@@ -55,15 +57,17 @@ class Command(BaseCommand):
         unique_owners = OldOwner.objects.order_by('owner_email').values('owner_email').distinct()
         links = {}
 
-        for owner_email in unique_owners:
+        for owner in unique_owners:
 
-            while True:
-                link_val = random.getrandbits(128)
-                if link_val in links.values():
-                    continue
-                else:
-                    links[owner_email] = link_val
-                    break
+            print(owner)
+
+            # while True:
+            #     link_val = random.getrandbits(128)
+            #     if link_val in links.values():
+            #         contiDistintcnue
+            #     else:
+            #         links[owner.owner_email] = link_val
+            #         break
 
         return links
 
@@ -97,21 +101,22 @@ class Command(BaseCommand):
                 # transition_entry.list_name = pck_dict['real_name']
                 # transition_entry.bounced = False
 
-                owner = OldOwner.objects.filter(owner_email=owner_email)
-                if owner.count() == 0:
-                    owner = OldOwner()
+                try:
+                    owner = OldOwner.objects.get(owner_email=owner_email)
+
+                except OldOwner.DoesNotExist:
+                    owner = OldOwner(owner_email=owner_email)
                     owner.owner_email = owner_email
+                    owner.save()
 
                     if self.owner_is_onid(owner_email):
                         owner.onid_email = owner.owner_email
                     else:
                         owner.onid_email = ''
-                else:
-                    owner.lists.objects.add(old_list)
 
+                owner.lists.add(old_list)
                 owner.save()
-                owner.lists.objects.add(old_list)
-                owner.save()
+
                 old_list.oldowner_set.add(owner)
                 old_list.save()
                 
