@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from models import ListEntry, OwnerEntry, OwnerTransition
+from models import * 
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +14,8 @@ def onid_transition(request):
     if user_code == '':
         raise Http404
 
-    lists = OldOwner.objects.filter(link_code=user_code).lists.all()
+    lists = OldOwner.objects.get(link_code=user_code).lists.all()
+    print(len(lists))
 
     template = loader.get_template('onid_transition.html')
     context = RequestContext(request, {

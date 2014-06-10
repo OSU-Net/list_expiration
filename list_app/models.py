@@ -24,6 +24,9 @@ class OwnerEntry(models.Model):
     class Meta:
         ordering = ('name', 'mailing_list')
 
+#
+#these models are used for the transition to ONID:
+#
 
 class OldList(models.Model):
     list_name = models.CharField(max_length=32, blank=False)

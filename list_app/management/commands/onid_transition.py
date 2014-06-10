@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from list_app.models import *
 from list_site import settings
 import cPickle as pickle  
-import random
+import os, binascii
 import hashlib
 from datetime import *
 
@@ -18,15 +18,16 @@ class Command(BaseCommand):
     over to ONID.  Only list owners that possess ONID accounts will be able to manage the
     expiration of the list(s) that they manage.
     """
-    def send_transition_email_onid(onid_email):
+    def send_transition_email_onid(self, onid_email):
         print('transition email sent to {0}'.format(onid_email))
 
-    def send_transition_email(email_addr):
+    def send_transition_email(self, email_addr):
         #print('Transition email sent with link ...')
         link_code = OldOwner.objects.get(owner_email=email_addr).link_code;
-        link = 'localhost:8000/lists/onid_transition/?link_code={0}'.format(link_code)
+        print(link_code)
+        link = 'localhost:8000/lists/onid_transition/?id={0}'.format(link_code)
 
-        print('link for {0} is: {1}'.format(onid_email, link))
+        print('link for {0} is: {1}'.format(email_addr, link))
 
 
     def get_mailman_list_names(self):
@@ -41,8 +42,6 @@ class Command(BaseCommand):
             else:
                 list_names.append(strs[len(strs)-1])
 
-        print list_names
-
         return list_names
 
     def owner_is_onid(self, owner_email):
@@ -55,19 +54,19 @@ class Command(BaseCommand):
 
     def generate_link_codes(self):
         unique_owners = OldOwner.objects.order_by('owner_email').values('owner_email').distinct()
+        
         links = {}
 
         for owner in unique_owners:
 
-            print(owner)
+            while True:
+                link_val = binascii.b2a_hex(os.urandom(15))
 
-            # while True:
-            #     link_val = random.getrandbits(128)
-            #     if link_val in links.values():
-            #         contiDistintcnue
-            #     else:
-            #         links[owner.owner_email] = link_val
-            #         break
+                if link_val in links.values():
+                    continue
+                else:
+                    links[owner['owner_email']] = link_val
+                    break
 
         return links
 
@@ -123,8 +122,8 @@ class Command(BaseCommand):
         links = self.generate_link_codes()
         
         for owner_email in links:
-            owner = OldOwner.objects.filter(owner_email=owner)
-            owner.link_code = links[owner]
+            owner = OldOwner.objects.get(owner_email=owner_email)
+            owner.link_code = links[owner.owner_email]
             owner.save()
 
         #now send out emails
@@ -132,9 +131,9 @@ class Command(BaseCommand):
 
         for owner in owner_entries:
             if owner.onid_email != '':
-                send_transition_email_onid(owner.onid_email)
+                self.send_transition_email_onid(owner.onid_email)
             else:
-                send_transition_email(owner.owner_email)
+                self.send_transition_email(owner.owner_email)
 
 
         #for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over
