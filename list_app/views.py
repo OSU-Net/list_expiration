@@ -15,8 +15,7 @@ def onid_transition(request):
         raise Http404
 
     lists = OldOwner.objects.get(link_code=user_code).lists.all()
-    print(len(lists))
-
+   
     template = loader.get_template('onid_transition.html')
     context = RequestContext(request, {
         'lists': lists

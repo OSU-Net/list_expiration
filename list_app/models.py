@@ -29,8 +29,10 @@ class OwnerEntry(models.Model):
 #
 
 class OldList(models.Model):
-    list_name = models.CharField(max_length=32, blank=False)
-
+    name = models.CharField(max_length=32, blank=False)
+    
+    class Meta:
+        ordering = ('name',)
 
 class OldOwner(models.Model):
     owner_email = models.CharField(max_length=32, blank=False, )

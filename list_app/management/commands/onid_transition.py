@@ -21,10 +21,8 @@ class Command(BaseCommand):
     def send_transition_email_onid(self, onid_email):
         print('transition email sent to {0}'.format(onid_email))
 
-    def send_transition_email(self, email_addr):
-        #print('Transition email sent with link ...')
+    def send_transition_email(self, email_addr): 
         link_code = OldOwner.objects.get(owner_email=email_addr).link_code;
-        print(link_code)
         link = 'localhost:8000/lists/onid_transition/?id={0}'.format(link_code)
 
         print('link for {0} is: {1}'.format(email_addr, link))
@@ -91,7 +89,7 @@ class Command(BaseCommand):
             except pickle.PickleError as e:
                 print("Pickle error{0}: {1}".format(e.errno, e.strerror))
 
-            old_list = OldList(list_name=list_name)
+            old_list = OldList(name=list_name)
             old_list.save()
 
             for owner_email in pck_dict['owner']:
