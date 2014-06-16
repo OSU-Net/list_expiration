@@ -1,29 +1,46 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		{% load static %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{% static 'js/crsf.js' %}"></script>
+   		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
    	</head>
 	<body>
-		<div>
-			You currently manage the following lists:
-		</div>
+		{% if authenticated %}
+			<div>
+				You currently manage the following lists:
+			</div>
 
-		<!-- list out lists here -->
-        {% for list in lists %}
-        <div>
-            List Name: {{list.name}}
-        </div>
+			<!-- list out lists here -->
+	        {% for list in lists %}
+	        <div>
+	            List Name: {{list.name}}
+	        </div>
 
-        {% endfor %}
-		<!-- if their lists are not linked to their ONID: -->
-		<div>
-			You do not currently have an ONID account linked to your lists. 
-			<button name="register_button"> Register Lists with ONID </button>
-			
-            <button onclick="location.href = '{% url django_cas.views.login %}?next={{request.path}}';" name="no_onid_button">
-                Don't have an ONID account? 
-            </button> 
-        </div>
+	        {% endfor %}
+			<!-- if their lists are not linked to their ONID: -->
+			<div>
+				You do not currently have an ONID account linked to your lists. 
+				<button name="register_button"> Register Lists with ONID </button>
+				
+	            <button name="no_onid_button">
+	                Don't have an ONID account? 
+	            </button> 
 
-
+	            <script>
+	                $(function()
+	                {
+	                    $('button[name="no_onid_button"]').click(function()
+	                    {
+	                        window.location.replace("{% url 'cas_login' %}?next={{request.path}}");
+	                    });
+	                });
+	            </script>
+	        </div>
+        {% else %}
+        	You have been successfully authenticated through ONID
+        {% endif %}
 	</body>
 </html>

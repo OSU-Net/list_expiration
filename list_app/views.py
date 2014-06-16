@@ -11,11 +11,18 @@ from transition_models import *
 def onid_transition(request):
     user_code = request.GET.get('id', '')
 
+    authenticated = False
+    if request.user.is_authenticated():
+        authenticated = True
+        
     if user_code == '':
         raise Http404
 
-    lists = OldOwner.objects.get(link_code=user_code).lists.all()
-   
+    try:
+        lists = OldOwner.objects.get(link_code=user_code).lists.all()
+    except OldOwner.DoesNotExist:
+       raise Http404
+
     template = loader.get_template('onid_transition.html')
     context = RequestContext(request, {
         'lists': lists
