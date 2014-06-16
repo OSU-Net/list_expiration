@@ -6,9 +6,10 @@
         <script src="{% static 'js/crsf.js' %}"></script>
    		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-   	</head>
+   	    <script src="{% static 'js/url.js' %}"></script>
+    </head>
 	<body>
-		{% if authenticated %}
+		{% if not authenticated %}
 			<div>
 				You currently manage the following lists:
 			</div>
@@ -29,18 +30,31 @@
 	                Don't have an ONID account? 
 	            </button> 
 
-	            <script>
-	                $(function()
-	                {
-	                    $('button[name="no_onid_button"]').click(function()
-	                    {
-	                        window.location.replace("{% url 'cas_login' %}?next={{request.path}}");
-	                    });
-	                });
-	            </script>
+	            
 	        </div>
         {% else %}
         	You have been successfully authenticated through ONID
         {% endif %}
+
+        <button name="logout_button">
+        	Logout
+        </button>
+
+        <script>
+	        $(function()
+	        {
+	            $('button[name="register_button"]').click(function()
+	            {
+	                var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
+	                console.log(link_str);
+	                window.location.replace(link_str);
+	            });
+
+	            $('button[name="logout_button"]').click(function()
+	            {
+	            	window.location.replace("{% url 'cas_logout' %}");
+	            });
+	        });
+	    </script>
 	</body>
 </html>
