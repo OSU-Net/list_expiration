@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from models import * 
+from list_app.models import * 
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
@@ -8,8 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from list_app import urls
 from list_app.forms import ListEditForm
-from datetime import *
-from transition_models import *
+import datetime
 
 def onid_transition(request):
     user_code = request.GET.get('id', '')
@@ -19,13 +18,31 @@ def onid_transition(request):
     
     #when the user redirects here after authenticating through CAS, fill the entry for their ONID email
     authenticated = False
+
     if request.user.is_authenticated():
-        owner = OldOwner.objects.get(link_code=user_code)
-        owner.onid_email = request.user.username + "@onid.oregonstate.edu";
-        owner.save()
+        # owner = OldOwner.objects.get(link_code=user_code)
+        # owner.onid_email = request.user.username + "@onid.oregonstate.edu";
+        # owner.save()
         
+        #set the automatic expire date to be two years out
+        old_owner = OldOwner.objects.get(link_code=user_code)
+        #owner = ListEntry(create_date=old_owner.
+        owner_lists = old_owner.lists.all()
+        for l in owner_lists:
+
+            ls = ListEntry.objects.filter(name=l.name)
+            if ls.exists():
+                if not OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username).exists():
+                    oe = OwnerEntry(name=request.user.username, lists=ls)
+                    oe.save()
+            else:
+                ls = ListEntry(name=l.name, 
+                               create_date=l.create_date, 
+                               expire_date=l.create_date + datetime.timedelta(365 * 2)) # set expiration out two days
+                ls.save()
+
         #redirect to the expiration home page
-        return redirect('list_index')
+        return redirect('list_app:list_index')
 
     try:
         owner = OldOwner.objects.get(link_code=user_code)
@@ -44,29 +61,19 @@ def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
 
-    user_entries = OwnerEntry.objects.filter(name=request.user)
+    #user_entries = OwnerEntry.objects.filter(name=request.user)
+    try:
+        lists = OwnerEntry.objects.get(name=request.user.username).lists.all()
 
-    lists = []
-    user_list_ids = []
-    user_lists = []
-
-    for user in user_entries:
-        user_list_ids.append(user.mailing_list.id)
-
-    user_lists = ListEntry.objects.filter(id__in=user_list_ids)
-
-    for list_record in user_lists:
-        lists.append(list_record)
-
-    if not user_lists:
+    except OwnerEntry.DoesNotExist:
         return HttpResponse(str.format("no lists for {0}", request.user))
-    else:
-        template = loader.get_template('list_index.html')
-        context = RequestContext(request, {
-            'lists': lists,
-            'admin_name': request.user
-        })
-        return HttpResponse(template.render(context))
+    
+    template = loader.get_template('list_index.html')
+    context = RequestContext(request, {
+        'lists': lists,
+        'admin_name': request.user.username
+    })
+    return HttpResponse(template.render(context))
 
 def validate_list_changes(cd):
     try:

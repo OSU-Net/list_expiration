@@ -16,13 +16,10 @@ le2.save()
 le3 = ListEntry(name='ph_314', create_date=create, expire_date=warning_date_2)
 le3.save()
 
-oe1 = OwnerEntry(name='wasingej', mailing_list=le1)
+oe1 = OwnerEntry(name='wasingej', lists= [le1, le2])
 oe1.save()
 
-oe2 = OwnerEntry(name='wasingej', mailing_list=le2)
-oe2.save()
-
-oe3 = OwnerEntry(name='doej', mailing_list=le2)
+oe3 = OwnerEntry(name='doej', lists=[le2])
 oe3.save()
 
 exit()

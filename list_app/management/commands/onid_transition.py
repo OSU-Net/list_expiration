@@ -10,7 +10,7 @@ from list_site import settings
 import cPickle as pickle  
 import os, binascii
 import hashlib
-from datetime import *
+import datetime
 
 
 class Command(BaseCommand):
@@ -89,7 +89,8 @@ class Command(BaseCommand):
             except pickle.PickleError as e:
                 print("Pickle error{0}: {1}".format(e.errno, e.strerror))
 
-            old_list = OldList(name=list_name)
+            list_create_date = datetime.date.fromtimestamp(pck_dict['created_at'])
+            old_list = OldList(name=list_name, create_date=list_create_date)
             old_list.save()
 
             for owner_email in pck_dict['owner']:

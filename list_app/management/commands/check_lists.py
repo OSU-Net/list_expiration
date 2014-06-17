@@ -78,7 +78,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         expired_lists = check_lists()
         
-        print("hey")
         for listEntry in expired_lists:
 
             print(__file__)
@@ -88,10 +87,8 @@ class Command(BaseCommand):
             #delete the list on file
             subprocess.call(['./remove_list {0} {1}'.format(listEntry.name, settings.MAILMAN_FILES_DIR)], shell=True)
 
-            print("hi")
-
             #delete the list from the database
-            (OwnerEntry.objects.get(mailing_list=listEntry)).delete()
+            (OwnerEntry.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
             listEntry.delete()
 

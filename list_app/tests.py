@@ -25,23 +25,17 @@ class ListTestCase(TestCase):
         le3 = ListEntry(name='ST_314', create_date=create, expire_date=warning_date_2)
         le3.save()
 
-        oe1 = OwnerEntry(name='wasingej', mailing_list=le1)
+        oe1 = OwnerEntry(name='wasingej', lists=[le1,le2, le3])
         oe1.save()
 
-        oe2 = OwnerEntry(name='wasingej', mailing_list=le2)
+        oe2 = OwnerEntry(name='doej', lists=[le2])
         oe2.save()
-
-        oe3 = OwnerEntry(name='doej', mailing_list=le2)
-        oe3.save()
-
-        oe4 = OwnerEntry(name='wasingej', mailing_list=le3)
-        oe4.save()
 
     def test(self):
         expired_lists = check_lists()
         for listEntry in expired_lists:
 
-            (OwnerEntry.objects.get(mailing_list=listEntry)).delete()
+            (OwnerEntry.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
 
             listEntry.delete()

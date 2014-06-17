@@ -19,10 +19,10 @@ class ListWarning(models.Model):
 
 class OwnerEntry(models.Model):
     name = models.CharField(max_length=32)
-    mailing_list = models.ForeignKey(ListEntry)
+    lists = models.ManyToManyField(ListEntry)
 
     class Meta:
-        ordering = ('name', 'mailing_list')
+        ordering = ('name',)
 
 #
 #these models are used for the transition to ONID:
@@ -30,7 +30,8 @@ class OwnerEntry(models.Model):
 
 class OldList(models.Model):
     name = models.CharField(max_length=32, blank=False)
-    
+    create_date = models.DateField(blank=False)
+
     class Meta:
         ordering = ('name',)
 
