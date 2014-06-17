@@ -10,6 +10,8 @@ from list_app import urls
 from list_app.forms import ListEditForm
 import datetime
 
+import pdb
+
 def onid_transition(request):
     user_code = request.GET.get('id', '')
     
@@ -23,7 +25,9 @@ def onid_transition(request):
         # owner = OldOwner.objects.get(link_code=user_code)
         # owner.onid_email = request.user.username + "@onid.oregonstate.edu";
         # owner.save()
-        
+
+        pdb.set_trace()
+
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
         #owner = ListEntry(create_date=old_owner.
@@ -58,6 +62,7 @@ def onid_transition(request):
 
 #view for the page that is redirected to after successful CAS authentication
 def list_index(request):
+
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
 
