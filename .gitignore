@@ -1,5 +1,4 @@
 .pyc
-list_site/settings.py
 .idea/
 db.sqlite3
 
