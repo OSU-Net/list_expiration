@@ -1,0 +1,20 @@
+<html lang="en">
+	<head>
+	</head>
+	<body>
+		{% for owner in owners %}
+			{{owner.owner_email}} Status: 
+			{% if owner.bounced %}
+				Bounced
+			{% endif %}
+
+			{% if owner.onid_email == '' %}
+				Not responded
+			{% else %}
+				Claimed ownership
+			{% endif %}
+
+			<br>
+		{% endfor %}
+	</body>
+</html>

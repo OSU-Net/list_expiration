@@ -1,5 +1,5 @@
 from django.db import models
-
+import pdb
 
 class ListEntry(models.Model):
     name = models.CharField(max_length=64)
@@ -41,3 +41,14 @@ class OldOwner(models.Model):
     link_code = models.CharField(max_length=32, blank=True)
     bounced = models.NullBooleanField(blank=True,null=True)
     lists = models.ManyToManyField(OldList, blank=True)
+
+    #get the ONID username without '@onid.oregonstate.edu' appended 
+    def get_onid_username(self):
+        if not self.onid_email:
+            raise Exception('The owner {0} does not have an ONID email'.format(self))
+
+        strs = self.onid_email.split('@')
+        return strs[0]
+
+    class Meta:
+        ordering = ('owner_email',)

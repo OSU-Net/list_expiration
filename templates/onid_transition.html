@@ -33,9 +33,14 @@
 	            
 	        </div>
         {% else %}
-        	You have been successfully authenticated through ONID
+        	<p><b>You have been successfully authenticated through ONID</b></p>
         {% endif %}
 
+       	{% if error %}
+       		<div name="error">
+       			<b>Error:{{error}}</b>
+       		</div>
+       	{% endif %}
         <button name="logout_button">
         	Logout
         </button>
@@ -54,6 +59,11 @@
 	            {
 	            	window.location.replace("{% url 'cas_logout' %}");
 	            });
+
+	            $('button[name="no_onid_button"]').click(function()
+            	{
+					window.location.replace("{% url 'list_app:no_onid' %}");
+            	});
 	        });
 	    </script>
 	</body>

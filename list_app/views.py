@@ -6,11 +6,44 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 
-from list_app import urls
+from list_app import urls, ListStatus, OwnerStatus
 from list_app.forms import ListEditForm
 import datetime
 
 import pdb
+
+def no_onid(request):
+    user_code = request.GET.get('id', '')
+    
+    pdb.set_trace()
+
+    if user_code == '':
+        raise Http404
+
+    try:
+        owner = OldOwner.objects.get(link_code=user_code)
+    except OldOwner.DoesNotExist:
+        raise Http404
+
+    this_owner = OldOwner.objects.get(link_code=user_code)
+    lists = this_owner.oldlist_set.all()
+
+    owners = []
+
+
+
+    owners = OldOwner.objects.filter(lists__name=list_name)
+
+    for i in range(0, len(owners)):
+        if owners[i].owner_email == this_owner.owner_email:
+            owners.pop(i)
+
+    template = loader.get_template('no_onid.html')
+    context = RequestContext(request, {
+        'list_name': list_name,
+        'owners': owners,
+    })
+    return HttpResponse(template.render(context))
 
 def onid_transition(request):
     user_code = request.GET.get('id', '')
@@ -18,15 +51,36 @@ def onid_transition(request):
     if user_code == '':
         raise Http404   
     
+    try:
+        owner = OldOwner.objects.get(link_code=user_code)
+    except OldOwner.DoesNotExist:
+       raise Http404
+
     #when the user redirects here after authenticating through CAS, fill the entry for their ONID email
     authenticated = False
 
     if request.user.is_authenticated():
+        # make sure that the authenticated onid user is not already entered as an owner to prevent duplicate owner entries
+        if OwnerEntry.objects.filter(name=request.user.username).exists():
+
+            logout(request)
+
+            template = loader.get_template('onid_transition.html')
+            context = RequestContext(request, {
+                'lists': owner.lists.all(),
+                'authenticated': authenticated,
+                'error': "This ONID account is already registered as a list owner.",
+            })
+            return HttpResponse(template.render(context))
+
+        # logout(request)
+        # exit()
+
         # owner = OldOwner.objects.get(link_code=user_code)
         # owner.onid_email = request.user.username + "@onid.oregonstate.edu";
         # owner.save()
 
-        pdb.set_trace()
+        #pdb.set_trace()
 
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
@@ -34,24 +88,30 @@ def onid_transition(request):
         owner_lists = old_owner.lists.all()
         for l in owner_lists:
 
-            ls = ListEntry.objects.filter(name=l.name)
-            if ls.exists():
-                if not OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username).exists():
-                    oe = OwnerEntry(name=request.user.username, lists=ls)
-                    oe.save()
-            else:
+            ls = None
+            try:
+                ls = ListEntry.objects.get(name=l.name)
+            except ListEntry.DoesNotExist:
+
+                #there is no record of the list, create an entry and set the expiration date out 2 years
                 ls = ListEntry(name=l.name, 
                                create_date=l.create_date, 
-                               expire_date=l.create_date + datetime.timedelta(365 * 2)) # set expiration out two days
+                               expire_date=l.create_date + datetime.timedelta(365 * 2))
                 ls.save()
+                continue
+
+            #the list is already in the database, but the owner is not.  Add a record for the owner
+            if not OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username).exists():
+                oe = OwnerEntry(name=request.user.username)
+                oe.save()
+                oe.lists.add(ls)
+                oe.save()
+                
 
         #redirect to the expiration home page
         return redirect('list_app:list_index')
 
-    try:
-        owner = OldOwner.objects.get(link_code=user_code)
-    except OldOwner.DoesNotExist:
-       raise Http404
+    
 
     template = loader.get_template('onid_transition.html')
     context = RequestContext(request, {
@@ -69,7 +129,6 @@ def list_index(request):
     #user_entries = OwnerEntry.objects.filter(name=request.user)
     try:
         lists = OwnerEntry.objects.get(name=request.user.username).lists.all()
-
     except OwnerEntry.DoesNotExist:
         return HttpResponse(str.format("no lists for {0}", request.user))
     

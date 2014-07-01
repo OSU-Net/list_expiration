@@ -58,7 +58,7 @@ class Command(BaseCommand):
         for owner in unique_owners:
 
             while True:
-                link_val = binascii.b2a_hex(os.urandom(15))
+                link_val = binascii.b2a_hex(os.urandom(15)) # each owner is uniquely identified by a 15 bit hex string
 
                 if link_val in links.values():
                     continue
@@ -131,6 +131,9 @@ class Command(BaseCommand):
         for owner in owner_entries:
             if owner.onid_email != '':
                 self.send_transition_email_onid(owner.onid_email)
+                oe = OwnerEntry(name = owner.get_onid_username())
+                oe.save()
+                
             else:
                 self.send_transition_email(owner.owner_email)
 
