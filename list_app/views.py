@@ -6,7 +6,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 
-from list_app import urls, list_status 
+from list_app import urls
+from list_app.list_status import * 
+
 from list_app.forms import ListEditForm
 import datetime
 
@@ -24,7 +26,7 @@ def no_onid(request):
         raise Http404
 
     this_owner = OldOwner.objects.get(link_code=user_code)
-    lists = this_owner.oldlist_set.all()
+    lists = this_owner.lists.all()
 
     list_statuses = []
 

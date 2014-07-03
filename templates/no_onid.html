@@ -6,13 +6,14 @@
 			{% for owner in list_status.owners %}
 				{{owner.email}} Status: 
 				{% if owner.status == "bounced" %}
-					Bounced
+					Email failed to send (bounced)/Invalid email address
 				{% endif %}
 
 				{% if owner.status == "no_response" %}
-					Not responded
+					No response
+					
 				{% else %}
-					Claimed ownership
+					Owner
 				{% endif %}
 			{% endfor %}
 
