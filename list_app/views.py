@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 
-from list_app import urls, ListStatus, OwnerStatus
+from list_app import urls, list_status 
 from list_app.forms import ListEditForm
 import datetime
 
@@ -14,8 +14,6 @@ import pdb
 
 def no_onid(request):
     user_code = request.GET.get('id', '')
-    
-    pdb.set_trace()
 
     if user_code == '':
         raise Http404
@@ -28,20 +26,25 @@ def no_onid(request):
     this_owner = OldOwner.objects.get(link_code=user_code)
     lists = this_owner.oldlist_set.all()
 
-    owners = []
+    list_statuses = []
 
+    for list_entry in lists:
 
+        owners = OldOwner.objects.filter(lists__name=list_entry.name)
+        ls_status = ListStatus(list_entry.name, [])
+        
+        for owner in owners:
+            
+            if not owner.owner_email == this_owner.owner_email:
+             
+                status = calc_owner_status(owner)
+                ls_status.owners.append(OwnerStatus(owner.owner_email, status))
 
-    owners = OldOwner.objects.filter(lists__name=list_name)
-
-    for i in range(0, len(owners)):
-        if owners[i].owner_email == this_owner.owner_email:
-            owners.pop(i)
+        list_statuses.append(ls_status)
 
     template = loader.get_template('no_onid.html')
     context = RequestContext(request, {
-        'list_name': list_name,
-        'owners': owners,
+        'statuses': list_statuses
     })
     return HttpResponse(template.render(context))
 

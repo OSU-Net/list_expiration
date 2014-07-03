@@ -62,7 +62,7 @@
 
 	            $('button[name="no_onid_button"]').click(function()
             	{
-					window.location.replace("{% url 'list_app:no_onid' %}");
+					window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id'));
             	});
 	        });
 	    </script>

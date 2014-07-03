@@ -2,17 +2,19 @@
 	<head>
 	</head>
 	<body>
-		{% for owner in owners %}
-			{{owner.owner_email}} Status: 
-			{% if owner.bounced %}
-				Bounced
-			{% endif %}
+		{% for list_status in statuses %}
+			{% for owner in list_status.owners %}
+				{{owner.email}} Status: 
+				{% if owner.status == "bounced" %}
+					Bounced
+				{% endif %}
 
-			{% if owner.onid_email == '' %}
-				Not responded
-			{% else %}
-				Claimed ownership
-			{% endif %}
+				{% if owner.status == "no_response" %}
+					Not responded
+				{% else %}
+					Claimed ownership
+				{% endif %}
+			{% endfor %}
 
 			<br>
 		{% endfor %}
