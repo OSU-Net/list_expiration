@@ -43,7 +43,7 @@ def no_onid(request):
                 ls_status.owners.append(OwnerStatus(owner.owner_email, status))
 
         list_statuses.append(ls_status)
-
+    
     template = loader.get_template('no_onid.html')
     context = RequestContext(request, {
         'statuses': list_statuses
