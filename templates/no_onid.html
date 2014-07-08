@@ -1,44 +1,53 @@
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		{% load static %}
 	    <link href="{% static 'css/list_transition.css' %}"
 	        rel="stylesheet" type="text/css"/>
-		
-	    
 	</head>
 	
 	<body>
-	
-
 
 		{% for list_status in statuses %}
-			{% for owner in list_status.owners %}
-				{{owner.email}} Status: 
 
-				{% if owner.status == "bounced" %}
-				
-				<div class="error_style">
-					Email failed to send (bounced)/Invalid email address
-				</div>
+		<div class="outer">
+			{{list_status.name}}
+
+			<div name="owners" class="left">
+				{% for owner in list_status.owners %}
+					{{owner.email}} Status: 
+					<br>
+				{% endfor %}
+			</div>
+
+			<div name="statuses" class="right">
+				{% for owner in list_status.owners %}
+					{% if owner.status == "bounced" %}
 					
-				{% endif %}
-
-				{% if owner.status == "no_response" %}
-				
-					<div class="neutral_style">
-						No response
+					<div class="error_style">
+						Email failed to send (bounced)/Invalid email address
 					</div>
-				
-				{% else %}
+						
+					{% endif %}
 
-					<div class="pass_style">
-						Owner		
-					</div>
+					{% if owner.status == "no_response" %}
+					
+						<div class="neutral_style">
+							No response
+						</div>
+					
+					{% else %}
 
-				{% endif %}
-			{% endfor %}
+						<div class="pass_style">
+							Owner		
+						</div>
 
-			<br>
+					{% endif %}
+					<br>
+				{% endfor %}
+			</div>
+		</div>
 		{% endfor %}
+
 	</body>
 </html>
