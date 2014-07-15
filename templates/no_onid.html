@@ -4,50 +4,73 @@
 		{% load static %}
 	    <link href="{% static 'css/list_transition.css' %}"
 	        rel="stylesheet" type="text/css"/>
+
+    	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	</head>
 	
 	<body>
 
 		{% for list_status in statuses %}
 
-		<div class="outer">
-			{{list_status.name}}
+			<div class="outer">
+				<div class="title"> {{list_status.name}} </div>
 
-			<div name="owners" class="left">
-				{% for owner in list_status.owners %}
-					{{owner.email}} Status: 
-					<br>
-				{% endfor %}
+				<table align="center">
+					<tr>
+						<th> List Owner Email  </th>
+						<th> List Owner Status </th>
+					</tr>
+
+					{% for owner in list_status.owners %}
+						<tr>
+							<td class="right"> {{owner.email}} </td>  
+
+							<td class="left">
+								{% if owner.status == "bounced" %}
+							
+									<div name="status" class="error_style">
+										Email failed to send (bounced)/Invalid email address
+									</div>
+									
+								{% endif %}
+
+								{% if owner.status == "no_response" %}
+								
+									<div name="status" class="neutral_style">
+										No response
+									</div>
+								
+								{% else %}
+									{% if owner.is_onid == True %}
+										<div name="status" 
+											 class="pass_style" 
+											 title="List owners with onid accounts are automatically given expiration control over lists.">
+											Claimed ownership		
+										</div>
+									{% else %}
+										<div name="status" 
+											 class="pass_style"
+											 >
+											Claimed ownership		
+										</div>
+									{% endif %}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %} 
+				</table>
 			</div>
-
-			<div name="statuses" class="right">
-				{% for owner in list_status.owners %}
-					{% if owner.status == "bounced" %}
-					
-					<div class="error_style">
-						Email failed to send (bounced)/Invalid email address
-					</div>
-						
-					{% endif %}
-
-					{% if owner.status == "no_response" %}
-					
-						<div class="neutral_style">
-							No response
-						</div>
-					
-					{% else %}
-
-						<div class="pass_style">
-							Owner		
-						</div>
-
-					{% endif %}
-					<br>
-				{% endfor %}
-			</div>
-		</div>
 		{% endfor %}
+
+		<script>
+		$(function()
+		{
+			$("div[name=status_tt]").tooltip();
+		});
+		</script>
 
 	</body>
 </html>
