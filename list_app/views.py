@@ -65,6 +65,7 @@ def onid_transition(request):
     authenticated = False
 
     if request.user.is_authenticated():
+
         # make sure that the authenticated onid user is not already entered as an owner to prevent duplicate owner entries
         if OwnerEntry.objects.filter(name=request.user.username).exists():
 
@@ -74,19 +75,12 @@ def onid_transition(request):
             context = RequestContext(request, {
                 'lists': owner.lists.all(),
                 'authenticated': authenticated,
-                'error': "This ONID account is already registered as a list owner.",
+                'error': 'This ONID account is already registered as a list owner.',
             })
             return HttpResponse(template.render(context))
 
-        # logout(request)
-        # exit()
-
-        # owner = OldOwner.objects.get(link_code=user_code)
-        # owner.onid_email = request.user.username + "@onid.oregonstate.edu";
-        # owner.save()
-
-        #pdb.set_trace()
-
+        pdb.set_trace()
+        
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
         #owner = ListEntry(create_date=old_owner.
