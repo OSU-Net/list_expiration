@@ -1,0 +1,9 @@
+#!/bin/bash
+
+MAILMAN_DIR="/var/lib/mailman/bin/"
+
+if [ $# -gt 1]
+then
+	echo "too many arguments"
+	exit 1
+fi
