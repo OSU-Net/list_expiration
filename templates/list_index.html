@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-    
-    <!-- list_extras provides several custom date formatting functions -->
-    {% load list_extras %}
+    	
+    	{% load staticfiles %}
 
+	    <!-- list_extras provides several custom date formatting functions -->
+	    {% load list_extras %}
+	    
+	    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <script src="{% static 'js/crsf.js' %}"></script>
+
+	    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+	    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+	    <link href="{% static 'css/index.css' %}"
+        	rel="stylesheet" type="text/css"/>
+
+	    <script src="{% static 'js/email_list.js' %}"
+	        language="javascript"></script>
+	        
+	    <script src="{% static 'js/email_lists.js' %}"
+	        language="javascript"></script>
     </head>
     <body>
         <div id="accordion">
@@ -33,42 +49,19 @@
             </div>
             {% endfor %}
 
-            <form action="/logout/" method="post"> {% csrf_token %}
-                <input name="logout" type="submit" value="logout" />
-            </form>
+            <button id='accordion' name='logout_button'>Logout</button>
+            <script>
+            	$(function()
+        		{
+        			$('button[name=logout_button]').click(function()
+    				{
+						window.location.replace("{% url 'cas_logout' %}");
+    				});
+        		});
+            </script>
+
         </div>
     </body>
-
-    {% load staticfiles %}
-    <!-- <script src="{% static 'js/jquery-1.11.0.js' %}"></script> -->
-    
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="{% static 'js/crsf.js' %}"></script>
-
-    
-    <!--<link href="{% static 'calendar/calendar_control.css' %}"
-        rel="stylesheet" type="text/css"/>
-
-    <script src="{% static 'calendar/calendar_control.js' %}"
-        language="javascript"></script> -->
-
-    <link href="{% static 'css/index.css' %}"
-        rel="stylesheet" type="text/css"/>
-
-    <script src="{% static 'js/email_list.js' %}"
-        language="javascript"></script>
-        
-    <script src="{% static 'js/email_lists.js' %}"
-        language="javascript"></script>
-
-    <!--<link href="{% static 'jquery-ui-1.10.4/css/ui-lightness/jquery-ui-1.10.4.custom.css' %}"
-        rel="stylesheet" type="text/css"/>
-
-    <script src="{% static 'jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.js' %}"
-        language="javascript"></script> -->
-    
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
     <script language="javascript">
         var list_array = new Array();
@@ -89,7 +82,10 @@
         language="javascript"></script>
 
     <script>
-        $("#accordion").accordion();
+        $(function()
+        {
+        	//$("#accordion").accordion();
+        });
     </script>
 
 </html>
