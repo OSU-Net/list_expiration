@@ -8,25 +8,6 @@ function get_element_list_id(element)
     return id_strs[id_strs.length - 1];
 }
 
-// function on_text_area_gain_focus(text_area)
-// {
-//     console.log("on_focus");
-
-//     text_area_stored_text = text_area.value;
-//     text_area.value = '';
-//     showCalendarControl(this); //should 'this' be 'text_area'?
-// }
-
-// function on_text_area_lose_focus(text_area)
-// {
-//     console.log("on_blur");
-//     if( this.value == '')
-//     {
-//         this.value = App.default_text;
-//         hideCalendarControl(this); //should 'this' be 'text_area'?
-//     }
-// }
-
 function on_cancel_button_click()
 {
     var id = get_element_list_id(this);
