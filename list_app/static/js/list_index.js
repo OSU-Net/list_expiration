@@ -81,12 +81,23 @@ function end_editing(id)
 //return a Date that is set out two years from 'date'
 function calc_2_years_forward(date)
 {
+	//create Date object for the 2 year forward date
+	expire_date = get_list_by_id(id).expire_date;
+	
+	forward_date = Date();
+	forward_date.setDate(expire_date.getDay());
+	forward_date.setYear(expire_date.getYear());
+	forward_date.setMonth(expire_date.getMonth());
 
+	return forward_date;
 }
 
-function on_forward_button_click()
+function on_forward_button_click(id)
 {
+	var list = get_list_by_id(id);
+	list.expire_date = calc_2_years_forward(list.expire_date);
 
+	$("form[id=edit_form_".concat(id).concat("] input[type=text]")).html("asdf");
 }
 
 function on_edit_button_click()
