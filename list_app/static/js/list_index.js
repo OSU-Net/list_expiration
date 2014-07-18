@@ -97,6 +97,12 @@ function end_editing(id)
     $("button[id=forward_button_".concat(id).concat("]")).hide();
 }
 
+//return a Date that is set out two years from 'date'
+function calc_2_years_forward(date)
+{
+
+}
+
 function on_forward_button_click()
 {
 
