@@ -168,7 +168,7 @@ def submit_list_edit(request):
     return HttpResponseRedirect('/lists/index')
 
 def list_edit(request):
-    if request.method == "POST":  # changes to a list have been submitted, TODO: check the validity of submitted data
+    if request.method == "POST":  # changes to a list have been submitted 
         edit_form = ListEditForm(request.POST)
 
         if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
