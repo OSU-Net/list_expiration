@@ -24,8 +24,8 @@ EmailLists.prototype =
 			list = this.lists[i];
 			if(list.is_editing)
 			{
-				list = this.cached_list.clone();
 				this.cached_list = null;
+				this.is_editing = false;
 				list.is_editing = false;
 			}
 		}
@@ -67,7 +67,7 @@ EmailLists.prototype =
 		}
 	},
 
-	start_editing : function(list_id)
+	start_editing : function(id)
 	{
 		if(this.is_editing)
 		{
@@ -76,7 +76,7 @@ EmailLists.prototype =
 
 		this.is_editing = true;
 		
-		var list = this.get_list_by_id(list_id)
+		var list = this.get_list_by_id(id)
 		if(!list)
 		{
 			throw "list does not exist!";

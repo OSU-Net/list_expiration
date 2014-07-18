@@ -21,6 +21,9 @@
 	        
 	    <script src="{% static 'js/email_lists.js' %}"
 	        language="javascript"></script>
+
+        <script src="{% static 'js/list_index.js' %}"
+            language="javascript"></script>
     </head>
     <body>
         <div id="accordion">
@@ -57,6 +60,11 @@
     				{
 						window.location.replace("{% url 'cas_logout' %}");
     				});
+
+                    $('button[name=cancel_button]').click(function()
+                    {
+
+                    });
         		});
             </script>
 
@@ -77,16 +85,5 @@
 
         var email_lists = new EmailLists(list_array);
     </script>
-
-    <script src="{% static 'js/index.js' %}"
-        language="javascript"></script>
-
-    <script>
-        $(function()
-        {
-        	//$("#accordion").accordion();
-        });
-    </script>
-
 </html>
 

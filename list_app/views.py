@@ -78,8 +78,6 @@ def onid_transition(request):
                 'error': 'This ONID account is already registered as a list owner.',
             })
             return HttpResponse(template.render(context))
-
-        pdb.set_trace()
         
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
