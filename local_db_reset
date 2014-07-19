@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm db.sqlite3
+./manage.py syncdb
+
+./manage.py onid_transition
