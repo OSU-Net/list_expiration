@@ -11,7 +11,7 @@ import cPickle as pickle
 import os, binascii
 import hashlib
 import datetime
-
+import pdb
 
 class Command(BaseCommand):
     help = """ This command is used to begin the transition process which will migrate list owners
@@ -127,16 +127,23 @@ class Command(BaseCommand):
 
         #now send out emails
         owner_entries = OldOwner.objects.all()
-
         for owner in owner_entries:
             if owner.onid_email != '':
                 self.send_transition_email_onid(owner.onid_email)
                 oe = OwnerEntry(name = owner.get_onid_username())
                 oe.save()
                 
+                pdb.set_trace()
+
+                #see if a list exists 
+                owner_list = OldList.objects.filter(lists__name=owner.get_onid_username())
+
+                #if not, create it
             else:
                 self.send_transition_email(owner.owner_email)
 
+        # old_lists = OldList.objects.all()
+        # for ls in old_lists:
 
         #for every list that has an owner with an ONID account, send out an email to the owner saying that they have been migrated over
         #to the new system and now have control over list expiration (Should they be prompted to choose an expiration date for their lists?)
