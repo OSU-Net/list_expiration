@@ -136,7 +136,7 @@ class Command(BaseCommand):
                 pdb.set_trace()
 
                 #see if a list exists 
-                owner_list = OldList.objects.filter(lists__name=owner.get_onid_username())
+                owner_list = OldList.objects.filter(oldownerset__name=owner.get_onid_username())
 
                 #if not, create it
             else:
