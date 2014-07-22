@@ -82,17 +82,23 @@ function end_editing(id)
 function calc_2_years_forward(date, id)
 {
 	//create Date object for the 2 year forward date
-	var expire_date = new Date(Date(email_lists.get_list_by_id(id).expire_date));
+	var expire_date = email_lists.get_list_by_id(id).get_expire_date_obj();
 
 	var forward_date = new Date(expire_date.getFullYear() + 2, expire_date.getMonth(), expire_date.getDay());
-    return forward_date.getFullYear().concat("-").concat(forward_date.getMonth()).concat("-").concat(forward_date.getDate());
+    return String(forward_date.getFullYear()).concat("-").concat(String(forward_date.getMonth())).concat("-").concat(String(forward_date.getDate()));
+}
+
+//calculate the amount of years from the current date to the passed 'date'
+function date_delta_from_now(date)
+{
+
 }
 
 function on_forward_button_click()
 {
     var id = get_element_list_id(this);
 	var list = email_lists.get_list_by_id(id);
-	var expire_date = calc_2_years_forward(list.expire_date, id).toDateString();
+	var expire_date = calc_2_years_forward(list.expire_date, id);
 
 	$("form[id=edit_form_".concat(id).concat("] input[type=text]")).val(expire_date);
 }
