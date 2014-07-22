@@ -98,6 +98,7 @@ def onid_transition(request):
 
 
             #the list is already in the database, but the owner is not.  Add a record for the owner
+            #TODO: This is where I am currently working:::::::::::::::::::::::::::::
             oe = OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username)
             try:
                 old_owner = OldOwner.objects.filter(link_code=user_code)
@@ -112,7 +113,7 @@ def onid_transition(request):
             else:
                 oe.lists.add(ls)
                 oe.save()
-
+            #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         #redirect to the expiration home page
         return redirect('list_app:list_index')
 
