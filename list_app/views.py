@@ -78,7 +78,7 @@ def onid_transition(request):
                 'error': 'This ONID account is already registered as a list owner.',
             })
             return HttpResponse(template.render(context))
-        
+
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
         #owner = ListEntry(create_date=old_owner.
@@ -95,20 +95,26 @@ def onid_transition(request):
                                create_date=l.create_date, 
                                expire_date=l.create_date + datetime.timedelta(365 * 2))
                 ls.save()
-                continue
+
 
             #the list is already in the database, but the owner is not.  Add a record for the owner
-            if not OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username).exists():
-                oe = OwnerEntry(name=request.user.username)
+            oe = OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username)
+            try:
+                old_owner = OldOwner.objects.filter(link_code=user_code)
+                oe = OwnerEntry.objects.get(name=request.user.username)
+            except OwnerEntry.DoesNotExist:
+
+            if not oe.exists():
                 oe.save()
                 oe.lists.add(ls)
                 oe.save()
-                
+            #the owner exists but isn't linked to the list
+            else:
+                oe.lists.add(ls)
+                oe.save()
 
         #redirect to the expiration home page
         return redirect('list_app:list_index')
-
-    
 
     template = loader.get_template('onid_transition.html')
     context = RequestContext(request, {
