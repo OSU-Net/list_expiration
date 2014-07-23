@@ -130,15 +130,25 @@ class Command(BaseCommand):
         for owner in owner_entries:
             if owner.onid_email != '':
                 self.send_transition_email_onid(owner.onid_email)
-                oe = OwnerEntry(name = owner.get_onid_username())
+
+                oe = OwnerEntry(name=owner.get_onid_username())
                 oe.save()
+
+                owner_lists = owner.lists.all()
                 
-                pdb.set_trace()
+                for old_list in owner_lists:
+                    #see if the list already exists
+                    try:
+                        ls = ListEntry.objects.get(name=old_list.name)
+                    except ListEntry.DoesNotExist:
+                        #if not create it and add a relation to the owner
+                        ls = ListEntry(name=old_list.name, 
+                                       create_date=old_list.create_date, 
+                                       expire_date=old_list.create_date + datetime.timedelta(365 * 2))
+                        ls.save()
 
-                #see if a list exists 
-                owner_list = OldList.objects.filter(oldownerset__name=owner.get_onid_username())
-
-                #if not, create it
+                        oe.lists.add(ls)
+                        oe.save()
             else:
                 self.send_transition_email(owner.owner_email)
 

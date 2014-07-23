@@ -79,41 +79,33 @@ def onid_transition(request):
             })
             return HttpResponse(template.render(context))
 
+
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
-        #owner = ListEntry(create_date=old_owner.
-        owner_lists = old_owner.lists.all()
-        for l in owner_lists:
 
-            ls = None
+
+        #create the OwnerEntry object
+        new_owner = OwnerEntry(name=request.user.username)
+        new_owner.save()
+
+        #create relation for each list new owner is a part of
+        old_lists = old_owner.lists.all()
+        for l in old_lists:
+
+            new_list = None
+
+            #if a ListEntry hasnt been created do so
             try:
-                ls = ListEntry.objects.get(name=l.name)
+                new_list = ListEntry.objects.get(name=l.name)
             except ListEntry.DoesNotExist:
+                new_list = ListEntry(name=l.name, 
+                                   create_date=l.create_date, 
+                                   expire_date=l.create_date + datetime.timedelta(365 * 2))
+                new_list.save()
 
-                #there is no record of the list, create an entry and set the expiration date out 2 years
-                ls = ListEntry(name=l.name, 
-                               create_date=l.create_date, 
-                               expire_date=l.create_date + datetime.timedelta(365 * 2))
-                ls.save()
+            new_owner.lists.add(new_list)
+            new_owner.save()
 
-
-            #the list is already in the database, but the owner is not.  Add a record for the owner
-            #TODO: This is where I am currently working:::::::::::::::::::::::::::::
-            oe = OwnerEntry.objects.filter(lists__name=l.name, name=request.user.username)
-            try:
-                old_owner = OldOwner.objects.filter(link_code=user_code)
-                oe = OwnerEntry.objects.get(name=request.user.username)
-            except OwnerEntry.DoesNotExist:
-
-            if not oe.exists():
-                oe.save()
-                oe.lists.add(ls)
-                oe.save()
-            #the owner exists but isn't linked to the list
-            else:
-                oe.lists.add(ls)
-                oe.save()
-            #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         #redirect to the expiration home page
         return redirect('list_app:list_index')
 
