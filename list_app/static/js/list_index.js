@@ -20,6 +20,7 @@ function cancel_editing(id)
     $("div[id=expire_date_".concat(id).concat("]")).show();
 
     //hide editable expire_date text field
+    $("form[id=edit_form_".concat(id).concat("] input[type=text]")).val("");
     $("form[id=edit_form_".concat(id).concat("] input[type=text]")).hide();
 
     //change 'save' button to edit

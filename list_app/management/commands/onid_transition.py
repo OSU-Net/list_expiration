@@ -126,9 +126,13 @@ class Command(BaseCommand):
             owner.save()
 
         #now send out emails
+        
+
         owner_entries = OldOwner.objects.all()
         for owner in owner_entries:
+
             if owner.onid_email != '':
+
                 self.send_transition_email_onid(owner.onid_email)
 
                 oe = OwnerEntry(name=owner.get_onid_username())
@@ -147,8 +151,8 @@ class Command(BaseCommand):
                                        expire_date=old_list.create_date + datetime.timedelta(365 * 2))
                         ls.save()
 
-                        oe.lists.add(ls)
-                        oe.save()
+                    oe.lists.add(ls)
+                    oe.save()
             else:
                 self.send_transition_email(owner.owner_email)
 
