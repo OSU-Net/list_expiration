@@ -82,7 +82,7 @@ function end_editing(id)
 //return a Date string with format "YYYY-MM-DD" that is set out two years from 'date'
 function calc_2_years_forward(date)
 {
-	var forward_date = new Date(date.getFullYear() + 2, date.getMonth(), date.getDay());
+	var forward_date = new Date(date.getFullYear() + 2, date.getMonth(), date.getDate());
     return String(forward_date.getFullYear()).concat("-").concat(String(forward_date.getMonth())).concat("-").concat(String(forward_date.getDate()));
 }
 

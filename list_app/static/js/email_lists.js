@@ -118,7 +118,7 @@ EmailLists.prototype =
 		return null;
 	},
 
-	//returns the amount of time between two formatted date strings "YYYY-MM-DD" in years
+	//returns the amount of time between two formatted date strings "YYYY-MM-DD" in days
 	get_date_delta : function(earlier_date_str, later_date_str)
 	{
 		//extract date components from arguments and put them into date objects
@@ -135,20 +135,21 @@ EmailLists.prototype =
 								  parseInt(later_date_strs[2]), 
 								  0, 0, 0);
 
-	    return (later_date.getTime() - earlier_date.getTime()) / (1000*60*60*24*365);
+	    return (later_date.getTime() - earlier_date.getTime()) / (1000*60*60*24);
 	},
 
 	validate_list_edit : function(list_id)
 	{
 		var new_expire_date_str = $("form[id=edit_form_".concat(list_id).concat("] input[name=expire_date]")).val();
 
-	    var current_expire_date = this.get_list_by_id(list_id).get_expire_date_str();
+	    var current_date = new Date();
+	    current_date_str = String(current_date.getFullYear()).concat("-").concat(String(current_date.getMonth())).concat("-").concat(String(current_date.getDate()));
 
-	    var delta_years = this.get_date_delta(current_expire_date, new_expire_date_str);
+	    var delta_days = this.get_date_delta(current_date_str, new_expire_date_str);
 
-	    if(delta_years >= 2.0 || delta_years <= 0.0)
+	    if(delta_days > 731.0 || delta_days <= 0.0)
 	    {
-	        alert("Invalid expiration date!  Choose a date within two years of the current expiration date.");
+	        alert("Invalid expiration date!  Choose a date within two years of the current date.");
 	        return false;
 	    }
 
