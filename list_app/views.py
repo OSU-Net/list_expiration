@@ -83,7 +83,6 @@ def onid_transition(request):
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
 
-
         #create the OwnerEntry object
         new_owner = OwnerEntry(name=request.user.username)
         new_owner.save()
