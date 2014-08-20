@@ -35,7 +35,7 @@ class Command(BaseCommand):
             list_owners_strs = line_strs[1].split(',')    
             
             #create the list
-
+            
             #add each owner to the list
         
         #create mailman lists
