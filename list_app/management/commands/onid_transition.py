@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
     def get_mailman_list_names(self):
 
-        list_dirs = [x[0] for x in os.walk(settings.MAILMAN_FILES_DIR + '/lists/')]
+        list_dirs = [x[0] for x in os.walk(settings.MAILMAN_LISTS_DIR + '/lists/')]
         list_names = []
 
         for list_dir in list_dirs:
