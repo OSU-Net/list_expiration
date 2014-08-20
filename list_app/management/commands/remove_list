@@ -1,37 +1,28 @@
 #!/bin/bash
 
-#read list name from commandline argument
-
-# options=':q:nd:h'
-# if ! getopts $options cmd_args 
-# then
-# 	echo "list name expected."
-# 	exit 1
-# fi
 if [ $# -lt 2 ] 
 then
 	echo "list name and mailman directory expected"
 	exit 1
 fi
 
-if [ $# -gt 2 ] 
+if [ $# -gt 3 ] 
 then
 	echo "Too many arguments"
 	exit 1
 fi
 
-echo "sup"
+MAILMAN_LISTS_DIR=$2
+MAILMAN_SCRIPTS_DIR=$3
 
-MAILMAN_DIR=$2
 ARCHIVE_DIR="./mailman/deleted_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
-TAR_DIR=$1"_files" 
+TAR_FILE=$1"_files" 
 
 mkdir -p $ARCHIVE_DIR
 
-pck_dir=$MAILMAN_DIR"/lists/"$1
-#public_archive_sym_link=$MAILMAN_DIR"/archives/public/"$1
-private_archive_dir="$MAILMAN_DIR"/archives/private/"$1"
-private_mbox_dir="$MAILMAN_DIR"/archives/private/"$1".mbox
+pck_dir=$MAILMAN_LISTS_DIR"/lists/"$1
+private_archive_dir="$MAILMAN_LISTS_DIR"/archives/private/"$1"
+private_mbox_dir="$MAILMAN_LISTS_DIR"/archives/private/"$1".mbox
 
 echo $pck_dir
 echo $public_archive_sym_link
@@ -57,7 +48,8 @@ cp "$pck_dir"/* $TAR_DIR"/pck/"
 cp -r "$private_archive_dir" "$TAR_DIR"/archive
 cp -r "$private_mbox_dir" "$TAR_DIR"/mbox
 
-"$MAILMAN_DIR"/bin/rmlist -a "$1"
+#call mailman script to remove the list's files
+"$MAILMAN_SCRIPTS_DIR"/bin/rmlist -a "$1"
 
 #tar-ball creation:
 echo "creating tar archive..."

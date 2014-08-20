@@ -85,7 +85,8 @@ class Command(BaseCommand):
             print(settings.MAILMAN_FILES_DIR)
 
             #delete the list on file
-            subprocess.call(['./remove_list {0} {1}'.format(listEntry.name, settings.MAILMAN_FILES_DIR)], shell=True)
+            cmd_str = './remove_list {0} {1} {2}'.format(listEntry.name, settings.MAILMAN_LISTS_DIR, settings.MAILMAN_SCRIPTS_DIR)
+            subprocess.call(cmd_str, shell=True)
 
             #delete the list from the database
             (OwnerEntry.objects.get(lists__in=listEntry)).delete() 

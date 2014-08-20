@@ -1,5 +1,17 @@
 #!/bin/bash
 
+if [ $# -lt 1 ]
+then
+    echo "too few arguments! (1 expected)"
+    exit 1
+fi
+
+if [ $# -gt 1 ]
+then
+    echo "too many arguments! (1 expected)"
+    exit 1
+fi
+
 MAILMAN_DIR = "./mailman"
 ARCHIVE_DIR = "./mailman/old_lists" #The directory to save the .tar.gz files containing .pck and the archives of deleted lists
 
