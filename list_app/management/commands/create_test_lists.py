@@ -39,16 +39,20 @@ class Command(BaseCommand):
             
             #call mailman utility to create the list
             
+            file_name = 'tmp/'+list_name+'_owners'
             #create file to pass to mailman to add owners to the list
-            if os.path.exists('tmp/'+list_name+'_owners'):
-                except Exeption('duplicate list')
-                break
+            if os.path.exists(file_name):
+                raise Exeption('duplicate list')
             
-            os.
+            file = open(file_name, 'a')
+
             #add each owner to the list
+            for owner in list_owners_strs:
+                file.write("mlist.owner.append('"+owner+"')\n")
         
-        #create mailman lists
+        #call mailman utility to create lists inside of mailman
+
 
         #delete temporary files
-        shutil.rmtree('tmp')
+        #shutil.rmtree('tmp')
 
