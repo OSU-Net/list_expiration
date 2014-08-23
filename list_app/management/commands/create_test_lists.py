@@ -4,7 +4,7 @@ import sys, os, shutil
 class Command(BaseCommand):
     
     def add_arguments(self, parser):
-        parser.add_argument('file', nargs='1', type=str)
+        parser.add_argument('--file', nargs='1', type=str)
          
     def handle(self, *args, **options):
         lists_file = options['file']
