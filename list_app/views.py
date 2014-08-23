@@ -125,12 +125,13 @@ def list_index(request):
     try:
         lists = OwnerEntry.objects.get(name=request.user.username).lists.all()
     except OwnerEntry.DoesNotExist:
-        return HttpResponse(str.format("no lists for {0}", request.user))
-    
+        #return HttpResponse(str.format("no lists for {0}", request.user))
+        lists = None
+
     template = loader.get_template('list_index.html')
     context = RequestContext(request, {
         'lists': lists,
-        'admin_name': request.user.username
+        'user_name': request.user.username
     })
     return HttpResponse(template.render(context))
 

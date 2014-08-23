@@ -28,6 +28,7 @@
     
     <body>
         <div id="accordion">
+            <div id="title_centered"> {{user_name}}'s lists:</div>
             {% for listEntry in lists %}
             <h{{listEntry.id}}> {{listEntry.name}} </h{{listEntry.id}}>
             <div name="list_div" id="{{listEntry.id}}" class="list_entry">

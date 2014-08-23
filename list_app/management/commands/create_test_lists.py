@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-import sys
+import sys, os, shutil
 
 class Command(BaseCommand):
     
@@ -25,6 +25,9 @@ class Command(BaseCommand):
         #input file format:
         # list_name1:list_owner1,list_owner2,list_owner3,...
         # list_name2:list_owner,...
+        if not os.path.exists('tmp'):
+            os.makedirs('tmp')
+        
         while True:
             line = file.readline()
             if not line:
@@ -34,10 +37,18 @@ class Command(BaseCommand):
             list_name = line_strs[0]      
             list_owners_strs = line_strs[1].split(',')    
             
-            #create the list
+            #call mailman utility to create the list
             
+            #create file to pass to mailman to add owners to the list
+            if os.path.exists('tmp/'+list_name+'_owners'):
+                except Exeption('duplicate list')
+                break
+            
+            os.
             #add each owner to the list
         
         #create mailman lists
 
+        #delete temporary files
+        shutil.rmtree('tmp')
 
