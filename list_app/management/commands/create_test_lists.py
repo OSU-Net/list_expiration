@@ -1,16 +1,33 @@
+from list_site import settings
 from django.core.management.base import BaseCommand, CommandError
-import sys, os, shutil, pdb
+import sys, os, shutil, pdb, subprocess
 
-class Command(BaseCommand):
+class Command(BaseCommand):        
+
+    #call mailman utilities to create a list and add it's owners specified in the tmp/{list_name} file
+    def mailman_create_list(self, list_name, first_owner):
+    #call mailman utility to create lists inside of mailman
+    #./newlist ph_211 wasingej@onid.oregonstate.edu test123
+
+        #open the file containing list owners in tmp/{list_name}
+        try:
+            file = open('tmp/'+list_name, 'r')
+        except IOError as err:
+            print err
+            return 
+
+        executable_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'newlist')
+        executable_args = list_name + ' ' + list_owners[0] + ' ' + 'test123'
     
-#   def add_arguments(self, parser):
-#       parser.add_argument('--file', type=file)
-         
+        subprocess.call(executable_path + executable_args, shell=True)
+        
+        script_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'config_list')
+        script_args = '-i ' + 'tmp/' + list_name
+        subprocess.call(script_path + script_args)
+
+
     def handle(self, *args, **options):
         
-#       pdb.set_trace()
-#       lists_file = options['file']
-
         lists_file_name = 'test_lists.txt'
 
         #open input file
@@ -21,9 +38,7 @@ class Command(BaseCommand):
         except IOError:
             print('file {0} not found'.format(lists_file))
             return 
-        
-        pdb.set_trace()
-                
+                        
         parse_state = 'default'
             
         #parse lists from the input file
@@ -33,9 +48,7 @@ class Command(BaseCommand):
         # list_name2:list_owner,...
         if not os.path.exists('tmp'):
             os.makedirs('tmp')
-        
-        pdb.set_trace()
-
+         
         while True:
             line = lists_file.readline().strip()
             if not line:
@@ -47,10 +60,10 @@ class Command(BaseCommand):
             
             #call mailman utility to create the list
             
-            mailman_file_name = 'tmp/'+list_name+'_owners'
+            mailman_file_name = 'tmp/'+list_name
             #create file to pass to mailman to add owners to the list
             if os.path.exists(mailman_file_name):
-                raise Exeption('duplicate list')
+                raise Exception('duplicate list')
             
             mailman_file = open(mailman_file_name, 'a')
 
@@ -58,9 +71,12 @@ class Command(BaseCommand):
             for owner in list_owners_strs:
                 mailman_file.write("mlist.owner.append('"+owner+"')\n")
         
-        #call mailman utility to create lists inside of mailman
+         
+        lists = os.listdir('tmp')
 
-
+        for list in lists:
+            self.mailman_create_list(list)
+            
         #delete temporary files
-        #shutil.rmtree('tmp')
+        shutil.rmtree('tmp')
 
