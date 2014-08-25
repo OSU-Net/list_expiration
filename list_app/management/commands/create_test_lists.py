@@ -17,14 +17,18 @@ class Command(BaseCommand):
             return 
 
         executable_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'newlist')
-        executable_args = list_name + ' ' + list_owners[0] + ' ' + 'test123'
+        executable_args = list_name + ' ' + first_owner + ' ' + 'test123'
     
-        subprocess.call(executable_path + executable_args, shell=True)
+        subprocess.call(executable_path + ' ' + executable_args, shell=True)
         
         script_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'config_list')
-        script_args = '-i ' + 'tmp/' + list_name
-        subprocess.call(script_path + script_args)
-
+        script_args = ' -i ' + '/data/ssg-test/htdocs/list_expiration/tmp/' + list_name + ' ' + list_name
+        
+        try:
+            subprocess.call(script_path + script_args)
+        except OSError as error:
+            pdb.set_trace()
+            print error
 
     def handle(self, *args, **options):
         
@@ -75,7 +79,12 @@ class Command(BaseCommand):
         lists = os.listdir('tmp')
 
         for list in lists:
-            self.mailman_create_list(list)
+            #open the file and find the name of the first owner
+            file = open('tmp/'+list, 'r')
+
+            first_line = file.readline()
+            owner = first_line.split("'")[1]
+            self.mailman_create_list(list, owner)
             
         #delete temporary files
         shutil.rmtree('tmp')
