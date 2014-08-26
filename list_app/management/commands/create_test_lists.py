@@ -2,6 +2,10 @@ from list_site import settings
 from django.core.management.base import BaseCommand, CommandError
 import sys, os, shutil, pdb, subprocess
 
+class List:
+    owners = []
+    name = None
+    
 class Command(BaseCommand):        
 
     #call mailman utilities to create a list and add it's owners specified in the tmp/{list_name} file
@@ -10,6 +14,8 @@ class Command(BaseCommand):
     #./newlist ph_211 wasingej@onid.oregonstate.edu test123
 
         #open the file containing list owners in tmp/{list_name}
+        file = None
+
         try:
             file = open('tmp/'+list_name, 'r')
         except IOError as err:
@@ -25,10 +31,12 @@ class Command(BaseCommand):
         script_args = ' -i ' + '/data/ssg-test/htdocs/list_expiration/tmp/' + list_name + ' ' + list_name
         
         try:
-            subprocess.call(script_path + script_args)
+            subprocess.call(script_path + script_args, shell=True)
         except OSError as error:
             pdb.set_trace()
             print error
+        
+        file.close()
 
     def handle(self, *args, **options):
         
@@ -36,6 +44,9 @@ class Command(BaseCommand):
 
         #open input file
         lists_file = None
+        
+        #store the data held in the lists file in a python-readable list of 'List's
+        lists = []
 
         try:
             lists_file = open(lists_file_name, 'r')
@@ -79,13 +90,17 @@ class Command(BaseCommand):
         lists = os.listdir('tmp')
 
         for list in lists:
-            #open the file and find the name of the first owner
+            #open the file and find the name of the first owner 
+            pdb.set_trace()
+            
             file = open('tmp/'+list, 'r')
 
             first_line = file.readline()
             owner = first_line.split("'")[1]
             self.mailman_create_list(list, owner)
             
+            file.close()
+                        
         #delete temporary files
         shutil.rmtree('tmp')
 
