@@ -5,6 +5,17 @@ import sys, os, shutil, pdb, subprocess
 class List:
     owners = []
     name = None
+
+def read_lists_from_files(files_path):
+    list_names = os.listdir(files_path)
+    
+    for name in list_names: 
+        try:
+            file = open(file_path, 'r')
+        except OSError as err:
+            print err
+            return None
+        
     
 class Command(BaseCommand):        
 
