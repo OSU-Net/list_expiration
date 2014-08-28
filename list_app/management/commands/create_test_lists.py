@@ -11,6 +11,10 @@ def get_list_by_owner_name(lists, name):
 class List:
     owners = []
     name = None
+    
+    def __init__(self, name, owners):
+        self.name = name
+        self.owners = owners
 
 #parse the .txt file containing the lists to be created
 #return an array of 'List's
@@ -24,16 +28,16 @@ def parse_input_file(file_path):
         print err
         return None
 
-    line = input_file.readline()
+    line = input_file.readline().strip('\n')
     while(line):
-        list = List()
-        list.name = line.split(':')[0]
-        list_owners = (line.split(':')[1]).split(',')
-        for owner_name in list_owners:
-            list.owners.append(owner_name)
         
-        lists.append(list)
-        line = input_file.readline()
+        #pdb.set_trace()
+
+        list_name = line.split(':')[0]
+        list_owners = (line.split(':')[1]).split(',')
+        lists.append(List(list_name, list_owners))
+         
+        line = input_file.readline().strip('\n')
                 
     return lists
 
@@ -48,6 +52,7 @@ def create_mailman_input_files(lists, output_directory):
         if os.path.exists(output_directory+'/'+list.name):
             raise Exception('duplicate list')
         
+        #pdb.set_trace() 
         mailman_file = open(output_directory + '/' + list.name, 'a')
 
         #add each owner to the list
