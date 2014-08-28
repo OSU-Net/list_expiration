@@ -6,112 +6,76 @@ class List:
     owners = []
     name = None
 
-def read_lists_from_files(files_path):
-    list_names = os.listdir(files_path)
+def get_list_by_owner_name(lists, name):
+    for list in lists:
+        if list.name == name:
+            return list
+    return None
+
+#parse the .txt file containing the lists to be created
+#return an array of 'List's
+def parse_input_file(file_path):
+    input_file = None
+    lists = []
+
+    try:
+        input_file = open(file_path, 'r')
+    except OSError as err:
+        print err
+        return None
+
+    line = input_file.readline()
+    while(line):
+        list = List()
+        list.name = line.split(':')[0]
+        list_owners = line.split(':')[1]
+        for owner_name in list_owners:
+            list.owners.append(owner_name)
+
+        line = input_file.readline()
+
+def create_mailman_input_files(lists, output_directory):
+    if not os.path.exists(output_directory):
+        print("output_directory does not exist!")
+        return False
     
-    for name in list_names: 
-        try:
-            file = open(file_path, 'r')
-        except OSError as err:
-            print err
-            return None
+    for list in lists:
+        #append all owners in the list structure except for the first one which will be supplied as the first owner
+        #when the list is created in mailman
+        if os.path.exists(mailman_file_name):
+            raise Exception('duplicate list')
         
+        mailman_file = open(output_directory + '/' + list.name, 'a')
+
+        #add each owner to the list
+        for i in range(1,len(list.names)):
+            mailman_file.write("mlist.owner.append('"+list.names[i]+"')\n")
     
-class Command(BaseCommand):        
+    return True
 
-    #call mailman utilities to create a list and add it's owners specified in the tmp/{list_name} file
-    def mailman_create_list(self, list_name, first_owner):
-    #call mailman utility to create lists inside of mailman
-    #./newlist ph_211 wasingej@onid.oregonstate.edu test123
-
-        #open the file containing list owners in tmp/{list_name}
-        file = None
-
-        try:
-            file = open('tmp/'+list_name, 'r')
-        except IOError as err:
-            print err
-            return 
-
-        executable_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'newlist')
-        executable_args = list_name + ' ' + first_owner + ' ' + 'test123'
+def create_mailman_lists(lists, mailman_input_file_dir):
+    if not os.path.exists(mailman_input_file_dir):
+        print("mailman_input_file_dir does not exist!")
+        return False   
     
-        subprocess.call(executable_path + ' ' + executable_args, shell=True)
-        
-        script_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'config_list')
-        script_args = ' -i ' + '/data/ssg-test/htdocs/list_expiration/tmp/' + list_name + ' ' + list_name
-        
-        try:
-            subprocess.call(script_path + script_args, shell=True)
-        except OSError as error:
-            pdb.set_trace()
-            print error
-        
-        file.close()
+        list_files = os.listdir('tmp')
+        for file_name in list_files:
+            first_owner = get_list_by_owner(lists, file_name)
+            if not first_owner:
+                raise Exception('list owner not found!')
+
+     
+class Command(BaseCommand):
 
     def handle(self, *args, **options):
+        input_file = 'test_lists.txt'
         
-        lists_file_name = 'test_lists.txt'
-
-        #open input file
-        lists_file = None
-        
-        #store the data held in the lists file in a python-readable list of 'List's
-        lists = []
-
-        try:
-            lists_file = open(lists_file_name, 'r')
-        except IOError:
-            print('file {0} not found'.format(lists_file))
+        lists = parse_input_file(input_file)
+        if not lists:
             return 
-                        
-        parse_state = 'default'
-            
-        #parse lists from the input file
-
-        #input file format:
-        # list_name1:list_owner1,list_owner2,list_owner3,...
-        # list_name2:list_owner,...
-        if not os.path.exists('tmp'):
-            os.makedirs('tmp')
-         
-        while True:
-            line = lists_file.readline().strip()
-            if not line:
-                break
-            
-            line_strs = line.split(':')
-            list_name = line_strs[0]      
-            list_owners_strs = line_strs[1].split(',')    
-            
-            #call mailman utility to create the list
-            
-            mailman_file_name = 'tmp/'+list_name
-            #create file to pass to mailman to add owners to the list
-            if os.path.exists(mailman_file_name):
-                raise Exception('duplicate list')
-            
-            mailman_file = open(mailman_file_name, 'a')
-
-            #add each owner to the list
-            for owner in list_owners_strs:
-                mailman_file.write("mlist.owner.append('"+owner+"')\n")
         
-         
-        lists = os.listdir('tmp')
-
-        for list in lists:
-            #open the file and find the name of the first owner 
-            pdb.set_trace()
-            
-            file = open('tmp/'+list, 'r')
-
-            first_line = file.readline()
-            owner = first_line.split("'")[1]
-            self.mailman_create_list(list, owner)
-            
-            file.close()
-                        
-        #delete temporary files
-        shutil.rmtree('tmp')
-
+        if not create_mailman_input_files(lists, 'tmp'):
+            print('failed to create mailman input files')
+            return 
+        
+                    
