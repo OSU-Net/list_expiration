@@ -77,8 +77,11 @@ class Command(BaseCommand):
         list_names = self.get_mailman_list_names()
 
         for list_name in list_names:
-            pck_dict = None
+            if list_name == "mailman":
+                continue #ignore the default Mailman list
 
+            pck_dict = None
+            
             try:
                 pck_file = open(settings.MAILMAN_LISTS_DIR + '/lists/' + list_name + '/config.pck','r')
                 pck_dict = pickle.load(pck_file)
@@ -104,11 +107,12 @@ class Command(BaseCommand):
                     owner = OldOwner.objects.get(owner_email=owner_email)
 
                 except OldOwner.DoesNotExist:
+                    
+                    pdb.set_trace()
+                    
                     owner = OldOwner(owner_email=owner_email)
                     owner.owner_email = owner_email
                     owner.save()
-                    
-                    pdb.set_trace()
 
                     if self.owner_is_onid(owner_email):
                         owner.onid_email = owner.owner_email
@@ -121,8 +125,6 @@ class Command(BaseCommand):
                 old_list.oldowner_set.add(owner)
                 old_list.save()
         
-        pdb.set_trace()
-
         links = self.generate_link_codes()
         
         for owner_email in links:
