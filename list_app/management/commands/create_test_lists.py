@@ -30,9 +30,6 @@ def parse_input_file(file_path):
 
     line = input_file.readline().strip('\n')
     while(line):
-        
-        #pdb.set_trace()
-
         list_name = line.split(':')[0]
         list_owners = (line.split(':')[1]).split(',')
         lists.append(List(list_name, list_owners))
@@ -51,8 +48,7 @@ def create_mailman_input_files(lists, output_directory):
         #when the list is created in mailman
         if os.path.exists(output_directory+'/'+list.name):
             raise Exception('duplicate list')
-        
-        #pdb.set_trace() 
+
         mailman_file = open(output_directory + '/' + list.name, 'a')
 
         #add each owner to the list
