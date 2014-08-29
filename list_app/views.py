@@ -93,7 +93,7 @@ def onid_transition(request):
 
             new_list = None
 
-            #if a ListEntry hasnt been created do so
+            #if a ListEntry hasnt been created do so and automatically set the expiration date out two years
             try:
                 new_list = ListEntry.objects.get(name=l.name)
             except ListEntry.DoesNotExist:

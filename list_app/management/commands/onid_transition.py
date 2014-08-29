@@ -11,6 +11,7 @@ import cPickle as pickle
 import os, binascii
 import hashlib
 import datetime
+
 import pdb
 
 class Command(BaseCommand):
@@ -79,7 +80,7 @@ class Command(BaseCommand):
             pck_dict = None
 
             try:
-                pck_file = open(settings.MAILMAN_FILES_DIR + '/lists/' + list_name + '/config.pck','r')
+                pck_file = open(settings.MAILMAN_LISTS_DIR + '/lists/' + list_name + '/config.pck','r')
                 pck_dict = pickle.load(pck_file)
 
             except IOError as e:
@@ -106,6 +107,8 @@ class Command(BaseCommand):
                     owner = OldOwner(owner_email=owner_email)
                     owner.owner_email = owner_email
                     owner.save()
+                    
+                    pdb.set_trace()
 
                     if self.owner_is_onid(owner_email):
                         owner.onid_email = owner.owner_email
@@ -117,7 +120,9 @@ class Command(BaseCommand):
 
                 old_list.oldowner_set.add(owner)
                 old_list.save()
-                
+        
+        pdb.set_trace()
+
         links = self.generate_link_codes()
         
         for owner_email in links:

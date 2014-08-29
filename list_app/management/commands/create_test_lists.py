@@ -99,6 +99,6 @@ class Command(BaseCommand):
         
         create_mailman_lists(lists, 'tmp')
         
-        #shutil.rmtree('tmp')
+        shutil.rmtree('tmp')
 
 
