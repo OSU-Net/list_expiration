@@ -63,8 +63,7 @@ def create_mailman_lists(lists, mailman_input_file_dir):
     if not os.path.exists(mailman_input_file_dir):
         print("mailman_input_file_dir does not exist!")
         return False   
-        
-    #pdb.set_trace() 
+
     list_files = os.listdir('tmp')
     for file_name in list_files:
         
@@ -72,8 +71,6 @@ def create_mailman_lists(lists, mailman_input_file_dir):
         if not list:
             print('owner not found!')
             return False
-            
-        #pdb.set_trace()
 
         executable_path = os.path.join(settings.MAILMAN_SCRIPTS_DIR, 'newlist')
         executable_args = ' ' + file_name + ' ' + list.owners[0] + ' ' + 'test123'
@@ -95,8 +92,6 @@ class Command(BaseCommand):
         
         if not os.path.exists('tmp'):
             os.makedirs('tmp')
-        
-        #pdb.set_trace()
 
         if not create_mailman_input_files(lists, 'tmp'):
             print('failed to create mailman input files')
