@@ -107,9 +107,7 @@ class Command(BaseCommand):
                     owner = OldOwner.objects.get(owner_email=owner_email)
 
                 except OldOwner.DoesNotExist:
-                    
-                    pdb.set_trace()
-                    
+                                        
                     owner = OldOwner(owner_email=owner_email)
                     owner.owner_email = owner_email
                     owner.save()
