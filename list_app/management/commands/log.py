@@ -1,8 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 import os, errno, stat, os.path
 
-from async_test.settings import BASE_DIR
-
 import pdb
 
 BUFFER_SIZE = 256
