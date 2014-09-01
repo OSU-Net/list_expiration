@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from list_site import settings
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -10,3 +12,8 @@ urlpatterns = patterns('',
     url(r'^login$', 'django_cas.views.login', name='cas_login'),
     url(r'^$', 'list_app.views.list_index')
 )
+
+if settings.DEBUG:
+   urlpatterns += patterns('',
+       url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),)
+    

@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 import os,sys
 
 sys.path.append('/data/ssg-test/htdocs/list_expiration')
+sys.path.append('/data/ssg-test/htdocs/list_expiration/list_site')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "list_site.settings")
 
 from django.core.wsgi import get_wsgi_application
