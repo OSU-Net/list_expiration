@@ -92,7 +92,9 @@ class Command(BaseCommand):
                 break
             except pickle.PickleError as e:
                 print("Pickle error{0}: {1}".format(e.errno, e.strerror))
-
+            
+            pdb.set_trace()
+            
             list_create_date = datetime.date.fromtimestamp(pck_dict['created_at'])
             old_list = OldList(name=list_name, create_date=list_create_date)
             old_list.save()
