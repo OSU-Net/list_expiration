@@ -1,10 +1,10 @@
+from __future__ import print_function
+
 from multiprocessing import Process, Pipe
 import os, errno, stat
 import shutil
-
-from async_test.settings import BASE_DIR
-
 import pdb
+import sys
 
 FIFO_DIR = 'tmp'
 FIFO_NAME = 'server_log_FIFO'
@@ -25,3 +25,8 @@ def log_str(msg):
     os.write(fd, msg)
 
     return True
+
+#log a string to the apache error log
+#TODO: this function is broken and does not log to the apache error log file for this site.  fix it!
+def log_error_apache(*strs):
+    print('',*strs, file=sys.stderr)

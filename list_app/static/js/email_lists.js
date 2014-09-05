@@ -143,7 +143,11 @@ EmailLists.prototype =
 		var new_expire_date_str = $("form[id=edit_form_".concat(list_id).concat("] input[name=expire_date]")).val();
 
 	    var current_date = new Date();
-	    current_date_str = String(current_date.getFullYear()).concat("-").concat(String(current_date.getMonth())).concat("-").concat(String(current_date.getDate()));
+
+        //add 1 to the month in 'current_date' because the range of Date month values is [0,11] and we want it to be [1,12]
+        var actual_current_date_month = current_date.getMonth() + 1;
+
+	    var current_date_str = String(current_date.getFullYear()).concat("-").concat(String(actual_current_date_month)).concat("-").concat(String(current_date.getDate()));
 
 	    var delta_days = this.get_date_delta(current_date_str, new_expire_date_str);
 

@@ -10,6 +10,9 @@ from list_app import urls
 from list_app.list_status import * 
 
 from list_app.forms import ListEditForm
+
+from list_site.log import log_error_apache
+
 import datetime
 
 import pdb
@@ -156,10 +159,13 @@ def submit_list_edit(request):
         le = ListEntry.objects.get(id=cd['list_id'])
         le.expire_date = cd['expire_date']
         le.save()
+        
+        log_error_apache("test log!")
 
     else:
         #this 'else statement should never be executed, if it does, it means that the browser submitted
         #edits that are invalid
+
         return HttpResponse("ERROR: Server rejected list changes.")
 
     return HttpResponseRedirect('/lists/index')
