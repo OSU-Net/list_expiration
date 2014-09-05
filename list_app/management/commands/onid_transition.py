@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
     def send_transition_email(self, email_addr): 
         link_code = OldOwner.objects.get(owner_email=email_addr).link_code;
-        link = 'localhost:8000/lists/onid_transition/?id={0}'.format(link_code)
+        link = settings.SITE_URL + '/lists/onid_transition/?id={0}'.format(link_code)
 
         print('link for {0} is: {1}'.format(email_addr, link))
 
@@ -92,9 +92,7 @@ class Command(BaseCommand):
                 break
             except pickle.PickleError as e:
                 print("Pickle error{0}: {1}".format(e.errno, e.strerror))
-            
-            pdb.set_trace()
-            
+             
             list_create_date = datetime.date.fromtimestamp(pck_dict['created_at'])
             old_list = OldList(name=list_name, create_date=list_create_date)
             old_list.save()
