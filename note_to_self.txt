@@ -1,0 +1,3 @@
+Is it possible that an a list owner could have a non-OSU email linked to one
+of their lists while at the same time managing another list with their ONID
+account?
