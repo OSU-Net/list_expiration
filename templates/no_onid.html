@@ -9,7 +9,8 @@
 
     	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
     	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-	</head>
+	    <script src="{% static 'js/url.js' %}"></script>
+    </head>
 	
 	<body>
 
@@ -64,11 +65,16 @@
 				</table>
 			</div>
 		{% endfor %}
-
+        
+        <button id="return">Go Back</button>
 		<script>
 		$(function()
 		{
 			$("div[name=status_tt]").tooltip();
+            $("button[id=return]").click(function()
+            {
+                window.location.replace("{% url 'list_app:onid_transition' %}?id=".concat(get_url_parameter('id')));    
+            });
 		});
 		</script>
 
