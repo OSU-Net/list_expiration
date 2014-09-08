@@ -41,7 +41,7 @@ def no_onid(request):
         for owner in owners:
             
             if not owner.owner_email == this_owner.owner_email:
-             
+                pdb.set_trace()
                 status = calc_owner_status(owner)
                 ls_status.owners.append(OwnerStatus(owner.owner_email, status))
 
