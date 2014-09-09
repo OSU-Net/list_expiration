@@ -40,8 +40,7 @@ def no_onid(request):
         
         for owner in owners:
             
-            if not owner.owner_email == this_owner.owner_email:
-                pdb.set_trace()
+            if not (owner.owner_email == this_owner.owner_email): 
                 status = calc_owner_status(owner)
                 ls_status.owners.append(OwnerStatus(owner.owner_email, status))
 
@@ -107,7 +106,12 @@ def onid_transition(request):
 
             new_owner.lists.add(new_list)
             new_owner.save()
-
+        
+        #modify the 'OldOwner' entry so that other prospective list owners can see that this user has claimed ONID ownership of the list
+        old_owner = OldOwner.objects.get(link_code=user_code)
+        old_owner.onid_email = request.user.username
+        old_owner.save()
+        
         #redirect to the expiration home page
         return redirect('list_app:list_index')
 
