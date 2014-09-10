@@ -1,0 +1,242 @@
+/* OSU top hat styles */
+#osu-top-hat {
+	width:100%;
+    /* height:4.096em; */
+    height: 49px;
+	/* height:3.846em;*/
+	border-bottom:3px solid #dbd6d0;
+	background:#2f2a2b url(../regions/top-hat/current/./images/tophat-bg.jpg) left top repeat-x;
+	/* font-size:.93em; */
+    font-size: 12px;
+    color:white;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+}
+
+#osu-top-hat a { text-decoration:none; color:#fff; }
+#osu-top-hat a:hover { text-decoration:underline; }
+
+#osu-top-hat #osu-top-hat-interior { margin:0 auto; }
+
+#osu-top-hat img.tag {
+	float:left;
+	margin-left:-1.5em;
+  margin-right:1.5em;
+	position:relative;
+	border:none;
+	z-index:51; /* 301; */
+}
+
+#osu-top-hat ul.utility {
+	float:left;
+	margin:1.465em 0 0 0;
+  margin-left:-1.5em;
+	padding:0;
+	width:auto;
+}
+
+#osu-top-hat ul.utility li {
+	border-right:1px solid #fff;
+	display:block;
+	float:left;
+	font-size:12px;
+	margin:0;
+	padding:0 1.465em;
+}
+
+#osu-top-hat ul.utility li.last {
+	padding-right:0;
+	border-right:none;
+}
+
+#osu-top-hat a.utility-link-nobg:hover{
+  background-color: transparent !important;
+}
+
+#osu-top-hat ul#campaign {
+    margin-left: 10px;
+}
+
+#osu-top-hat ul#campaign li {
+    color: #fff;
+    border-left: 1px solid white;
+    padding-right:15px;
+	border-right:none;
+}
+
+#osu-top-hat ul#campaign li a {
+    margin-bottom: 2px;
+    margin-top: -2px;
+}
+
+#osu-top-hat ul#campaign li img {
+    display: inline;
+    padding-right: 5px;
+    margin-top: -3px;
+    vertical-align: middle;
+}
+
+#osu-top-hat form.search {
+	float:right;
+	width:auto;
+	margin:1.16em 0 0 0;
+}
+
+#osu-top-hat form.search input {
+	float:left;
+}
+
+/* ie fix: using a class instead type=text because of  a bug in ie6 */
+#osu-top-hat .search-terms {
+	height:22px;
+	margin:0;
+	padding:2px 0 0 2px;
+    font-size:13px;
+    border:1px inset threedface;
+}
+
+#osu-top-hat .wrapper1
+#osu-top-hat .wrapper1 { width:760px; } /* Changed from 750 to 760 for interim homepage */
+#osu-top-hat .wrapper2 { width:950px; }
+#osu-top-hat .wrapper3 { width:100%; }
+#osu-top-hat .wrapper4 { width:1070px; }
+
+#osu-top-hat .wrapper3 img.tag { margin-left:2.231em; }
+#osu-top-hat .wrapper3 form.search { margin-right:1em; }
+
+#osu-top-hat .search-menu {
+	float:left;
+	position:relative;
+	margin:0;
+	padding:0;
+    z-index:51; /* 301; */
+}
+
+#osu-top-hat .search-menu ul {
+
+	display:none;
+	position:absolute;
+	top:26px;
+	right:.385em;
+	right:0;
+
+	margin:0;
+	padding:0;
+	background-image:url(../regions/top-hat/current/./images/search-menu-bg2.png);
+	background-repeat:repeat-x;
+	background-position:top left;
+	z-index:51; /* 301; */
+}
+#osu-top-hat .search:hover ul {
+  position: absolute;
+	top:26px;
+	right:.385em;
+	right:0;
+  left: auto;
+}
+#osu-top-hat .search:active ul {
+  position: absolute;
+	top:26px;
+	right:.385em;
+	right:0;
+  left: auto;
+}
+
+#osu-top-hat .search-hidden-form {
+	position:absolute;
+  left: -999em;
+}
+
+#osu-top-hat .search-menu ul li {
+	width:13em;
+	margin:0;
+	padding:.31em .539em;
+	padding-left:4em;
+	text-align:right;
+	list-style-image:none;
+	list-style-type:none;
+	border-bottom:1px dotted #fff;
+	color:#fff;
+	font-size:.85em;
+}
+
+#osu-top-hat .search-menu span.checked {
+	float:left;
+}
+
+#osu-top-hat .hide {
+  display: none;
+}
+
+/* Alert div styles */
+
+#osu-top-hat-alerts {
+    color:#FFF;
+    background-color: #ae2a25;
+    margin: 0px;
+    padding-bottom: 10px;
+    min-height: 55px;
+}
+
+
+#osu-top-hat-alerts a {
+    text-decoration:none;
+    font-weight: bold;
+    color: #fff !important;
+}
+
+#osu-top-hat-alerts a:hover {
+    text-decoration:underline;
+    background-color: #da926d !important;
+}
+
+#osu-top-hat-alerts-left a:hover {
+    text-decoration:none;
+    background-color: transparent !important;
+}
+
+#osu-top-hat-alerts-left img {
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+
+#osu-top-hat-alerts-left {
+    float: left;
+}
+
+
+#osu-top-hat-alerts-content {
+    position: relative;
+    margin-left: 160px;
+    border-left: 2px dotted #fff;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-right: 10px;
+    top: 10px;
+    min-height: 40px;
+    font-size: 1.2em;
+}
+
+#osu-top-hat-alerts-content a {
+    text-decoration:underline !important;
+}
+
+#osu-top-hat-alerts-content a.top-hat-alerts-small-link {
+    font-weight: normal;
+}
+
+#osu-top-hat-alerts-content .top-hat-alert-item {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+#osu-top-hat-alerts-content .top-hat-alert-date {
+    font-weight: bold;
+    font-style: italic;
+    position: relative;
+    float: left;
+}
+
+#osu-top-hat-alerts-content .top-hat-alert-title {
+    font-weight: bold;
+}

@@ -1,0 +1,186 @@
+#box{
+    background:#4c5c5c;
+}
+
+#container{
+    min-height:100%;
+    position:relative;
+}
+
+#content{
+    margin-left: 1.4em;
+    margin-top: 1.2em;
+}
+
+#bottom_content{
+    overflow: auto;
+    width: 1050px;
+}
+
+#more_content{
+    overflow: auto;
+    width: 1050px;
+}
+
+#bottom_left, #bottom_right{
+    width:45%;
+    margin:5px;
+    padding:1em;
+}
+#bottom_left2{
+    width:30%;
+    margin:5px;
+    padding:1em;
+}
+#welcome{
+    background: white;
+    margin: 5px;
+}
+
+#weclome {float:right;}
+
+#bottom_left  { float:left;  }
+
+#bottom_right { float:right; } 
+
+#footer{
+    /* Overrides sticky-footer */
+    min-width:1070px;
+    background: #FFEECC;
+    padding-top: 1em;
+    margin-top: -90px;
+}
+#footer a {
+    text-align:center;
+    color: teal;
+    text-decoration:none;
+}
+#footer a:hover {
+    color: #4C5C5C;
+}
+#footer span{
+    text-align:center;
+}
+
+#header{
+    min-width: 1070px;
+    background: #FFFFF;
+}
+
+#logo {
+    width: 50%;
+    margin: 0px auto;
+    margin-top: 1em;
+    padding-bottom: 1em;
+}
+
+#blank {
+    display:none;
+}
+
+#logo h1 {
+    display: inline;
+    color: black;
+    font-size: 1.9em;
+}
+#logo h4 {
+    display: inline;
+}
+
+#log {
+    overflow:auto;
+    max-height: 630px;
+    width: 99%;
+    overflow-y:scroll;
+}
+
+#main{
+    padding-bottom: 160px;
+}
+#navigation ul {
+    text-align: center;
+    margin:0px;
+}
+
+#navigation ul li {
+    display: inline;
+}
+
+#navigation a{
+    padding-top:.5em;
+    padding-bottom: .4em;
+    vertical-align:middle;
+    text-decoration: none;
+    position: relative;
+}
+#navigation span {
+    font-size: .8em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: .7em;
+    padding-bottom: .7em;
+    border-bottom-left-radius: .6em;
+    border-bottom-right-radius: .6em;
+    color:black;
+    margin-left: auto;
+    margin-right: auto;
+}
+#navigation span:hover {
+    background:#DDDDD3;
+}
+
+table th{
+    font-size:1.3em;
+}
+table td{
+    font-size:.9em;
+}
+#table_headers {
+    font-size:1.0em;
+}
+tr.alt{
+    background:#FFEECC;
+}
+
+#wrap a{
+    color: teal;
+    text-decoration: none;
+}
+
+#wrap a:hover {
+    color: #4C5C5C;
+}
+
+#osu-top-hat a{
+    color: white;
+    text-decoration: none;
+}
+
+#osu-top-hat a:hover {
+    color: #4C5C5C;
+}
+
+#osu-homepage-region-footer {
+    min-width:74.923em;
+    width:100%;
+    min-height:148px;
+    border-top:4px solid #d85a1a;
+    color:#fff;
+    background:#252525 url(http://oregonstate.edu/osuhomepage/images/footer_gradient.png) left top repeat-x;
+    text-align:center;
+    overflow:hidden;
+}
+#osu-homepage-region-footer a{
+    color: white;
+    text-decoration: none;
+}
+
+#osu-homepage-region-footer-inner {
+    margin: 1.231em auto;
+    width: 74.923em;
+}
+
+#osu-homepage-region-footer a:hover {
+    color:white;
+    background-color:#d85a1a;
+}

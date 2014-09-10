@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>DCA Tools</h3>
+
+<div id="paragraph">
+    <span>Welcome {{ request.session.username }} to the Network Engineering DCA Tools server! We have provided this site to assist OSU DCAs in diagnosing technical problems.</span><br/><br/>
+
+<span><b>Please Note:</b> Information available on this site may be sensitive in nature and should not be shared with individuals outside the university except by direction of the University Legal office. Also, sharing some information on this site may pose a security risk to the University. In particular, details about network layout and architecture should not be reproduced from this site. In other words, please don't download or print information from this site and leave it somewhere where persons who don't have a business need-to-know might find it.</span><br/><br/>
+</div>
+
+<div id="bottom_content" style="border-style: solid; border-color: red;">
+    <div id="bottom_left" style="border-style: solid; border-color: green;">
+    </div>
+    <div id="bottom_right" style="border-style: solid; border-color: blue;">
+   </div>
+</div>
+<div id="more_content" style="border-style: solid; border-color: orange;">
+    <div id="bottom_left2" style="border-style: solid; border-color: black;">
+    </div>
+</div>
+{% endblock %}
