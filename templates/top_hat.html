@@ -4,12 +4,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <style type="text/css"></style>
+
+        {% load static %}
     </head>
     <body>
         <div id="osu-top-hat" style="border-bottom-color: #dbd6d0;">
             <div id="osu-top-hat-interior" class="wrapper4">
                 <a href="http://oregonstate.edu/" title="Oregon State University">
-                    <img src="./top_hat_files/osu-tag.gif" alt="Oregon State University" class="tag">
+                    <img src="{% static 'top_hat_files/osu-tag.gif' %}" alt="Oregon State University" class="tag">
                 </a>
                 <ul class="utility">
                     <li class="first">
@@ -26,7 +28,7 @@
                 <ul class="utility" id="campaign">
                     <li class="first">
                         <a href="https://osufoundation.org/giving/online_gift.shtml?first_designation=" class="utility-link-nobg">
-                            <img class="campaign" src="./top_hat_files/campaign.png" width="19" height="19" alt="OSU Foundation">
+                            <img class="campaign" src="{% static 'top_hat_files/campaign.png' %}" width="19" height="19" alt="OSU Foundation">
                         </a>
                         <a href="https://osufoundation.org/giving/online_gift.shtml?first_designation=">Make a Gift</a>
                     </li>
@@ -39,13 +41,13 @@
                         <label class="hide" for="osu-home-search-terms">Search for people and pages</label>
                         <input id="osu-home-search-terms" type="text" name="q" size="24" maxlength="255" class="search-terms" value="">
                         <input type="hidden" name="client" value="default_frontend">
-                        <input type="image" src="./top_hat_files/submit.jpg" value="Search" alt="Search">
+                        <input type="image" src="{% static 'top_hat_files/submit.jpg' %}" value="Search" alt="Search">
                         <div class="search-menu">
-                            <img src="./top_hat_files/menu.jpg" alt="Search Menu">
+                            <img src="{% static 'top_hat_files/menu.jpg' %}" alt="Search Menu">
                             <ul>
                                 <li>
                                     <span class="checked">
-                                        <img src="./top_hat_files/check.gif" alt="selected">
+                                        <img src="{% static 'top_hat_files/check.gif' %}" alt="selected">
                                     </span>All of OSU
                                 </li>
                             </ul>
