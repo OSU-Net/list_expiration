@@ -2,18 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhml" xml:lang="en" lang="en">
 
   <head>
+    {% load static %}
     <title>Netshed | Network Engineering</title>
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/top-hat.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/top-hat.css' %}" />
     <script src="http://oregonstate.edu/osuhomepage/js/js.php?jquery,timers,top-hat" type="text/javascript"></script>
 
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/base.css" />
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/screen.css" />
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/print.css" />
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/ie.css" />
-    <link rel="stylesheet" type="text/css" href="/site_media/stylesheets/sticky_footer.css" />
-    <link rel="icon" type="image/x-icon" href="/site_media/images/favicon.ico" />
-    <script type="text/javascript" src="/site_media/javascripts/jquery-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/screen.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/print.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ie.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sticky_footer.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
   </head>
 
   <body style="background:#FFFFFF;">
@@ -56,51 +57,10 @@
             <div id="content">
                 {% block content %}
                 {% endblock %}
-                {% if loglines %}
-                    <div id="log">
-                        <table>
-                           <th>{{loglines|length}} results for {{query}} ({{time}} seconds)</th>
-                           {% for logline in loglines %}
-                               <tr><td>{{logline}}<br/></td></tr>
-                           {% endfor %}
-                        </table>
-                    </div>
-                {% else %}
-                    {% if query and not db_results %}
-                        <b>No results found for {{query}}</b>
-                    {% endif %}
-                {% endif %}
-
-
             </div>
           </div>
         </div>
       </div>
-
     </div>
-
-    <div id="osu-homepage-region-footer" >
-        <div id="osu-homepage-region-footer-inner" >
-            <a href="http://oregonstate.edu/"><span>Oregon State University</span></a> -
-            <a href="http://oregonstate.edu/net"><span>Network Engineering</span></a><br/>
-            <span>Netshed - DCA Tools</span><br/>
-            <span>All Rights Reserved, Copyright © 2011</span>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-30635822-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
-
   </body>
 </html>
