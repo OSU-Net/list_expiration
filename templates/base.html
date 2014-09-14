@@ -15,6 +15,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/sticky_footer.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+    
+    <!-- Email lists stuff -->
+    <script src="{% static 'js/crsf.js' %}"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link href="{% static 'css/index.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'js/email_list.js' %}"  language="javascript"></script>
+    <script src="{% static 'js/email_lists.js' %}" language="javascript"></script>
+    <script src="{% static 'js/list_index.js' %}"  language="javascript"></script>
+                      
   </head>
 
   <body style="background:#FFFFFF;">
@@ -49,19 +59,11 @@
                 <li><a href="/shodan"><span>Shodan</span></a><li>
                 <li><a href="/virtual_search"><span>Email Search</span></a><li>
                 <li><a href="/users/logout"><span>Logout</span></a><li>
-                </ul>
-              </div>
-            <br/>
-            <hr/>
-            
-            <div id="navigation"> 
-                <ul> 
-                    <li><span>hello1</span></li>
-                    <li><span>hello2</span></li>
-                    <li><span>hello3</span></li>
-                    <li><span>hello4</span></li>
-                </ul>
+              </ul>
             </div>
+            
+            <br/>
+            <hr/> 
 
             <div id="content">
                 {% block content %}
