@@ -1,0 +1,31 @@
+#navigation ul {
+    text-align: center;
+    margin:0px;
+}
+
+#navigation ul li {
+    display: inline;
+}
+
+#navigation a{
+    padding-top:.5em;
+    padding-bottom: .4em;
+    vertical-align:middle;
+    text-decoration: none;
+    position: relative;
+}
+#navigation span {
+    font-size: .8em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: .7em;
+    padding-bottom: .7em;
+    border-bottom-left-radius: .6em;
+    border-bottom-right-radius: .6em;
+    color:black;
+    margin-left: auto;
+    margin-right: auto;
+}
+#navigation span:hover {
+    background:#DDDDD3;
+}
