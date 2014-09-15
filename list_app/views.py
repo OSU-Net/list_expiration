@@ -18,7 +18,7 @@ import datetime
 import pdb
 
 def test_index(request):
-    template = loader.get_template('index.html')
+    template = loader.get_template('test_index.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
