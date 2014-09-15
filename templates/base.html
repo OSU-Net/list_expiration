@@ -3,7 +3,7 @@
 
   <head>
     {% load static %}
-    <title>Netshed | Network Engineering</title>
+    <title>List Expiration</title>
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/top-hat.css' %}" />
     <script src="http://oregonstate.edu/osuhomepage/js/js.php?jquery,timers,top-hat" type="text/javascript"></script>
@@ -24,7 +24,10 @@
     <script src="{% static 'js/email_list.js' %}"  language="javascript"></script>
     <script src="{% static 'js/email_lists.js' %}" language="javascript"></script>
     <script src="{% static 'js/list_index.js' %}"  language="javascript"></script>
-                      
+    <script src="{% static 'js/url.js' %}"></script> 
+    
+    {% block head %}
+    {% endblock %}
   </head>
 
   <body style="background:#FFFFFF;">
@@ -35,7 +38,7 @@
 
       <div id="header">
             <div id="logo">
-                <h1>Netshed: &nbsp;MongoDB-Powered Log Searches</h1>
+                <h1>List Expiration Tool</h1>
             </div>
       </div>
 
@@ -43,25 +46,7 @@
 
       <div id="main">
         <div class="container">
-          <div class="span-27 last">
-            <div id="navigation">
-              <ul>
-                <li><a href="/"><span>Home</span></a><li>
-                <li><a href="/dhcp"><span>DHCP</span></a><li>
-                <li><a href="/vpn"><span>VPN</span></a><li>
-                <li><a href="/cca"><span>CCA</span></a><li>
-                <li><a href="/greylist"><span>Greylist</span></a><li>
-                <li><a href="/header_reject"><span>Header Reject</span></a><li>
-                <li><a href="/aruba"><span>Aruba</span></a><li>
-                <li><a href="/named"><span>BIND</span></a><li>
-                <!-- <a href="/transport"><span>SMTP File</span></a> -->
-                <li><a href="/firewall"><span>Firewall</span></a><li>
-                <li><a href="/shodan"><span>Shodan</span></a><li>
-                <li><a href="/virtual_search"><span>Email Search</span></a><li>
-                <li><a href="/users/logout"><span>Logout</span></a><li>
-              </ul>
-            </div>
-            
+          <div class="span-27 last">            
             <br/>
             <hr/> 
 

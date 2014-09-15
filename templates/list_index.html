@@ -1,28 +1,8 @@
 {% extends "base.html" %}
-    <head>   	
-    	{% load staticfiles %}
 
-	    <!-- list_extras provides several custom date formatting functions -->
-	    {% load list_extras %}
-	    
-	    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	    <script src="{% static 'js/crsf.js' %}"></script>
-
-	    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-	    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-
-	    <link href="{% static 'css/index.css' %}"
-        	rel="stylesheet" type="text/css"/>
-
-	    <script src="{% static 'js/email_list.js' %}"
-	        language="javascript"></script>
-	        
-	    <script src="{% static 'js/email_lists.js' %}"
-	        language="javascript"></script>
-
-        <script src="{% static 'js/list_index.js' %}"
-            language="javascript"></script>
-    </head>
+{% block head %}
+{% load list_extras %}
+{% endblock %}
 
 {% block content %}
 

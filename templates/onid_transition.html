@@ -1,70 +1,64 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		{% load static %}
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="{% static 'js/crsf.js' %}"></script>
-   		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-   	    <script src="{% static 'js/url.js' %}"></script>
-    </head>
-	<body>
-		{% if not authenticated %}
-			<div>
-				You currently manage the following lists:
-			</div>
+{% extends "base.html" %}
 
-			<!-- list out lists here -->
-	        {% for list in lists %}
-	        <div>
-	            List Name: {{list.name}}
-	        </div>
+{% block content %}
 
-	        {% endfor %}
-			<!-- if their lists are not linked to their ONID: -->
-			<div>
-				You do not currently have an ONID account linked to your lists. 
-				<button name="register_button"> Register Lists with ONID </button>
-				
-	            <button name="no_onid_button">
-	                Don't have an ONID account? 
-	            </button> 
+{% if not authenticated %}
+    <div>
+        You currently manage the following lists:
+    </div>
 
-	            
-	        </div>
-        {% else %}
-        	<p><b>You have been successfully authenticated through ONID</b></p>
-        {% endif %}
+    <!-- list out lists here -->
+    {% for list in lists %}
+    <div>
+        List Name: {{list.name}}
+    </div>
 
-       	{% if error %}
-       		<div name="error">
-       			<b>Error:{{error}}</b>
-       		</div>
-       	{% endif %}
-        <button name="logout_button">
-        	Logout
-        </button>
+    {% endfor %}
+    <!-- if their lists are not linked to their ONID: -->
+    <div>
+        You do not currently have an ONID account linked to your lists. 
+        <button name="register_button"> Register Lists with ONID </button>
+        
+        <button name="no_onid_button">
+            Don't have an ONID account? 
+        </button> 
 
-        <script>
-	        $(function()
-	        {
-	            $('button[name="register_button"]').click(function()
-	            {
-	                var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
-	                console.log(link_str);
-	                window.location.replace(link_str);
-	            });
+        
+    </div>
+{% else %}
+    <p><b>You have been successfully authenticated through ONID</b></p>
+{% endif %}
 
-	            $('button[name="logout_button"]').click(function()
-	            {
-	            	window.location.replace("{% url 'cas_logout' %}");
-	            });
+{% if error %}
+    <div name="error">
+        <b>Error:{{error}}</b>
+    </div>
+{% endif %}
 
-	            $('button[name="no_onid_button"]').click(function()
-            	{
-					window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')));
-            	});
-	        });
-	    </script>
-	</body>
-</html>
+<button name="logout_button">
+    Logout
+</button>
+
+<script>
+    $(function()
+    {
+        $('button[name="register_button"]').click(function()
+        {
+            var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
+            console.log(link_str);
+            window.location.replace(link_str);
+        });
+
+        $('button[name="logout_button"]').click(function()
+        {
+            window.location.replace("{% url 'cas_logout' %}");
+        });
+
+        $('button[name="no_onid_button"]').click(function()
+        {
+            window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')));
+        });
+    });
+</script>
+
+{% endblock %}
