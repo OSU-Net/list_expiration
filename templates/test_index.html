@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/test_index.css' %}" />
+{% endblock %}
+
 {% block content %}
 
 <div id="navigation">
@@ -11,9 +16,11 @@
 </div>
 
 You currently manage the following lists:
-<ul id="lists">
-    <li id="lists"> <span id="lists"> List1 </span> </li>
-    <li> <span> List2 </span> </li>
-    <li> list3 </li>
-</ul>
+<div id="lists">
+    <ul>
+        <li> <span> List1 </span> </li>
+        <li> <span> List2 </span> </li>
+        <li> list3 </li>
+    </ul>
+</div>
 {% endblock %}

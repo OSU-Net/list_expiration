@@ -30,12 +30,10 @@
     background:#DDDDD3;
 }*/
 
-#lists ul li 
-{
+#lists ul li {
     display: inline;  
-};
+}
 
-#lists span:hover
-{
-    background:red; 
+#lists span:hover {
+    background:#DDDDD3; 
 }
