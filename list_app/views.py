@@ -24,36 +24,37 @@ def test_index(request):
 
 def no_onid(request):
     user_code = request.GET.get('id', '')
-
+    list_name = request.GET.get('list_name', '')
+    
+    #pdb.set_trace()
+     
     if user_code == '':
+        raise Http404
+    
+    if list_name == '':
         raise Http404
 
     try:
         owner = OldOwner.objects.get(link_code=user_code)
-    except OldOwner.DoesNotExist:
+        list = OldList.objects.get(name=list_name)
+    except OldOwner.DoesNotExist, OldList.DoesNotExist:
         raise Http404
 
     this_owner = OldOwner.objects.get(link_code=user_code)
-    lists = this_owner.lists.all()
+    list = OldList.objects.get(name=list_name) 
 
-    list_statuses = []
-
-    for list_entry in lists:
-
-        owners = OldOwner.objects.filter(lists__name=list_entry.name)
-        ls_status = ListStatus(list_entry.name, [])
-        
-        for owner in owners:
-            
-            if not (owner.owner_email == this_owner.owner_email): 
-                status = calc_owner_status(owner)
-                ls_status.owners.append(OwnerStatus(owner.owner_email, status))
-
-        list_statuses.append(ls_status)
+    owners = OldOwner.objects.filter(lists__name=list.name)
+    list_status = ListStatus(list.name, [])
     
+    for owner in owners:
+        
+        if not (owner.owner_email == this_owner.owner_email): 
+            status = calc_owner_status(owner)
+            list_status.owners.append(OwnerStatus(owner.owner_email, status))
+      
     template = loader.get_template('no_onid.html')
     context = RequestContext(request, {
-        'statuses': list_statuses
+        'list_status': list_status
     })
     return HttpResponse(template.render(context))
 

@@ -2,6 +2,17 @@
 {
     margin-left:   40px;
     margin-right:  40px;
+    margin-bottom: 20px;
+}
+
+#lists div.right
+{
+    float: right;    
+}
+
+#lists div.left
+{
+    float: left;    
 }
 
 p.important
@@ -15,6 +26,7 @@ p.important
     list-style-type: none;        
     margin-left: 0px;
     margin-right: 0px;
+    padding-left: 0px;
 }
 
 #lists li
@@ -24,7 +36,14 @@ p.important
     margin-top:     2px;
     margin-bottom:  2px; 
     color:          #385E86;
-    font-size:      15px;  
+    background:     #F5F2ED;
+    border-radius:  10px; 
+}
+
+#lists span
+{
+    margin-left: 5px;    
+    font-size: 15px;
 }
 
 #lists li:hover 
@@ -32,9 +51,4 @@ p.important
     background: #C34500;
     color:      #F5F2ED;
     cursor: pointer;    
-}
-
-#lists span:hover {
-    background:#DDDDD3;
- 
 }

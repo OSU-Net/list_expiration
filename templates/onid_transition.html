@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+{% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/lists.css' %}" />
 {% endblock %}
 
@@ -12,20 +13,19 @@
             <p class="important"> You currently manage the following lists: </p>
 
             <ul>
-                <li title="click to see the status of List1"> List1 </li>
-                <li title="click to see the status of List2"> List2 </li>
-                <li title="click to see the status of List3"> List3 </li>
-            </ul>
-
-            <ul>
                 {% for list in lists %}
-                    <li title="click to see the status of {{ list.name }}"> {{ list.name }} </li>
+                    <li id="{{list.name}}" name="status_{{list.name}}" title="click to see the status of {{ list.name }}"> <span>  {{ list.name }} </span> </li>
                 {% endfor %}
+            </ul>
         </div> 
-        <div>
-            <button> Authenticate with ONID </button>
+        <div class="left">
+            <button name="register"> Authenticate with ONID </button>
         </div>
-    </div> 
+        
+        <div class="right">
+            <button name="logout">  Logout </button>   
+        </div>
+</div> 
 {% else %}
     <p><b>You have been successfully authenticated through ONID</b></p>
 {% endif %}
@@ -35,31 +35,38 @@
         <b>Error:{{error}}</b>
     </div>
 {% endif %}
-
-<button name="logout_button">
-    Logout
-</button>
-
 <script>
-    $(function()
+$(function()
+{
+    $('button[name="register"]').click(function()
     {
-        $('button[name="register_button"]').click(function()
-        {
-            var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
-            console.log(link_str);
-            window.location.replace(link_str);
-        });
-
-        $('button[name="logout_button"]').click(function()
-        {
-            window.location.replace("{% url 'cas_logout' %}");
-        });
-
-        $('button[name="no_onid_button"]').click(function()
-        {
-            window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')));
-        });
+        var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
+        console.log(link_str);
+        window.location.href = link_str;
     });
-</script>
 
+    $('button[name="logout"]').click(function()
+    {
+        window.location.href = "{% url 'cas_logout' %}";
+    });
+
+    //$('button[name="no_onid_button"]').click(function()
+    //{
+    //    window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')));
+    //});
+
+    var status_buttons = $('li[name^=status_]');
+
+    for(i = 0; i < status_buttons.length; i++)
+    {
+        var list_name = status_buttons[i].id;
+        status_buttons[i].onclick = function()
+        {
+            var link_str = "{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')).concat("&list_name=").concat(list_name);
+            window.location.href = link_str;
+        }; 
+    }
+});
+</script>
 {% endblock %}
+

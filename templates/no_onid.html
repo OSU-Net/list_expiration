@@ -1,82 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		{% load static %}
-	    <link href="{% static 'css/no_onid.css' %}"
-	        rel="stylesheet" type="text/css"/>
+{% extends "base.html" %}
 
-    	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% block head %}
 
-    	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-	    <script src="{% static 'js/url.js' %}"></script>
-    </head>
-	
-	<body>
+{% load static %}
+<link href="{% static 'css/no_onid.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
 
-		{% for list_status in statuses %}
+{% block content %}
+<p class="important"> Status of {{list_status.name}}: </p>
 
-			<div class="outer">
-				<div class="title"> {{list_status.name}} </div>
+<table align="center">
+    <tr>
+        <th> List Owner Email  </th>
+        <th> List Owner Status </th>
+    </tr>
 
-				<table align="center">
-					<tr>
-						<th> List Owner Email  </th>
-						<th> List Owner Status </th>
-					</tr>
+    {% for owner in list_status.owners %}
+    <tr>
+        <td class="right"> {{owner.email}} </td>  
 
-					{% for owner in list_status.owners %}
-						<tr>
-							<td class="right"> {{owner.email}} </td>  
-
-							<td class="left">
-								{% if owner.status == "bounced" %}
-							
-									<div name="status" class="error_style">
-										Email failed to send (bounced)/Invalid email address
-									</div>
-									
-								{% endif %}
-
-								{% if owner.status == "no_response" %}
-								
-									<div name="status" class="neutral_style">
-										No response
-									</div>
-								
-								{% else %}
-									{% if owner.is_onid == True %}
-										<div name="status" 
-											 class="pass_style" 
-											 title="List owners with onid accounts are automatically given expiration control over lists.">
-											Claimed ownership		
-										</div>
-									{% else %}
-										<div name="status" 
-											 class="pass_style"
-											 >
-											Claimed ownership		
-										</div>
-									{% endif %}
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %} 
-				</table>
-			</div>
-		{% endfor %}
+        <td class="left">
+            {% if owner.status == "bounced" %}
         
-        <button id="return">Go Back</button>
-		<script>
-		$(function()
-		{
-			$("div[name=status_tt]").tooltip();
-            $("button[id=return]").click(function()
-            {
-                window.location.replace("{% url 'list_app:onid_transition' %}?id=".concat(get_url_parameter('id')));    
-            });
-		});
-		</script>
+                <div name="status" class="error_style">
+                    Email failed to send (bounced)/Invalid email address
+                </div>
+                
+            {% endif %}
 
-	</body>
-</html>
+            {% if owner.status == "no_response" %}
+            
+                <div name="status" class="neutral_style">
+                    No response
+                </div>
+            
+            {% else %}
+                {% if owner.is_onid == True %}
+                    <div name="status" 
+                         class="pass_style" 
+                         title="List owners with onid accounts are automatically given control of the expiration of lists.">
+                        Claimed ownership		
+                    </div>
+                {% else %}
+                    <div name="status" 
+                         class="pass_style"
+                         >
+                        Claimed ownership		
+                    </div>
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %} 
+</table>
+
+<button id="return">Go Back</button>
+<script>
+$(function()
+{
+    $("div[name=status_tt]").tooltip();
+    $("button[id=return]").click(function()
+    {
+        window.location.replace("{% url 'list_app:onid_transition' %}?id=".concat(get_url_parameter('id')));    
+    });
+});
+</script>
+{% endblock %}
