@@ -1,30 +1,31 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lists.css' %}" />
+{% endblock %}
+
 {% block content %}
 
 {% if not authenticated %}
-    <div>
-        You currently manage the following lists:
-    </div>
+    <div id="lists">
+        <div>
+            <p class="important"> You currently manage the following lists: </p>
 
-    <!-- list out lists here -->
-    {% for list in lists %}
-    <div>
-        List Name: {{list.name}}
-    </div>
+            <ul>
+                <li title="click to see the status of List1"> List1 </li>
+                <li title="click to see the status of List2"> List2 </li>
+                <li title="click to see the status of List3"> List3 </li>
+            </ul>
 
-    {% endfor %}
-    <!-- if their lists are not linked to their ONID: -->
-    <div>
-        You do not currently have an ONID account linked to your lists. 
-        <button name="register_button"> Register Lists with ONID </button>
-        
-        <button name="no_onid_button">
-            Don't have an ONID account? 
-        </button> 
-
-        
-    </div>
+            <ul>
+                {% for list in lists %}
+                    <li title="click to see the status of {{ list.name }}"> {{ list.name }} </li>
+                {% endfor %}
+        </div> 
+        <div>
+            <button> Authenticate with ONID </button>
+        </div>
+    </div> 
 {% else %}
     <p><b>You have been successfully authenticated through ONID</b></p>
 {% endif %}

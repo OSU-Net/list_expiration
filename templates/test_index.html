@@ -7,20 +7,31 @@
 
 {% block content %}
 
-<div id="navigation">
-    <ul>
-        <li> <span> poop1 </span> </li>
-        <li> poop2 </li>
-
-    </ul>
-</div>
-
-You currently manage the following lists:
 <div id="lists">
-    <ul>
-        <li> <span> List1 </span> </li>
-        <li> <span> List2 </span> </li>
-        <li> list3 </li>
-    </ul>
+    <div>
+        <p class="important"> You currently manage the following lists: </p>
+
+        <ul>
+            <li title="click to see the status of List1"> List1 </li>
+            <li title="click to see the status of List2"> List2 </li>
+            <li title="click to see the status of List3"> List3 </li>
+        </ul>
+    </div> 
+    <div>
+        <button> Authenticate with ONID </button>
+    </div>
 </div>
+
+
+<script>
+$(function()
+{
+   $(document).tooltip();
+   $("div[id=lists] ul li").on('click', function()
+   {
+        alert("hello world!");
+   });     
+});
+</script>
+
 {% endblock %}
