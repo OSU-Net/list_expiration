@@ -51,7 +51,7 @@ def no_onid(request):
         if not (owner.owner_email == this_owner.owner_email): 
             status = calc_owner_status(owner)
             list_status.owners.append(OwnerStatus(owner.owner_email, status))
-      
+    
     template = loader.get_template('no_onid.html')
     context = RequestContext(request, {
         'list_status': list_status

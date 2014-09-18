@@ -23,29 +23,14 @@ div.left
 	border-style:solid;
 }
 
-div.right
+th
 {
-	float:right;
-	margin-right: 2%;
-	border-style:solid;
+    font-size: 15px;    
 }
-
-div.error_style
+    
+td.owners
 {
-	border-style:solid;
-	border-color:#FF6666;
-	border-radius:5px;
-
-	background-color:#FFE0E0;
-}
-
-div.neutral_style
-{
-	border-style:solid;
-	border-color:#FFFF66;
-	border-radius:5px;
-
-	background-color:#FFFFE0;
+    background: white;    
 }
 
 td.left
@@ -56,14 +41,4 @@ td.left
 td.right
 {
 	padding-right:10px;
-}
-
-div.pass_style
-{
-	border-style:solid;
-	border-color:#66FF66;
-	border-radius:5px;
-	padding-right: 5px;
-	padding-left: 5px;
-	background-color:#E0FFE0;
 }

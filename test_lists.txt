@@ -1,3 +1,3 @@
-l1:doej@hotmail.com,test_123@gmail.com,j-wasinger@hotmail.com
-l2:lord_eddard@got.com,test_123@gmail.com,j-wasinger@hotmail.com
-l3:m-dow@onid.orst.edu,lord_eddard@got.com,j-wasinger@hotmail.com
+l1:doej@hotmail.com,test_123@gmail.com,j-wasinger@hotmail.com,test1@gamedev.net,test2@gamedev.net
+l2:lord_eddard@got.com,test_123@gmail.com,j-wasinger@hotmail.com,test1@gamedev.net,test3@gamedev.net
+l3:m-dow@onid.orst.edu,lord_eddard@got.com,j-wasinger@hotmail.com,lala@lala.com

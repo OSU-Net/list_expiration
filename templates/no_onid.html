@@ -7,8 +7,6 @@
 {% endblock %}
 
 {% block content %}
-<p class="important"> Status of {{list_status.name}}: </p>
-
 <table align="center">
     <tr>
         <th> List Owner Email  </th>
@@ -17,9 +15,9 @@
 
     {% for owner in list_status.owners %}
     <tr>
-        <td class="right"> {{owner.email}} </td>  
+        <td class="owners"> {{owner.email}} </td>  
 
-        <td class="left">
+        <td class="owners">
             {% if owner.status == "bounced" %}
         
                 <div name="status" class="error_style">

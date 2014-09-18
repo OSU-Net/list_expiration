@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhml" xml:lang="en" lang="en">
 
   <head>
-    {% load static %}
+    {% load static %} 
+    {% block head %}
+    {% endblock %}
     <title>List Expiration</title>
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/top-hat.css' %}" />
@@ -26,8 +28,6 @@
     <script src="{% static 'js/list_index.js' %}"  language="javascript"></script>
     <script src="{% static 'js/url.js' %}"></script> 
     
-    {% block head %}
-    {% endblock %}
   </head>
 
   <body style="background:#FFFFFF;">
