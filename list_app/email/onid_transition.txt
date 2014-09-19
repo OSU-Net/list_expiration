@@ -1,0 +1,13 @@
+Greetings *owner_name*,
+
+    Ownership of mailing lists affiliated with Oregon State University are
+    being transfered to owners with ONID user accounts.  You remain an
+    administrator of the lists your ONID account is connected with.  List
+    expiration dates can be viewed/modified at:
+    
+    *link_addr*
+    
+    In the future, you will be warned in advance before any of your lists are
+    about to expire.
+    
+    Cheers 

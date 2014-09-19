@@ -1,0 +1,11 @@
+Greetings *owner_name*, 
+
+    Ownership of mailing lists affiliated with Oregon State University are
+    being transfered to owners with ONID user accounts.  
+    
+    *link_addr*
+    
+    Please follow the link to register your ONID account with the lists you
+    administrate.
+    
+    Cheers 

@@ -1,0 +1,6 @@
+*owner_name*,
+    Your list, *list_name* is set to expire and be deleted in two weeks.  If
+    the list is still in use, you can set a later expiration date at:
+    *link_addr*
+
+    This is an automated email.  Do not reply to it.
