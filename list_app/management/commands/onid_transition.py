@@ -140,7 +140,7 @@ class Command(BaseCommand):
 
                 self.send_transition_email_onid(owner.onid_email)
 
-                oe = OwnerEntry(name=owner.get_onid_username())
+                oe = Owner(name=owner.get_onid_username())
                 oe.save()
 
                 owner_lists = owner.lists.all()
@@ -148,10 +148,10 @@ class Command(BaseCommand):
                 for old_list in owner_lists:
                     #see if the list already exists
                     try:
-                        ls = ListEntry.objects.get(name=old_list.name)
-                    except ListEntry.DoesNotExist:
+                        ls = List.objects.get(name=old_list.name)
+                    except List.DoesNotExist:
                         #if not create it and add a relation to the owner
-                        ls = ListEntry(name=old_list.name, 
+                        ls = List(name=old_list.name, 
                                        create_date=old_list.create_date, 
                                        expire_date=old_list.create_date + datetime.timedelta(365 * 2))
                         ls.save()

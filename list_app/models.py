@@ -1,7 +1,7 @@
 from django.db import models
 import pdb
 
-class ListEntry(models.Model):
+class List(models.Model):
     name = models.CharField(max_length=64)
     # active_date = models.DateTimeField('date of last list activity')
     expire_date = models.DateField('date of expiration')
@@ -17,12 +17,16 @@ class ListWarning(models.Model):
         ordering = ('mailing_list__name', 'first_warning', 'last_warning')
 
 
-class OwnerEntry(models.Model):
+class Owner(models.Model):
     name = models.CharField(max_length=32)
     lists = models.ManyToManyField(ListEntry)
 
     class Meta:
         ordering = ('name',)
+
+class PreferredEmailEntry(models.Model):
+    onid_email = models.CharField(max_length=32)
+    pref_email = models.CharField(max_length=32)
 
 #
 #these models are used for the transition to ONID:
@@ -41,6 +45,7 @@ class OldOwner(models.Model):
     link_code = models.CharField(max_length=32, blank=True)
     bounced = models.NullBooleanField(blank=True,null=True)
     lists = models.ManyToManyField(OldList, blank=True)
+    preferred_email = models.CharField(max_length=32, blank=True)
 
     #get the ONID username without '@onid.oregonstate.edu' appended 
     def get_onid_username(self):

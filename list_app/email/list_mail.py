@@ -44,17 +44,6 @@ def send_email(file, args):
 
 def send_first_warning_email(username, user_email, list_name):
     send_email('list_app/email/first_warning.txt', {
-            'Subject': 'Mailing List Expiration',
-            'From': 'admin@ssg-test.nws.oregonstate.edu',
-            'To': user_email,
-            'owner_name': username,
-            'link_addr': 'ssg-test.nws.oregonstate.edu',
-            'list_name': 'list_name'
-        })
-
-
-def send_final_warning_email(user_name, list_name):
-    send_email('list_app/email/first_warning.txt', {
         'Subject': 'Mailing List Expiration',
         'From': 'admin@ssg-test.nws.oregonstate.edu',
         'To': user_email,
@@ -64,14 +53,32 @@ def send_final_warning_email(user_name, list_name):
     })
 
 
+def send_final_warning_email(user_name, list_name):
+    send_email('list_app/email/first_warning.txt', {
+        'Subject': 'Mailing List Expiration: Final Warning',
+        'From': 'admin@ssg-test.nws.oregonstate.edu',
+        'To': user_email,
+        'owner_name': username,
+        'link_addr': 'ssg-test.nws.oregonstate.edu',
+        'list_name': 'list_name'
+    })
+
+
 def send_onid_transition_email(username):
+    send_email('list_app/email/onid_transition.txt', {
+        'Subject': 'Notice to Mailing List Owners',
+        'From': 'admin@ssg-test.nws.oregonstate.edu',
+        'To': user_email,
+        'owner_name': username,
+        'link_addr': 'ssg-test.nws.oregonstate.edu'
+    })
+
 
 def send_non_onid_transition_email(username):
-
-
-def test():
-    send_email('list_app/email/first_warning.txt', {
-            'owner_name': 'wasingej',
-            'list_name': 'ph_212',
-            'link_addr': 'google.com'
-        })
+    send_email('list_app/email/non_onid_transition.txt', {
+        'Subject': 'Notice to Mailing List Owners',
+        'From': 'admin@ssg-test.nws.oregonstate.edu',
+        'To': user_email,
+        'owner_name': username,
+        'link_addr': 'ssg-test.nws.oregonstate.edu'
+    })

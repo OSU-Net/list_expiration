@@ -35,7 +35,7 @@ def check_lists():
     month_from_now = datetime.now() + timedelta(days=30)
     week_from_now = datetime.now() + timedelta(days=7)
 
-    expiring_lists = ListEntry.objects.filter(expire_date__lt=month_from_now)
+    expiring_lists = List.objects.filter(expire_date__lt=month_from_now)
     expired_lists = []
     
     for listEntry in expiring_lists:
@@ -89,7 +89,7 @@ class Command(BaseCommand):
             subprocess.call(cmd_str, shell=True)
 
             #delete the list from the database
-            (OwnerEntry.objects.get(lists__in=listEntry)).delete() 
+            (Owner.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
             listEntry.delete()
 

@@ -16,26 +16,26 @@ class ListTestCase(TestCase):
         warning_date_1 = now + timedelta(29)
         warning_date_2 = now + timedelta(6)
 
-        le1 = ListEntry(name='PH_211', create_date=create, expire_date=expired_date)
+        le1 = List(name='PH_211', create_date=create, expire_date=expired_date)
         le1.save()
 
-        le2 = ListEntry(name='PH_212', create_date=create, expire_date=warning_date_1)
+        le2 = List(name='PH_212', create_date=create, expire_date=warning_date_1)
         le2.save()
 
-        le3 = ListEntry(name='ST_314', create_date=create, expire_date=warning_date_2)
+        le3 = List(name='ST_314', create_date=create, expire_date=warning_date_2)
         le3.save()
 
-        oe1 = OwnerEntry(name='wasingej', lists=[le1,le2, le3])
+        oe1 = Owner(name='wasingej', lists=[le1,le2, le3])
         oe1.save()
 
-        oe2 = OwnerEntry(name='doej', lists=[le2])
+        oe2 = Owner(name='doej', lists=[le2])
         oe2.save()
 
     def test(self):
         expired_lists = check_lists()
         for listEntry in expired_lists:
 
-            (OwnerEntry.objects.get(lists__in=listEntry)).delete() 
+            (Owner.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
 
             listEntry.delete()
@@ -46,13 +46,13 @@ class ListTestCase(TestCase):
 
         #ensure list records have been deleted for the expired list
         try:
-            ListEntry.objects.get(name='PH_211')
-        except ListEntry.DoesNotExist:
+            List.objects.get(name='PH_211')
+        except List.DoesNotExist:
             list_deleted = True
 
         try:
-            OwnerEntry.objects.get(mailing_list__name='PH_211')
-        except OwnerEntry.DoesNotExist:
+            Owner.objects.get(mailing_list__name='PH_211')
+        except Owner.DoesNotExist:
             owner_deleted = True
 
         try:
