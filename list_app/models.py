@@ -9,7 +9,7 @@ class List(models.Model):
 
 
 class ListWarning(models.Model):
-    mailing_list = models.ForeignKey(ListEntry)
+    mailing_list = models.ForeignKey(List)
     first_warning = models.BooleanField()
     last_warning = models.BooleanField()
 
@@ -19,12 +19,13 @@ class ListWarning(models.Model):
 
 class Owner(models.Model):
     name = models.CharField(max_length=32)
-    lists = models.ManyToManyField(ListEntry)
+    lists = models.ManyToManyField(List)
+    preferred_email = models.CharField(max_length=32, blank=True)
 
     class Meta:
         ordering = ('name',)
 
-class PreferredEmailEntry(models.Model):
+class PreferredEmail(models.Model):
     onid_email = models.CharField(max_length=32)
     pref_email = models.CharField(max_length=32)
 
@@ -44,9 +45,9 @@ class OldOwner(models.Model):
     onid_email = models.CharField(max_length=32, blank=True)
     link_code = models.CharField(max_length=32, blank=True)
     bounced = models.NullBooleanField(blank=True,null=True)
-    lists = models.ManyToManyField(OldList, blank=True)
     preferred_email = models.CharField(max_length=32, blank=True)
-
+    lists = models.ManyToManyField(OldList, blank=True)
+    
     #get the ONID username without '@onid.oregonstate.edu' appended 
     def get_onid_username(self):
         if not self.onid_email:

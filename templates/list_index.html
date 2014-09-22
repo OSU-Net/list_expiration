@@ -2,11 +2,13 @@
 
 {% block head %}
 {% load list_extras %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/lists.css' %}" />
 {% endblock %}
 
 {% block content %}
 
-<div id="accordion">
+<div id="lists">
     <div id="title_centered"> {{user_name}}'s lists:</div>
     {% for listEntry in lists %} 
     <div name="list_div" id="{{listEntry.id}}" class="list_entry">
@@ -32,18 +34,17 @@
     </div>
     {% endfor %}
 
-        <button id='accordion' name='logout_button'>Logout</button>
-        <script>
-            $(function()
+    <button id='accordion' name='logout_button'>Logout</button>
+    <script>
+        $(function()
+        {
+            $('button[name=logout_button]').click(function()
             {
-                $('button[name=logout_button]').click(function()
-                {
-                    window.location.replace("{% url 'cas_logout' %}");
-                });
+                window.location.replace("{% url 'cas_logout' %}");
             });
-        </script>
-    </div>
-</body>
+        });
+    </script>
+</div>
 
 <script language="javascript">
     var list_array = new Array();

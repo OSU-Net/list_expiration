@@ -6,9 +6,9 @@ import sys, os, shutil, pdb, subprocess
 class Command(BaseCommand):
     
     def truncate_all_tables(self):
-        ListEntry.objects.all().delete()
+        List.objects.all().delete()
         ListWarning.objects.all().delete()
-        OwnerEntry.objects.all().delete()
+        Owner.objects.all().delete()
         OldList.objects.all().delete()
         OldOwner.objects.all().delete()
 

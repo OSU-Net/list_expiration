@@ -75,7 +75,7 @@ def onid_transition(request):
     if request.user.is_authenticated():
 
         # make sure that the authenticated onid user is not already entered as an owner to prevent duplicate owner entries
-        if OwnerEntry.objects.filter(name=request.user.username).exists():
+        if Owner.objects.filter(name=request.user.username).exists():
 
             logout(request)
 
@@ -91,8 +91,8 @@ def onid_transition(request):
         #set the automatic expire date to be two years out
         old_owner = OldOwner.objects.get(link_code=user_code)
 
-        #create the OwnerEntry object
-        new_owner = OwnerEntry(name=request.user.username)
+        #create the Owner object
+        new_owner = Owner(name=request.user.username)
         new_owner.save()
 
         #create relation for each list new owner is a part of
@@ -101,11 +101,11 @@ def onid_transition(request):
 
             new_list = None
 
-            #if a ListEntry hasnt been created do so and automatically set the expiration date out two years
+            #if a List hasnt been created do so and automatically set the expiration date out two years
             try:
-                new_list = ListEntry.objects.get(name=l.name)
-            except ListEntry.DoesNotExist:
-                new_list = ListEntry(name=l.name, 
+                new_list = List.objects.get(name=l.name)
+            except List.DoesNotExist:
+                new_list = List(name=l.name, 
                                    create_date=l.create_date, 
                                    expire_date=l.create_date + datetime.timedelta(365 * 2))
                 new_list.save()
@@ -134,10 +134,10 @@ def list_index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('login')
 
-    #user_entries = OwnerEntry.objects.filter(name=request.user)
+    #user_entries = Owner.objects.filter(name=request.user)
     try:
-        lists = OwnerEntry.objects.get(name=request.user.username).lists.all()
-    except OwnerEntry.DoesNotExist:
+        lists = Owner.objects.get(name=request.user.username).lists.all()
+    except Owner.DoesNotExist:
         #return HttpResponse(str.format("no lists for {0}", request.user))
         lists = None
 
@@ -166,7 +166,7 @@ def submit_list_edit(request):
 
     if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
         cd = edit_form.cleaned_data
-        le = ListEntry.objects.get(id=cd['list_id'])
+        le = List.objects.get(id=cd['list_id'])
         le.expire_date = cd['expire_date']
         le.save()
         
@@ -186,7 +186,7 @@ def list_edit(request):
 
         if edit_form.is_valid() and validate_list_changes(edit_form.cleaned_data):
             cd = edit_form.cleaned_data
-            le = ListEntry.objects.get(pk=cd['list_pk'])
+            le = List.objects.get(pk=cd['list_pk'])
             le.expire_date = cd['expire_date']
             le.save()
 
@@ -201,7 +201,7 @@ def list_edit(request):
         admin_name = request.GET['admin_name']
         list_pk = request.GET['list_pk']
 
-        list_to_edit = ListEntry.objects.get(id=list_pk)
+        list_to_edit = List.objects.get(id=list_pk)
 
         if not list_to_edit:
             return HttpResponse(str.format("user {0} is not an administrator of {1}", admin_name, list_to_edit.name))
