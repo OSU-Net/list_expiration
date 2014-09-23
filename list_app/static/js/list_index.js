@@ -31,6 +31,12 @@ function on_date_field_lose_focus(id)
     element.val(list.get_expire_date_str());   
 }
 
+function on_date_selected(text, obj)
+{
+    id = email_lists.get_list_being_edited().get_list_id();
+    $("form[id=edit_form_".concat(id).concat("] input[name=expire_date]")).css("color", "#000000");        
+}
+
 function cancel_editing(id)
 {
     //show expire_date div
@@ -71,9 +77,14 @@ function begin_editing(id)
     var date_field = $("form[id=edit_form_".concat(id).concat("] input[type=text]"));
     var default_date = email_lists.get_list_by_id(id).get_expire_date_str();
     
-    date_field.datepicker({ dateFormat: "yy-mm-dd"})
-    date_field.datepicker("option", "defaultDate", default_date);
-    date_field.datepicker();
+    //date_field.datepicker({ dateFormat: "yy-mm-dd"})
+    //date_field.datepicker("option", "defaultDate", default_date);
+    date_field.datepicker({ 
+        dateFormat: "yy-mm-dd",
+        defaultDate: default_date,
+        onSelect: on_date_selected 
+    });
+    //date_field.datepicker();
 
     date_field.blur(function()
     {
