@@ -45,7 +45,7 @@ def no_onid(request):
 
     owners = OldOwner.objects.filter(lists__name=list.name)
     list_status = ListStatus(list.name, [])
-    
+
     for owner in owners:
         
         if not (owner.owner_email == this_owner.owner_email): 

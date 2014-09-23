@@ -3,6 +3,7 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/lists.css' %}" />
+<script src="{% static 'js/email_lists.js' %}" language="javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -56,16 +57,11 @@ $(function()
     //});
 
     var status_buttons = $('li[name^=status_]');
-
-    for(i = 0; i < status_buttons.length; i++)
+    status_buttons.on("click", function()
     {
-        var list_name = status_buttons[i].id;
-        status_buttons[i].onclick = function()
-        {
-            var link_str = "{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')).concat("&list_name=").concat(list_name);
-            window.location.href = link_str;
-        }; 
-    }
+        var link_str = "{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter("id")).concat("&list_name=").concat(this.id);
+        window.location.href = link_str;
+    });
 });
 </script>
 {% endblock %}

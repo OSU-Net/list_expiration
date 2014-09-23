@@ -120,7 +120,11 @@ function on_forward_button_click()
 	var list = email_lists.get_list_by_id(id);
 
 	var expire_date = calc_2_years_forward(new Date());
-	$("form[id=edit_form_".concat(id).concat("] input[type=text]")).val(expire_date);
+    //break the string apart and correct the month because Date() assumes [0-11] months and I want [1-12]
+    var date_elements = expire_date.split("-");	
+    var new_month = parseInt(date_elements[1]) + 1;
+    var new_date_str = date_elements[0].concat("-").concat(new_month).concat("-").concat(date_elements[2]);
+    $("form[id=edit_form_".concat(id).concat("] input[type=text]")).val(new_date_str);
 }
 
 function on_edit_button_click()
