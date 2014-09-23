@@ -14,10 +14,27 @@ function on_cancel_button_click()
     cancel_editing(id);
 }
 
+function on_date_field_gain_focus(id)
+{
+    var element = $("form[id=edit_form_".concat(id).concat("] input[name=expire_date]"));
+    element.css("color", "#000000");
+    var list = email_lists.get_list_by_id(id);
+    
+    element.val("");
+    //element.val(list.get_expire_date_str());
+}
+
+function on_date_field_lose_focus(id)
+{
+    var element = $("form[id=edit_form_".concat(id).concat("] input[name=expire_date]"));
+    element.css("color", "#AAAAAA"); 
+    element.val(list.get_expire_date_str());   
+}
+
 function cancel_editing(id)
 {
     //show expire_date div
-    $("div[id=expire_date_".concat(id).concat("]")).show();
+    $("tr[id=".concat(id).concat("]").concat(" p ")).show();
 
     //hide editable expire_date text field
     $("form[id=edit_form_".concat(id).concat("] input[type=text]")).val("");
@@ -38,8 +55,9 @@ function cancel_editing(id)
 function begin_editing(id)
 {
     //hide readonly expire_date div
-    $("div[id=expire_date_".concat(id).concat("]")).hide();
-
+    //$("div[id=expire_date_".concat(id).concat("]")).hide();
+    $("td[id=expire_date_".concat(id).concat("] p")).hide();    
+    
     //show editable expire_date text field
     $("form[id=edit_form_".concat(id).concat("] input[type=text]")).show();
 
@@ -57,6 +75,17 @@ function begin_editing(id)
     date_field.datepicker("option", "defaultDate", default_date);
     date_field.datepicker();
 
+    date_field.blur(function()
+    {
+        on_date_field_lose_focus(id);
+    });
+
+    date_field.focus(function()
+    {
+        on_date_field_gain_focus(id);
+    });
+    
+    on_date_field_lose_focus(id); // call this to make 'ghost' text appear
     email_lists.start_editing(id);
 }
 
@@ -65,8 +94,7 @@ function end_editing(id)
 {
     email_lists.end_editing();
 
-    //show expire_date div
-    $("div[id=expire_date_".concat(id).concat("]")).show();
+    $("td[id=expire_date_".concat(id).concat("]")).show();
 
     //hide editable expire_date text field
     $("form[id=edit_form_".concat(id).concat("] input[type=text]")).hide();
@@ -92,7 +120,6 @@ function on_forward_button_click()
 	var list = email_lists.get_list_by_id(id);
 
 	var expire_date = calc_2_years_forward(new Date());
-
 	$("form[id=edit_form_".concat(id).concat("] input[type=text]")).val(expire_date);
 }
 

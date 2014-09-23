@@ -8,30 +8,43 @@
 
 {% block content %}
 
-<div id="lists">
-    <div id="title_centered"> {{user_name}}'s lists:</div>
-    {% for listEntry in lists %} 
-    <div name="list_div" id="{{listEntry.id}}" class="list_entry">
+<!-- <div id="lists"> -->
+<table id="lists">
+    <tr>
+        <th> List Name </th>
+        <th> Expiration Date </th>
+    </tr>
     
-        <div name="list_name" id="list_name_{{listEntry.id}}" class="list_field">
+    {% for listEntry in lists %} 
+    <!-- <div name="list_div" id="{{listEntry.id}}" class="list_entry"> -->
+    <tr class="lists" id="{{listEntry.id}}">
+        <!-- <div name="list_name" id="list_name_{{listEntry.id}}" class="list_field">
             <p><b>List Name:</b></p>
             <p>{{listEntry.name}}</p>
-        </div>
+        </div> -->
+        <td>
+            {{listEntry.name}}
+        </td>
 
-        <div name="expire_date" id="expire_date_{{listEntry.id}}" class="list_field">
+        <!-- <div name="expire_date" id="expire_date_{{listEntry.id}}" class="list_field">
             <p><b>List Expiration Date:</b></p>
             <p>{{listEntry|format_expire_date}}</p>
-        </div>
+        </div> -->
+        <td id="expire_date_{{listEntry.id}}">
+            <p style=""> {{listEntry | format_expire_date }} </p>
+            
+            <form name="edit_form" id="edit_form_{{listEntry.id}}" method="post" action="/lists/list_edit/"> {% csrf_token %}
+                <input type="hidden" name="list_id" value="{{listEntry.id}}">
+                <input type="text" name="expire_date" value="">    
+            </form>
+        </td>
 
-        <form name="edit_form" id="edit_form_{{listEntry.id}}" method="post" action="/lists/list_edit/"> {% csrf_token %}
-            <input type="hidden" name="list_id" value="{{listEntry.id}}">
-            <input type="text" name="expire_date" value="">    
-        </form>
-
-        <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button>
-        <button name="cancel_button" id="cancel_button_{{listEntry.id}}" class="cancel_button">Cancel</button>
-        <button name="forward_button" id="forward_button_{{listEntry.id}}" class="forward_button">Set foward two years</button> 
-    </div>
+        <td> 
+            <button name="edit_button" id="edit_button_{{listEntry.id}}" class="edit_button">Edit</button> 
+            <button name="cancel_button" id="cancel_button_{{listEntry.id}}" class="cancel_button">Cancel</button>
+            <button name="forward_button" id="forward_button_{{listEntry.id}}" class="forward_button">Set foward two years</button> 
+        </td>
+    </tr>
     {% endfor %}
 
     <button id='accordion' name='logout_button'>Logout</button>
@@ -44,7 +57,7 @@
             });
         });
     </script>
-</div>
+</table>
 
 <script language="javascript">
     var list_array = new Array();

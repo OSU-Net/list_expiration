@@ -46,9 +46,23 @@ p.important
     font-size: 15px;
 }
 
+/* TODO: add some pretty animations to make things look better!
+@-webkit-keyframes anim_off
+{
+    from { margin-bottom: 20px; }
+    to { margin-bottom: 2px; }   
+}
+
+@-webkit-keyframes anim 
+{
+    from { margin-bottom: 2px; }
+    to { margin-bottom: 20px; }
+}
+*/
+
 #lists li:hover 
 {
     background: #C34500;
     color:      #F5F2ED;
-    cursor: pointer;    
+    cursor: pointer;
 }

@@ -46,29 +46,15 @@
 
 .edit_button
 {
-    position:absolute;
-    width: 10%;
-    height: 20%;
-    top: 45%;
-    bottom: 55%;
-    float:right;
+    display: inline;
 }
 
 .cancel_button
 {
-    position:relative;
-    width: 10%;
-    height: 20%;
-    top: 45%;
-    bottom: 55%;
-    float:left;
-    vertical-align: middle;
+    display: inline;
 }
 
 .text_edit_field
 {
-    position: relative;
-    width: 95%;
-    height: 30%;
-    vertical-align: bottom;
+    display: inline;
 }
