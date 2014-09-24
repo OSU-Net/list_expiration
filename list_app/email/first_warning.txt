@@ -1,8 +1,8 @@
 *owner_name*,
-    Your list, *list_name* is set to expire and be deleted in one week.  This
-    is the last email that will be sent out before the list is deleted.  If
-    the list is still in use, you can set a later expiration date at:
-    *link_addr*
+    
+    Your list, *list_name* is set to expire and be deleted in one week.  This is the last email that will be sent out before the list is deleted.  If the list is still in use, you can set a later expiration date at:
 
-    This is an automated email.  Do not reply to it.
+*link_addr*
+
+This is an automated email.  Do not reply to it.
 

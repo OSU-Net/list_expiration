@@ -1,5 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
+import pdb
 
 def send_email(file, args):
     file = open(file, 'r')
@@ -37,48 +38,48 @@ def send_email(file, args):
     msg['From'] = args['From']
     msg['To'] = args['To']
     
-    s = smtplib.SMTP('ssg-test')
+    s = smtplib.SMTP('localhost')
     s.sendmail(msg['From'], [msg['To']], msg.as_string())
     s.quit()
 
 
-def send_first_warning_email(username, user_email, list_name):
+def send_first_warning_email(user_email, list_name, link_addr):
     send_email('list_app/email/first_warning.txt', {
         'Subject': 'Mailing List Expiration',
         'From': 'admin@ssg-test.nws.oregonstate.edu',
         'To': user_email,
-        'owner_name': username,
-        'link_addr': 'ssg-test.nws.oregonstate.edu',
-        'list_name': 'list_name'
+        'owner_email': user_email,
+        'link_addr': link_addr,
+        'list_name': list_name
     })
 
 
-def send_final_warning_email(user_name, list_name):
+def send_final_warning_email(user_email, list_name, link_addr):
     send_email('list_app/email/first_warning.txt', {
         'Subject': 'Mailing List Expiration: Final Warning',
         'From': 'admin@ssg-test.nws.oregonstate.edu',
         'To': user_email,
-        'owner_name': username,
-        'link_addr': 'ssg-test.nws.oregonstate.edu',
-        'list_name': 'list_name'
+        'owner_name': user_email,
+        'link_addr': link_addr,
+        'list_name': list_name
     })
 
 
-def send_onid_transition_email(username):
+def send_onid_transition_email(user_email, link_addr):
     send_email('list_app/email/onid_transition.txt', {
         'Subject': 'Notice to Mailing List Owners',
         'From': 'admin@ssg-test.nws.oregonstate.edu',
         'To': user_email,
-        'owner_name': username,
-        'link_addr': 'ssg-test.nws.oregonstate.edu'
+        'owner_name': user_email,
+        'link_addr': link_addr
     })
 
 
-def send_non_onid_transition_email(username):
+def send_non_onid_transition_email(owner_email, link_addr):
     send_email('list_app/email/non_onid_transition.txt', {
         'Subject': 'Notice to Mailing List Owners',
         'From': 'admin@ssg-test.nws.oregonstate.edu',
-        'To': user_email,
-        'owner_name': username,
-        'link_addr': 'ssg-test.nws.oregonstate.edu'
+        'To': owner_email,
+        'owner_name': owner_email,
+        'link_addr': link_addr
     })

@@ -6,6 +6,7 @@
 import sys, os
 from django.core.management.base import BaseCommand, CommandError
 from list_app.models import *
+from list_app.email.list_mail import *
 from list_site import settings
 import cPickle as pickle  
 import os, binascii
@@ -21,13 +22,14 @@ class Command(BaseCommand):
     """
     def send_transition_email_onid(self, onid_email):
         print('transition email sent to {0}'.format(onid_email))
+        send_onid_transition_email(onid_email, 'ssg-test.nws.oregonstate.edu')
 
     def send_transition_email(self, email_addr): 
         link_code = OldOwner.objects.get(owner_email=email_addr).link_code;
         link = settings.SITE_URL + '/lists/onid_transition/?id={0}'.format(link_code)
-
         print('link for {0} is: {1}'.format(email_addr, link))
-
+        
+        send_non_onid_transition_email(email_addr, link)
 
     def get_mailman_list_names(self):
 
