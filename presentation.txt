@@ -21,6 +21,8 @@ Agenda:
 3)  CAS authentication and main page
     
     a)  There is a bug with python's date 
+    
+    b)  Two years forward is latest expiration date.
 
 4)  Check Lists script and list deletion/restoration
 

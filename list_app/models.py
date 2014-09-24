@@ -58,3 +58,5 @@ class OldOwner(models.Model):
 
     class Meta:
         ordering = ('owner_email',)
+
+

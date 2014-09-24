@@ -92,6 +92,3 @@ class Command(BaseCommand):
             (Owner.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
             listEntry.delete()
-
-
-
