@@ -1,4 +1,0 @@
-.env 
-tmp
-db.sqlite3
-pipe_test
