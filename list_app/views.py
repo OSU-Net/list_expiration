@@ -11,8 +11,6 @@ from list_app.list_status import *
 
 from list_app.forms import ListEditForm
 
-from list_site.log import log_error_apache
-
 import datetime
 
 import pdb
@@ -168,9 +166,7 @@ def submit_list_edit(request):
         cd = edit_form.cleaned_data
         le = List.objects.get(id=cd['list_id'])
         le.expire_date = cd['expire_date']
-        le.save()
-        
-        log_error_apache("test log!")
+        le.save() 
 
     else:
         #this 'else statement should never be executed, if it does, it means that the browser submitted

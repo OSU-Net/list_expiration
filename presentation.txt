@@ -1,0 +1,27 @@
+Agenda:
+-------
+
+1)  ONID Transition Script
+    
+    a)  Open each .pck file and parse the contents for the list owners it
+    contains.
+    
+    b)  If the owner has an ONID account, they don't have to do anything,
+    transfer the lists they own to the new system and mark them down as an
+    owner
+    
+    c)  If owner is not ONID, generate a unique link for them to visit.
+
+
+2)  ONID Transition Page and NO_ONID page
+    
+    a)  NO_ONID page needs a better way to show people that ONID accounts are
+    automatically given list ownership under new system.
+
+3)  CAS authentication and main page
+    
+    a)  There is a bug with python's date 
+
+4)  Check Lists script and list deletion/restoration
+
+    a) assumed to be run once per day

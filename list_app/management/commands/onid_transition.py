@@ -134,7 +134,6 @@ class Command(BaseCommand):
 
         #now send out emails
         
-
         owner_entries = OldOwner.objects.all()
         for owner in owner_entries:
 
