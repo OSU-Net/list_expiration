@@ -1,7 +1,12 @@
 from django.test import TestCase
 from datetime import *
 from list_app.models import * 
+from list_app.management.commands.check_lists import *
+
 import subprocess
+
+import pdb
+
 
 class ListTestCase(TestCase):
 
@@ -16,51 +21,56 @@ class ListTestCase(TestCase):
         warning_date_1 = now + timedelta(29)
         warning_date_2 = now + timedelta(6)
 
-        le1 = List(name='PH_211', create_date=create, expire_date=expired_date)
-        le1.save()
+        le1 = List.objects.create(name='PH_211', create_date=create, expire_date=expired_date)
 
-        le2 = List(name='PH_212', create_date=create, expire_date=warning_date_1)
-        le2.save()
+        le2 = List.objects.create(name='PH_212', create_date=create, expire_date=warning_date_1)
 
-        le3 = List(name='ST_314', create_date=create, expire_date=warning_date_2)
-        le3.save()
+        le3 = List.objects.create(name='ST_314', create_date=create, expire_date=warning_date_2)
 
-        oe1 = Owner(name='wasingej', lists=[le1,le2, le3])
-        oe1.save()
-
-        oe2 = Owner(name='doej', lists=[le2])
-        oe2.save()
+        oe1 = Owner.objects.create(name='wasingej')
+        oe1.lists.add(le1)
+        oe1.lists.add(le2)
+        oe1.lists.add(le3)
+        
+        oe2 = Owner.objects.create(name='doej')
+        oe2.lists.add(le2)
+        oe2.lists.add(le1)
 
     def test(self):
         expired_lists = check_lists()
         for listEntry in expired_lists:
-
-            (Owner.objects.get(lists__in=listEntry)).delete() 
+            
+            #(Owner.objects.get(lists__in=listEntry)).delete() 
             (ListWarning.objects.get(mailing_list=listEntry)).delete()
+            
+            #only delete owners if they no longer refer to lists other than this one
+            owners = listEntry.owner_set.all()
+            for owner in owners:
+                if owner.lists.count() == 1:
+                    owner.delete()
 
             listEntry.delete()
 
         warning_deleted = False
         list_deleted = False
-        owner_deleted = False
-
+        no_hanging_refs = False
+        
         #ensure list records have been deleted for the expired list
         try:
             List.objects.get(name='PH_211')
         except List.DoesNotExist:
             list_deleted = True
 
-        try:
-            Owner.objects.get(mailing_list__name='PH_211')
-        except Owner.DoesNotExist:
-            owner_deleted = True
+        owners = Owner.objects.filter(lists__name='PH_211')
+        if owners.count() == 0:
+            no_hanging_refs = True
 
         try:
             ListWarning.objects.get(mailing_list__name='PH_211')
         except ListWarning.DoesNotExist:
             warning_deleted = True
 
-        self.assertEqual(list_deleted and owner_deleted and warning_deleted, True)
+        self.assertEqual(list_deleted and no_hanging_refs and warning_deleted, True)
 
         #ensure records of warnings have been filled out accordingly
         self.assertEqual(

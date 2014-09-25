@@ -20,7 +20,7 @@ def date_delta_days(earlier_date, later_date):
     return (later_date - earlier_date).days
 
 
-def send_second_warning(list_entry):
+def send_last_warning(list_entry):
     print("second warning sent ;)")
 
 
