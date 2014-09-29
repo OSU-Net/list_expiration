@@ -51,7 +51,7 @@ EmailLists.prototype =
 				{
 					this.is_editing = false;
 					list.is_editing = false;
-					return;
+					return false;
 				}
 				else
 				{
@@ -65,6 +65,8 @@ EmailLists.prototype =
 				}
 			}
 		}
+
+        return true;
 	},
 
 	start_editing : function(id)

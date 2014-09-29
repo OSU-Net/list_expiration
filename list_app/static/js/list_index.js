@@ -105,7 +105,7 @@ function end_editing(id)
 {
     email_lists.end_editing();
 
-    $("td[id=expire_date_".concat(id).concat("]")).show();
+    $("td[id=expire_date_".concat(id).concat("] p")).show();
 
     //hide editable expire_date text field
     $("form[id=edit_form_".concat(id).concat("] input[type=text]")).hide();
