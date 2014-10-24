@@ -11,9 +11,17 @@ from list_app.list_status import *
 
 from list_app.forms import ListEditForm
 
+from django_cas.views import login
+
 import datetime
 
 import pdb
+
+
+def mm_authenticate(request, list_name):
+    """Forwards performs CAS authentication and forwards the user to the mailman interface"""
+    return login(request, next_page='http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name, supply_ticket = True)     
+
 
 #TODO: remove this view
 def test_index(request):

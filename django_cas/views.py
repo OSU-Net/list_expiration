@@ -95,11 +95,6 @@ def login(request, next_page=None, required=False, supply_ticket=False):
     else:
         return HttpResponseRedirect(_login_url(service))
 
-
-def mm_authenticate(request, list_name):
-    """Forwards performs CAS authentication and forwards the user to the mailman interface"""
-    return login(request, next_page='http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name, supply_ticket = True)     
-
 def logout(request, next_page=None):
     """Redirects to CAS logout page"""
 
