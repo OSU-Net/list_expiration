@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseBadRequest
 from list_app.models import * 
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
@@ -15,6 +15,7 @@ import datetime
 
 import pdb
 
+#TODO: remove this view
 def test_index(request):
     template = loader.get_template('test_index.html')
     context = RequestContext(request)

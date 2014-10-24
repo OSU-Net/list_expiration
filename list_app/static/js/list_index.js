@@ -52,7 +52,8 @@ function cancel_editing(id)
     //hide 'cancel' and 'forward' buttons
     $("button[id=cancel_button_".concat(id).concat("]")).hide();
     $("button[id=forward_button_".concat(id).concat("]")).hide();
-    
+    $("button[id=mm_button_".concat(id).concat("]")).hide();
+     
     email_lists.cancel_editing();
 }
 
@@ -73,7 +74,8 @@ function begin_editing(id)
     //make 'cancel' and forward buttons visible
     $("button[id=cancel_button_".concat(id).concat("]")).show();
     $("button[id=forward_button_".concat(id).concat("]")).show();
-
+    $("button[id=mm_button_".concat(id).concat("]")).show();
+    
     var date_field = $("form[id=edit_form_".concat(id).concat("] input[type=text]"));
     var default_date = email_lists.get_list_by_id(id).get_expire_date_str();
     
@@ -116,6 +118,7 @@ function end_editing(id)
     //hide 'cancel' and 'forward' buttons
     $("button[id=cancel_button_".concat(id).concat("]")).hide();
     $("button[id=forward_button_".concat(id).concat("]")).hide();
+    $("button[id=mm_button_".concat(id).concat("]")).hide();
 }
 
 //return a Date string with format "YYYY-MM-DD" that is set out two years from 'date'
@@ -160,8 +163,16 @@ function on_edit_button_click()
     }
 }
 
+function on_mm_button_click()
+{
+    var id = get_element_list_id(this);
+    var list = email_lists.get_list_by_id(id);
+    window.location = '/mailman/admin/'.concat(list.get_list_name()); 
+}
+
 $(document).ready(function()
 {
+    $('button[name=mm_button]').click(on_mm_button_click);
     $('button[name=edit_button]').click(on_edit_button_click);
     $('button[name=cancel_button]').click(on_cancel_button_click);
     $('button[name=forward_button]').click(on_forward_button_click);
@@ -169,4 +180,5 @@ $(document).ready(function()
     $("form[name=edit_form] input[type=text]").hide();
     $("button[name=cancel_button]").hide();
     $("button[name=forward_button]").hide();
+    $('button[name=mm_button]').hide();
 });

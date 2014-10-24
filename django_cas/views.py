@@ -3,7 +3,7 @@
 from urllib import urlencode
 from urlparse import urljoin
 
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse, HttpResponseBadRequest
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib import messages
@@ -12,7 +12,6 @@ __all__ = ['login', 'logout']
 
 def _service_url(request, redirect_to=None):
     """Generates application service URL for CAS"""
-
     protocol = ('http://', 'https://')[request.is_secure()]
     host = request.get_host()
     service = protocol + host + request.path
@@ -62,8 +61,7 @@ def _logout_url(request, next_page=None):
         url += '?' + urlencode({'url': protocol + host + next_page})
     return url
 
-
-def login(request, next_page=None, required=False):
+def login(request, next_page=None, required=False, supply_ticket=False):
     """Forwards to CAS login URL or verifies CAS ticket"""
 
     if not next_page:
@@ -72,6 +70,7 @@ def login(request, next_page=None, required=False):
         message = "You are logged in as %s." % request.user.username
         messages.success(request, message)
         return HttpResponseRedirect(next_page)
+    
     ticket = request.GET.get('ticket')
     service = _service_url(request, next_page)
     if ticket:
@@ -82,7 +81,12 @@ def login(request, next_page=None, required=False):
             name = user.first_name or user.username
             message = "Login succeeded. Welcome, %s." % name
             messages.success(request, message)
-            return HttpResponseRedirect(next_page)
+            
+            if supply_ticket:
+                return HttpResponseRedirect(next_page + '?ticket=' + ticket) #supply ticket some other way
+            else:
+                return HttpResponseRedirect(next_page)
+
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(_login_url(service))
         else:
@@ -91,6 +95,10 @@ def login(request, next_page=None, required=False):
     else:
         return HttpResponseRedirect(_login_url(service))
 
+
+def mm_authenticate(request, list_name):
+    """Forwards performs CAS authentication and forwards the user to the mailman interface"""
+    return login(request, next_page='http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name, supply_ticket = True)     
 
 def logout(request, next_page=None):
     """Redirects to CAS logout page"""
