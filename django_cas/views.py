@@ -8,6 +8,8 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib import messages
 
+import pdb
+
 __all__ = ['login', 'logout']
 
 def _service_url(request, redirect_to=None):
@@ -61,17 +63,23 @@ def _logout_url(request, next_page=None):
         url += '?' + urlencode({'url': protocol + host + next_page})
     return url
 
+
 def login(request, next_page=None, required=False, supply_ticket=False):
     """Forwards to CAS login URL or verifies CAS ticket"""
-
+     
     if not next_page:
         next_page = _redirect_url(request)
     if request.user.is_authenticated():
         message = "You are logged in as %s." % request.user.username
         messages.success(request, message)
-        return HttpResponseRedirect(next_page)
+       
+        if supply_ticket:
+            return HttpResponseRedirect(next_page + '?ticket=' + request.session['cas_ticket'])
+        else:
+            return HttpResponseRedirect(next_page)
     
     ticket = request.GET.get('ticket')
+    
     service = _service_url(request, next_page)
     if ticket:
         from django.contrib import auth
@@ -82,9 +90,11 @@ def login(request, next_page=None, required=False, supply_ticket=False):
             message = "Login succeeded. Welcome, %s." % name
             messages.success(request, message)
             
+            request.session['cas_ticket'] = ticket
+
             if supply_ticket:
-                return HttpResponseRedirect(next_page + '?ticket=' + ticket) #supply ticket some other way
-            else:
+                return HttpResponseRedirect(next_page + '?ticket=' + ticket)
+            else:   
                 return HttpResponseRedirect(next_page)
 
         elif settings.CAS_RETRY_LOGIN or required:
