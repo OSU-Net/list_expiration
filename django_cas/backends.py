@@ -151,6 +151,8 @@ def _verify_cas2_saml(ticket, service):
 
 _PROTOCOLS = {'1': _verify_cas1, '2': _verify_cas2, '3': _verify_cas3, 'CAS_2_SAML_1_0': _verify_cas2_saml}
 
+import pdb
+pdb.set_trace()
 
 if settings.CAS_VERSION not in _PROTOCOLS:
     raise ValueError('Unsupported CAS_VERSION %r' % settings.CAS_VERSION)

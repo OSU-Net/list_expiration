@@ -74,7 +74,7 @@ def login(request, next_page=None, required=False, supply_ticket=False):
         messages.success(request, message)
        
         if supply_ticket:
-            return HttpResponseRedirect(next_page + '?ticket=' + request.session['cas_ticket'])
+            return HttpResponseRedirect(next_page + '?ticket=' + request.session['cas_ticket'] + '&service=' + request.session['cas_service'])
         else:
             return HttpResponseRedirect(next_page)
     
@@ -83,6 +83,8 @@ def login(request, next_page=None, required=False, supply_ticket=False):
     service = _service_url(request, next_page)
     if ticket:
         from django.contrib import auth
+
+        pdb.set_trace()
         user = auth.authenticate(ticket=ticket, service=service, request=request)
         if user is not None:
             auth.login(request, user)
@@ -91,6 +93,7 @@ def login(request, next_page=None, required=False, supply_ticket=False):
             messages.success(request, message)
             
             request.session['cas_ticket'] = ticket
+            request.session['cas_service'] = service
 
             if supply_ticket:
                 return HttpResponseRedirect(next_page + '?ticket=' + ticket)
