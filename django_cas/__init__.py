@@ -13,7 +13,6 @@ _DEFAULTS = {
     'CAS_RETRY_LOGIN': False,
     'CAS_SERVER_URL': None,
     'CAS_VERSION': '2',
-    'CAS_SUPPLY_TICKET': False, #if true, ticket value will be passed as an argument in the URL
 }
 
 for key, value in _DEFAULTS.iteritems():

@@ -64,19 +64,15 @@ def _logout_url(request, next_page=None):
     return url
 
 
-def login(request, next_page=None, required=False, supply_ticket=False):
+def login(request, next_page=None, required=False):
     """Forwards to CAS login URL or verifies CAS ticket"""
-     
+    
     if not next_page:
         next_page = _redirect_url(request)
     if request.user.is_authenticated():
         message = "You are logged in as %s." % request.user.username
         messages.success(request, message)
-       
-        if supply_ticket:
-            return HttpResponseRedirect(next_page + '?ticket=' + request.session['cas_ticket'] + '&service=' + request.session['cas_service'])
-        else:
-            return HttpResponseRedirect(next_page)
+        return HttpResponseRedirect(next_page)
     
     ticket = request.GET.get('ticket')
     
@@ -84,7 +80,6 @@ def login(request, next_page=None, required=False, supply_ticket=False):
     if ticket:
         from django.contrib import auth
 
-        pdb.set_trace()
         user = auth.authenticate(ticket=ticket, service=service, request=request)
         if user is not None:
             auth.login(request, user)
@@ -92,13 +87,7 @@ def login(request, next_page=None, required=False, supply_ticket=False):
             message = "Login succeeded. Welcome, %s." % name
             messages.success(request, message)
             
-            request.session['cas_ticket'] = ticket
-            request.session['cas_service'] = service
-
-            if supply_ticket:
-                return HttpResponseRedirect(next_page + '?ticket=' + ticket)
-            else:   
-                return HttpResponseRedirect(next_page)
+            return HttpResponseRedirect(next_page)
 
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(_login_url(service))

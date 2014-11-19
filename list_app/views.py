@@ -5,6 +5,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
+from django.core.urlresolvers import reverse
 
 from list_app import urls
 from list_app.list_status import * 
@@ -16,6 +17,7 @@ from django_cas.views import login
 import datetime
 
 import pdb
+from list_site.verify_cas import verify_cas2
 
 
 def mm_authenticate(request, list_name):
@@ -25,8 +27,15 @@ def mm_authenticate(request, list_name):
 
 #TODO: remove this view
 def test_index(request):
+    
+    cas_verified = verify_cas2(request.session['cas_ticket'], 
+                                request.session['cas_service'], 
+                                'https://login.oregonstate.edu/cas-dev/')[0] 
+    
     template = loader.get_template('test_index.html')
-    context = RequestContext(request)
+    context = RequestContext(request,{
+        'cas_verified': cas_verified,
+    })
     return HttpResponse(template.render(context))
 
 def no_onid(request):
@@ -139,7 +148,7 @@ def onid_transition(request):
 def list_index(request):
 
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('login')
+        return HttpResponseRedirect(reverse('cas_login'))
 
     #user_entries = Owner.objects.filter(name=request.user)
     try:

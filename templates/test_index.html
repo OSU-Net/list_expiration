@@ -6,46 +6,8 @@
 {% endblock %}
 
 {% block content %}
-
-<div id="lists">
-    <div>
-        <p class="important"> You currently manage the following lists: </p>
-
-        <ul>
-            <li title="click to see the status of List1"> List1 </li>
-            <li title="click to see the status of List2"> List2 </li>
-            <li title="click to see the status of List3"> List3 </li>
-        </ul>
-    </div> 
-    <div>
-        <button> Authenticate with ONID </button>
-    </div>
-</div>
-
-<div id="accordion">
-    <h3>Header1</h3>
-    <div>
-        poopoopoopoopoopoop
-    </div>
-
-    <h3>Header1</h3>
-    <div>
-        poopoopoopoopoopoop
-    </div>
-</div>
-
-shiit
-
-<script>
-$(function()
-{
-   $(document).tooltip();
-   $("#accordion").accordion();
-   $("div[id=lists] ul li").on('click', function()
-   {
-        alert("hello world!");
-   });     
-});
-</script>
+{% if {{cas_verified}} %}
+CAS verification successful!
+{% endif %}
 
 {% endblock %}

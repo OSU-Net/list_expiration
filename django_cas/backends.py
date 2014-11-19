@@ -8,6 +8,8 @@ from django.conf import settings
 
 from django_cas.models import User
 
+import pdb
+
 __all__ = ['CASBackend']
 
 def _verify_cas1(ticket, service):
@@ -44,6 +46,7 @@ def _verify_cas2(ticket, service):
     params = {'ticket': ticket, 'service': service}
     url = (urljoin(settings.CAS_SERVER_URL, 'proxyValidate') + '?' +
            urlencode(params))
+    
     page = urlopen(url)
     try:
         response = page.read()
@@ -151,9 +154,6 @@ def _verify_cas2_saml(ticket, service):
 
 _PROTOCOLS = {'1': _verify_cas1, '2': _verify_cas2, '3': _verify_cas3, 'CAS_2_SAML_1_0': _verify_cas2_saml}
 
-import pdb
-pdb.set_trace()
-
 if settings.CAS_VERSION not in _PROTOCOLS:
     raise ValueError('Unsupported CAS_VERSION %r' % settings.CAS_VERSION)
 
@@ -167,6 +167,7 @@ class CASBackend(object):
         """Verifies CAS ticket and gets or creates User object"""
         
         username, attributes = _verify(ticket, service)
+        
         if attributes:
             request.session['attributes'] = attributes
         if not username:
@@ -177,6 +178,10 @@ class CASBackend(object):
             # user will have an "unusable" password
             user = User.objects.create_user(username, '')
             user.save()
+        
+        request.session['cas_ticket'] = ticket
+        request.session['cas_service'] = service
+         
         return user
 
     def get_user(self, user_id):
