@@ -53,6 +53,8 @@
 </table>
 
 <button id="return">Go Back</button>
+<button id="delete">Delete this list</button>
+
 <script>
 $(function()
 {
@@ -61,6 +63,15 @@ $(function()
     {
         window.location.replace("{% url 'list_app:onid_transition' %}?id=".concat(get_url_parameter('id')));    
     });
+
+    $("button[id=delete]").on("click", function()
+    {
+        var link =  "{% url 'list_app:no_onid' %}".concat(get_url_parameter(id));
+        var action = "?action=delete&id=".concat(get_url_parameter('id')).concat(
+                     "&list_name=").concat(get_url_parameter('list_name'));
+
+        window.location.replace(link.concat('/').concat(action));
+    });
 });
 </script>
-{% endblock %}
+{%  %}

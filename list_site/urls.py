@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^$', 'list_app.views.list_index'),
 )
 
+#serve static files automatically in debug mode.  Otherwise, some will not be served during page loading
 if settings.DEBUG:
    urlpatterns += patterns('',
        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),)

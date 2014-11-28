@@ -17,6 +17,9 @@ SECRET_KEY = '...'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#if DEBUG is false, ALLOWED_HOSTS must be set
+
+ALLOWED_HOSTS = ['*']
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []

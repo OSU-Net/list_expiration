@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        print("WARNING:  this command will delete all table entries for this application.  It is not intended to be used outside of a testing environment.  Only use it if you are entirely sure of what you are doing!")
+        print("WARNING:  this command will delete all database entries for this application.  It is not intended to be used outside of a testing environment.  Only use it if you are entirely sure of what you are doing!")
 
         decision = raw_input("continue? [y/N]")
         if decision == 'y':

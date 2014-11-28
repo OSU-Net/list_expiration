@@ -2,6 +2,16 @@ import smtplib
 from email.mime.text import MIMEText
 import pdb
 
+#######################################################################################
+#
+# send text specified in 'file' as an email
+# file(string): location of a template file containing the text for an email.  Entries
+#               denoted '*entry*' will be replaced with the value for 'args[entry]'
+#
+# args(dict):   contains values for template entries.  In addition, must contain values 
+#               'Subject', 'From' and 'To'
+#
+######################################################################################
 def send_email(file, args):
     file = open(file, 'r')
     
@@ -73,7 +83,6 @@ def send_onid_transition_email(user_email, link_addr):
         'owner_name': user_email,
         'link_addr': link_addr
     })
-
 
 def send_non_onid_transition_email(owner_email, link_addr):
     send_email('list_app/email/non_onid_transition.txt', {

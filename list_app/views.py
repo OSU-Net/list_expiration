@@ -41,7 +41,8 @@ def test_index(request):
 def no_onid(request):
     user_code = request.GET.get('id', '')
     list_name = request.GET.get('list_name', '')
-    
+    action = request.GET.get('action', '')
+     
     #pdb.set_trace()
      
     if user_code == '':
@@ -49,7 +50,10 @@ def no_onid(request):
     
     if list_name == '':
         raise Http404
-
+    
+    if action == 'delete': #delete the list and return the user to onid transition page
+        #####....
+        
     try:
         owner = OldOwner.objects.get(link_code=user_code)
         list = OldList.objects.get(name=list_name)
@@ -88,7 +92,7 @@ def onid_transition(request):
     #when the user redirects here after authenticating through CAS, fill the entry for their ONID email
     authenticated = False
 
-    if request.user.is_authenticated():
+    elif request.user.is_authenticated():
 
         # make sure that the authenticated onid user is not already entered as an owner to prevent duplicate owner entries
         if Owner.objects.filter(name=request.user.username).exists():
