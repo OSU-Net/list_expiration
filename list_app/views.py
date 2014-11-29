@@ -53,7 +53,16 @@ def no_onid(request):
     
     if action == 'delete': #delete the list and return the user to onid transition page
         #####....
-        
+        #remove the list from mailman, and mark it as deleted in the db
+        old_list = OldList.objects.get(name=list_name)
+
+        cmd_str = "list_app/management/commands/remove_list {0} {1} {2}".
+                  format(old_list.name,
+                         settings.MAILMAN_LISTS_DIR,
+                         settings.MAILMAN_SCRIPTS_DIR)
+        subprocess.call(cmd_str, shell=True)
+        old_
+           
     try:
         owner = OldOwner.objects.get(link_code=user_code)
         list = OldList.objects.get(name=list_name)
