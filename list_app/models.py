@@ -36,7 +36,7 @@ class PreferredEmail(models.Model):
 class OldList(models.Model):
     name = models.CharField(max_length=32, blank=False)
     create_date = models.DateField(blank=False)
-#    deleted = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('name',)

@@ -4,6 +4,8 @@
 
 {% load static %}
 <link href="{% static 'css/no_onid.css' %}" rel="stylesheet" type="text/css"/>
+
+
 {% endblock %}
 
 {% block content %}
@@ -66,12 +68,14 @@ $(function()
 
     $("button[id=delete]").on("click", function()
     {
-        var link =  "{% url 'list_app:no_onid' %}".concat(get_url_parameter(id));
+        alert("hello!");
+        var link =  "{% url 'list_app:no_onid' %}";
         var action = "?action=delete&id=".concat(get_url_parameter('id')).concat(
                      "&list_name=").concat(get_url_parameter('list_name'));
 
-        window.location.replace(link.concat('/').concat(action));
+        window.location.replace(link.concat(action));
     });
 });
 </script>
-{%  %}
+
+{% endblock %}

@@ -9,41 +9,22 @@ from django.core.urlresolvers import reverse
 
 from list_app import urls
 from list_app.list_status import * 
-
 from list_app.forms import ListEditForm
+
+from list_site import settings
 
 from django_cas.views import login
 
-import datetime
+import datetime, subprocess
 
 import pdb
 from list_site.verify_cas import verify_cas2
 
 
-def mm_authenticate(request, list_name):
-    """Forwards performs CAS authentication and forwards the user to the mailman interface"""
-    return login(request, next_page='http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name, supply_ticket = True)     
-
-
-#TODO: remove this view
-def test_index(request):
-    
-    cas_verified = verify_cas2(request.session['cas_ticket'], 
-                                request.session['cas_service'], 
-                                'https://login.oregonstate.edu/cas-dev/')[0] 
-    
-    template = loader.get_template('test_index.html')
-    context = RequestContext(request,{
-        'cas_verified': cas_verified,
-    })
-    return HttpResponse(template.render(context))
-
-def no_onid(request):
-    user_code = request.GET.get('id', '')
+def no_onid(request, user_code):
+#    user_code = request.GET.get('id', '')
     list_name = request.GET.get('list_name', '')
     action = request.GET.get('action', '')
-     
-    #pdb.set_trace()
      
     if user_code == '':
         raise Http404
@@ -56,12 +37,15 @@ def no_onid(request):
         #remove the list from mailman, and mark it as deleted in the db
         old_list = OldList.objects.get(name=list_name)
 
-        cmd_str = "list_app/management/commands/remove_list {0} {1} {2}".
+        cmd_str = "list_app/management/commands/remove_list {0} {1} {2}". \
                   format(old_list.name,
                          settings.MAILMAN_LISTS_DIR,
                          settings.MAILMAN_SCRIPTS_DIR)
         subprocess.call(cmd_str, shell=True)
-        old_
+        old_list.deleted = True
+        old_list.save()
+
+        return HttpResponseRedirect(reverse('list_app:onid_transition', user_code=user_code))
            
     try:
         owner = OldOwner.objects.get(link_code=user_code)
@@ -87,8 +71,8 @@ def no_onid(request):
     })
     return HttpResponse(template.render(context))
 
-def onid_transition(request):
-    user_code = request.GET.get('id', '')
+def onid_transition(request, user_code):
+#    user_code = request.GET.get('id', '')
     
     if user_code == '':
         raise Http404   
@@ -101,9 +85,10 @@ def onid_transition(request):
     #when the user redirects here after authenticating through CAS, fill the entry for their ONID email
     authenticated = False
 
-    elif request.user.is_authenticated():
+    if request.user.is_authenticated():
 
-        # make sure that the authenticated onid user is not already entered as an owner to prevent duplicate owner entries
+        # make sure that the authenticated onid user is not 
+        #already entered as an owner to prevent duplicate owner entries
         if Owner.objects.filter(name=request.user.username).exists():
 
             logout(request)
@@ -142,7 +127,8 @@ def onid_transition(request):
             new_owner.lists.add(new_list)
             new_owner.save()
         
-        #modify the 'OldOwner' entry so that other prospective list owners can see that this user has claimed ONID ownership of the list
+        #modify the 'OldOwner' entry so that other prospective list 
+        #owners can see that this user has claimed ONID ownership of the list
         old_owner = OldOwner.objects.get(link_code=user_code)
         old_owner.onid_email = request.user.username
         old_owner.save()
@@ -184,7 +170,8 @@ def validate_list_changes(cd):
         return True
 
     except object:
-        print(str.format("Exception of type {0} occurred because invalid list form data was submitted",
+        print(str.format("Exception of type {0} occurred because" +  
+                         "invalid list form data was submitted",
                          type(object)))
         return False
 
@@ -222,7 +209,9 @@ def list_edit(request):
 
         else:
             #return an error message
-            return HttpResponse(str.format("Errors:\n {0} \n {1}", edit_form['list_pk'].errors, edit_form['expire_date'].errors))
+            return HttpResponse(str.format("Errors:\n {0} \n {1}", 
+                                edit_form['list_pk'].errors, 
+                                edit_form['expire_date'].errors))
 
     else:
         admin_name = request.GET['admin_name']
@@ -231,7 +220,9 @@ def list_edit(request):
         list_to_edit = List.objects.get(id=list_pk)
 
         if not list_to_edit:
-            return HttpResponse(str.format("user {0} is not an administrator of {1}", admin_name, list_to_edit.name))
+            return HttpResponse(str.format("user {0} is not an administrator of {1}", 
+                                admin_name, 
+                                list_to_edit.name))
             # ^^ I don't think this will ever be executed...
 
         template = loader.get_template('list_edit.html')
@@ -243,4 +234,3 @@ def list_edit(request):
         })
 
         return HttpResponse(template.render(context))
-

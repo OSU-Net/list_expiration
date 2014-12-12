@@ -15,9 +15,15 @@
 
             <ul>
                 {% for list in lists %}
-                    <li id="{{list.name}}" name="status_{{list.name}}" title="click to see the status of {{ list.name }}">
-                        <span>  {{ list.name }} </span> 
-                    </li>
+                    {% if list.deleted %}
+                        List has been deleted
+                    {% else %}
+                        <li id="{{list.name}}" 
+                         name="status_{{list.name}}" 
+                         title="click to see the status of {{ list.name }}">
+                            <span>  {{ list.name }} </span> 
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div> 
@@ -53,15 +59,10 @@ $(function()
         window.location.href = "{% url 'cas_logout' %}";
     });
 
-    //$('button[name="no_onid_button"]').click(function()
-    //{
-    //    window.location.replace("{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter('id')));
-    //});
-
     var status_buttons = $('li[name^=status_]');
     status_buttons.on("click", function()
     {
-        var link_str = "{% url 'list_app:no_onid' %}?id=".concat(get_url_parameter("id")).concat("&list_name=").concat(this.id);
+        var link_str = "{% url 'list_app:no_onid' user_code=onid_transition.user_code%}";
         window.location.href = link_str;
     });
 });
