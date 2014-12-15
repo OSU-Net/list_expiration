@@ -21,8 +21,8 @@ import pdb
 from list_site.verify_cas import verify_cas2
 
 
-def no_onid(request, user_code):
-#    user_code = request.GET.get('id', '')
+def no_onid(request):
+    user_code = request.GET.get('id', '')
     list_name = request.GET.get('list_name', '')
     action = request.GET.get('action', '')
      
@@ -45,7 +45,8 @@ def no_onid(request, user_code):
         old_list.deleted = True
         old_list.save()
 
-        return HttpResponseRedirect(reverse('list_app:onid_transition', user_code=user_code))
+        return HttpResponseRedirect(reverse('list_app:onid_transition') + 
+            '?id=' + user_code)
            
     try:
         owner = OldOwner.objects.get(link_code=user_code)
@@ -71,8 +72,8 @@ def no_onid(request, user_code):
     })
     return HttpResponse(template.render(context))
 
-def onid_transition(request, user_code):
-#    user_code = request.GET.get('id', '')
+def onid_transition(request):
+    user_code = request.GET.get('id', '')
     
     if user_code == '':
         raise Http404   
@@ -140,6 +141,7 @@ def onid_transition(request, user_code):
     context = RequestContext(request, {
         'lists': owner.lists.all(),
         'authenticated': authenticated,
+        'user_code': user_code,
     })
     return HttpResponse(template.render(context))
 

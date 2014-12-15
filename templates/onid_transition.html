@@ -49,7 +49,7 @@ $(function()
 {
     $('button[name="register"]').click(function()
     {
-        var link_str = "{% url 'cas_login' %}?next={{request.path}}?id=".concat(get_url_parameter('id'));
+        var link_str = "{% url 'cas_login' %}?next={{request.path}}";
         console.log(link_str);
         window.location.href = link_str;
     });
@@ -58,13 +58,18 @@ $(function()
     {
         window.location.href = "{% url 'cas_logout' %}";
     });
+    
+    {% for list in lists %}
+        var status_buttons = $('li[id={{list.name}}]');
 
-    var status_buttons = $('li[name^=status_]');
-    status_buttons.on("click", function()
-    {
-        var link_str = "{% url 'list_app:no_onid' user_code=onid_transition.user_code%}";
-        window.location.href = link_str;
-    });
+        status_buttons.on("click", function()
+        {
+            var link_str = "{% url 'list_app:no_onid'%}";
+            var link_args = "?id=".concat(get_url_parameter('id')).concat(
+                "&list_name=".concat(this.id));
+            window.location.href = link_str.concat(link_args);
+        });
+    {% endfor %}
 });
 </script>
 {% endblock %}

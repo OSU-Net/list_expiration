@@ -68,10 +68,8 @@ $(function()
 
     $("button[id=delete]").on("click", function()
     {
-        alert("hello!");
         var link =  "{% url 'list_app:no_onid' %}";
-        var action = "?action=delete&id=".concat(get_url_parameter('id')).concat(
-                     "&list_name=").concat(get_url_parameter('list_name'));
+        var action = "?action=delete&id=".concat(get_url_parameter('id')).concat("&list_name=").concat(get_url_parameter('list_name'));
 
         window.location.replace(link.concat(action));
     });
