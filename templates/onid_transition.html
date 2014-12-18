@@ -16,7 +16,12 @@
             <ul>
                 {% for list in lists %}
                     {% if list.deleted %}
-                        List has been deleted
+                        <li id="{{list.name}}_deleted" 
+                         name="status_{{list.name}}" 
+                         title="click to see the status of {{ list.name }}">
+                            <span>  {{ list.name }}-List has been deleted</span> 
+                        </li>
+
                     {% else %}
                         <li id="{{list.name}}" 
                          name="status_{{list.name}}" 
